@@ -1,0 +1,224 @@
+Exon,DNA change,Var_pub_as,RNA change,Codon_change,Protein change,DB-ID,Variant remarks,Genet_ori,Reference,Template,Technique,Frequency,RE-site
+1,NM_001100.3:c.-66_-65delinsTC,-,r.(?),-,p.(=),ACTA1_00200,-,germline (inherited),-,DNA,SEQ,-,-
+1_7,NM_001100.3:c.=,-,r.=,-,p.=,ACTA1_00000,no variants 2nd chromosome,germline (inherited),-,DNA,SEQ,-,-
+2,NM_001100.3:c.7G>T,D1Y,r.(?),GAC > TAC,p.(Asp3Tyr),ACTA1_00001,-,germline (inherited),15520409,DNA,SEQ,-,-
+2,NM_001100.3:c.16G>A,-,r.(?),GAG > AAG,p.(Glu6Lys),ACTA1_00002,-,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.24C>A,-,r.(?),-,p.(=),ACTA1_00235,Emory Genetics Lab,unknown,-,DNA,SEQ,-,-
+2,NM_001100.3:c.37G>A,-,r.(?),GAC > AAC,p.(Asp13Asn),ACTA1_00160,-,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.44G>A,-,r.(?),GGC > GAC,p.(Gly15Asp),ACTA1_00225,-,de novo,20621480,DNA,SEQ,-,-
+2,NM_001100.3:c.49G>C,G15R,r.(?),GGC > CGC,p.(Gly17Arg),ACTA1_00003,-,de novo,10508519,DNA,SEQ,-,-
+2,NM_001100.3:c.79G>A,-,r.(?),GAC > AAC,p.(Asp27Asn),ACTA1_00004,-,germline (inherited),12921789,DNA,SEQ,-,-
+2,NM_001100.3:c.89G>A,-,r.(?),AGG > AAG,p.(Arg30Lys),ACTA1_00005,?unaffected father carries the same mutation,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.109G>C,-,r.(?),GTG > CTG,p.(Val37Leu),ACTA1_00006,-,de novo,12921789;15236405,DNA,SEQ,-,-
+2,NM_001100.3:c.109G>T,-,r.(?),GTG > TTG,p.(Val37Leu),ACTA1_00202,-,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.110T>C,-,r.(?),GTG > GCG,p.(Val37Ala),ACTA1_00161,-,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.113G>C,-,r.(?),GGC > GCC,p.(Gly38Ala),ACTA1_00007,parents not tested,germline (inherited),19562689,DNA,SEQ,-,-
+2,NM_001100.3:c.119C>T,-,r.(?),CCC > CTC,p.(Pro40Leu),ACTA1_00008,-,de novo,12921789;15236405,DNA,SEQ,-,-
+2,NM_001100.3:c.121C>T,-,r.(?),CGA > TGA,p.(Arg41*),ACTA1_00009,both unaffected parents heterozygous,germline (inherited),17187373;12921789,DNA,SEQ,-,-
+2,NM_001100.3:c.122G>A,-,r.(?),CGA > CAA,p.(Arg41Gln),ACTA1_00229,-,de novo,-,DNA,PCR, SEQ,-,-
+2,NM_001100.3:c.124C>T,-,r.(?),CAC > TAC,p.(His42Tyr),ACTA1_00010,-,de novo,10508519;12921789,DNA,SEQ,-,-
+2,NM_001100.3:c.128A>G,-,r.(?),CAG > CGG,p.(Gln43Arg),ACTA1_00011,-,de novo,11525890;12921789;15138616,DNA,SEQ,-,-
+2i,NM_001100.3:c.129+31C>A,-,r.(?),-,p.(=),ACTA1_00236,Emory Genetics Lab,unknown,-,DNA,SEQ,-,-
+2i,NM_001100.3:c.130-10G>C,-,r.(=),-,-,ACTA1_00150,-,germline (inherited),15138616,DNA,SEQ,-,-
+2i,NM_001100.3:c.130-5T>C,-,r.(=),-,-,ACTA1_00151,-,germline (inherited),15138616,DNA,SEQ,-,-
+3,NM_001100.3:c.131G>T,-,r.(?),GGC > GTC,p.(Gly44Val),ACTA1_00012,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.133G>T,-,r.(?),GTC > TTC,p.(Val45Phe),ACTA1_00013,-,de novo,12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.137T>C,-,r.(?),ATG > ACG,p.(Met46Thr),ACTA1_00014,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.142G>A,-,r.(?),GGT > AGT,p.(Gly48Ser),ACTA1_00221,-,germline (inherited),-,DNA,SEQ,-,-
+3,NM_001100.3:c.142G>C,-,r.(?),GGT > CGT,p.(Gly48Arg),ACTA1_00239,-,de novo,-,DNA,SEQ,-,-
+3,NM_001100.3:c.142G>T,-,r.(?),GGT > TGT,p.(Gly48Cys),ACTA1_00162,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.143G>A,-,r.(?),GGT > GAT,p.(Gly48Asp),ACTA1_00015,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.145A>G,-,r.(?),ATG > GTG,p.(Met49Val),ACTA1_00190,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.169G>C,-,r.(?),GGC > CGC,p.(Gly57Arg),ACTA1_00016,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.172G>A,-,r.(?),GAC > AAC,p.(Asp58Asn),ACTA1_00227,-,germline (inherited),-,DNA,PCR, SEQ,-,-
+3,NM_001100.3:c.197T>A,-,r.(?),ATC > AAC,p.(Ile66Asn),ACTA1_00212,-,de novo,12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.197T>G,-,r.(?),ATC > AGC,p.(Ile66Ser),ACTA1_00163,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.203C>A,-,r.(?),ACC > AAC,p.(Thr68Asn),ACTA1_00208,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.203C>T,-,r.(?),ACC > ATC,p.(Thr68Ile),ACTA1_00018,-,de novo,15198992,DNA,SEQ,-,-
+3,NM_001100.3:c.209A>G,-,r.(?),AAG > AGG,p.(Lys70Arg),ACTA1_00186,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.210G>A,-,r.210g>a,AAG > AAA,p.=,ACTA1_00144,RNA muscle normal; pathogenicity unclear; ,germline (inherited),15138616,DNA, RNA,RT-PCR, SEQ,-,-
+3,NM_001100.3:c.215C>G,-,r.(?),CCT > CGT,p.(Pro72Arg),ACTA1_00216,-,germline (inherited),unpublished,DNA,SEQ,-,-
+3,NM_001100.3:c.217A>G,-,r.(?),ATC > GTC,p.(Ile73Val),ACTA1_00164,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.217A>T,-,r.(?),ATC > TTC,p.(Ile73Phe),ACTA1_00019,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.220G>A,-,r.(?),GAG > AAG,p.(Glu74Lys),ACTA1_00020,-,de novo,15198992,DNA,SEQ,-,-
+3,NM_001100.3:c.222_223delinsTT,-,r.(?),GAGCAC > GATTAC,p.(Glu74_His75delinsAspTyr),ACTA1_00215,GAG CAC > GATTAC,de novo,19553116,DNA,SEQ,-,-
+3,NM_001100.3:c.223C>A,-,r.(?),CAC > AAC,p.(His75Asn),ACTA1_00165,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.224A>G,-,r.(?),CAC > CGC,p.(His75Arg),ACTA1_00157,-,germline (inherited),15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.224A>T,-,r.(?),CAC > CTC,p.(His75Leu),ACTA1_00021,-,de novo,12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.227G>A,-,r.(?),GGC > GAC,p.(Gly76Asp),ACTA1_00022,-,de novo,15952992,DNA,SEQ,-,-
+3,NM_001100.3:c.229A>C,-,r.(?),ATC > CTC,p.(Ile77Leu),ACTA1_00023,-,de novo,12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.230T>G,-,r.(?),ATC > AGC,p.(Ile77Ser),ACTA1_00024,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.235A>G,-,r.(?),ACC > GCC,p.(Thr79Ala),ACTA1_00025,-,de novo,12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.253G>A,-,r.(?),GAG > AAG,p.(Glu85Lys),ACTA1_00026,-,de novo,15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.275_277del,-,r.(?),-,p.(Phe92del),ACTA1_00231,deleted sequence = TCT,de novo,-,DNA,SEQ,-,-
+3,NM_001100.3:c.282C>G,-,r.(?),AAC > AAG,p.(Asn94Lys),ACTA1_00027,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.287T>C,Leu94Pro,r.(?),CTT > CCT,p.(Leu96Pro),ACTA1_00210,-,germline (inherited),10508519;12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.324C>A,Thr108Thr,r.(?),ACC > ACA,p.(=),ACTA1_00196,-,germline (inherited),dbSNP-rs41271479,DNA,SEQ,?,-
+3,NM_001100.3:c.327G>C,-,r.(?),GAG > GAC,p.(Glu109Asp),ACTA1_00029,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.338A>G,-,r.(?),AAT > AGT,p.(Asn113Ser),ACTA1_00030,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.343A>G,-,r.(?),AAG > GAG,p.(Lys115Glu),ACTA1_00166,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.346G>A,-,r.(?),GCC > ACC,p.(Ala116Thr),ACTA1_00031,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.346G>T,-,r.(?),GCC > TCC,p.(Ala116Ser),ACTA1_00032,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.350A>C,-,r.(?),AAC > ACC,p.(Asn117Thr),ACTA1_00034,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.350A>G,N115S,r.(?),AAC > AGC,p.(Asn117Ser),ACTA1_00033,-,germline (inherited),10508519;12921789;11333380,DNA,SEQ,-,-
+3,NM_001100.3:c.353G>A,-,r.(?),CGC > CAC,p.(Arg118His),ACTA1_00035,-,de novo,12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.360G>T,-,r.(?),AAG > AAT,p.(Lys120Asn),ACTA1_00219,-,de novo,-,DNA,PCR, SEQ,-,-
+3,NM_001100.3:c.365C>G,-,r.(?),ACC > AGC,p.(Thr122Ser),ACTA1_00036,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.393delG,-,r.(?),GTG > GTC,p.(Ala133Profs*59),ACTA1_00037,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.400A>G,-,r.(?),ATG > GTG,p.(Met134Val),ACTA1_00038,-,germline (inherited),10508519;11166164;12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.402G>A,-,r.(?),ATG > ATA,p.(Met134Ile),ACTA1_00039,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.407T>C,-,r.(?),GTG > GCG,p.(Val136Ala),ACTA1_00040,-,germline (inherited),12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.413T>C,-,r.(?),ATC > ACC,p.(Ile138Thr),ACTA1_00042,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.414C>G,I136M,r.(?),ATC > ATG,p.(Ile138Met),ACTA1_00041,-,germline (inherited),10838259;11333380;12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.417G>C,-,r.(?),CAG > CAC,p.(Gln139His),ACTA1_00043,-,de novo,18461503,DNA,SEQ,-,-
+3,NM_001100.3:c.418G>C,-,r.(?),GCC > CCC,p.(Ala140Pro),ACTA1_00044,-,de novo,12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.419C>A,-,r.(?),GCC > GAC,p.(Ala140Asp),ACTA1_00195,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.422T>C,-,r.(?),GTG > GCG,p.(Val141Ala),ACTA1_00045,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.425T>C,-,r.(?),CTG > CCG,p.(Leu142Pro),ACTA1_00046,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.430C>T,-,r.(?),CTC > TTC,p.(Leu144Phe),ACTA1_00197,-,de novo,19553121;19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.435C>G,-,r.(?),TAC > TAG,p.(Tyr145*),ACTA1_00184,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.436delG,-,r.(?),-,p.(Ala146Profs*46),ACTA1_00047,-,germline (inherited),11525890;12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.437_442dup,436_441dup,r.(?),-,p.(Ala146_Ser147dup),ACTA1_00048,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.442G>A,-,r.(?),GGC > AGC,p.(Gly148Ser),ACTA1_00050,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.443G>A,-,r.(?),GGC > GAC,p.(Gly148Asp),ACTA1_00049,-,de novo,12921789;15236405,DNA,SEQ,-,-
+3,NM_001100.3:c.446G>A,-,r.(?),AGG > AAG,p.(Arg149Lys),ACTA1_00051,-,germline (inherited),19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.449C>A,-,r.(?),ACC > AAC,p.(Thr150Asn),ACTA1_00052,-,germline (inherited),12921789,DNA,SEQ,-,-
+3,NM_001100.3:c.449C>G,-,r.(?),ACC > AGC,p.(Thr150Ser),ACTA1_00053,-,de novo,19562689,DNA,SEQ,-,-
+3,NM_001100.3:c.453C>A,Thr151Thr,r.(?),ACC > ACA,p.(=),ACTA1_00145,known polymorphism,germline (inherited),10528865,DNA,SEQ,-,-
+3i,NM_001100.3:c.454+30CCCGCC(3_5),-,r.(=),-,p.(=),ACTA1_00152,known polymorphism,germline (inherited),10508519;15138616,DNA,SEQ,-,-
+3i,NM_001100.3:c.455-53A>C,455-53C>A,r.(=),-,-,ACTA1_00193,-,germline (inherited),-,DNA,SEQ,-,-
+3i,NM_001100.3:c.455-1G>A,-,r.spl?,-,-,ACTA1_00139,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.455G>C,-,r.(?),GGC > GCC,p.(Gly152Ala),ACTA1_00217,-,de novo,[20850316],DNA,SEQ,-,-
+4,NM_001100.3:c.466G>A,-,r.(?),GAC > AAC,p.(Asp156Asn),ACTA1_00054,-,germline (inherited),12921789;15221331,DNA,SEQ,-,-
+4,NM_001100.3:c.478G>T,-,r.(?),GGT > TGT,p.(Gly160Cys),ACTA1_00187,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.487C>G,-,r.(?),CAC > GAC,p.(His163Asp),ACTA1_00055,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.487C>T,-,r.(?),CAC > TAC,p.(His163Tyr),ACTA1_00218,?recessive variant,germline (inherited),-,DNA,SEQ,-,-
+4,NM_001100.3:c.493G>A,V163M,r.(?),GTG > ATG,p.(Val165Met),ACTA1_00058,-,germline (inherited),12921789;15198992;16427282,DNA,SEQ,-,-
+4,NM_001100.3:c.493G>C,V163L,r.(?),GTG > CTG,p.(Val165Leu),ACTA1_00056,-,de novo,10508519;12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.493G>T,V163L,r.(?),GTG > TTG,p.(Val165Leu),ACTA1_00057,-,germline (inherited),10508519;12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.515C>A,-,r.(?),GCG > GAG,p.(Ala172Glu),ACTA1_00059,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.515C>G,-,r.(?),GCG > GGG,p.(Ala172Gly),ACTA1_00060,-,germline (inherited),12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.539T>C,-,r.(?),CTG > CCG,p.(Leu180Pro),ACTA1_00061,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.541delG,-,r.(?),-,p.(Asp181Thrfs*11),ACTA1_00066,both parents carriers,germline (inherited),17187373,DNA,SEQ,-,-
+4,NM_001100.3:c.541G>A,-,r.(?),GAC > AAC,p.(Asp181Asn),ACTA1_00062,-,germline (inherited),12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.541G>C,-,r.(?),GAC > CAC,p.(Asp181His),ACTA1_00063,-,germline (inherited),12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.542A>G,-,r.(?),GAC > GGC,p.(Asp181Gly),ACTA1_00064,-,de novo,15236405,DNA,SEQ,-,-
+4,NM_001100.3:c.547G>A,-,r.(?),GCG > ACG,p.(Ala183Thr),ACTA1_00168,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.549G>A,Ala183Ala,r.(?),GCG > GCA,p.(=),ACTA1_00194,known polymorphism,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.551G>A,-,r.(?),GGC > GAC,p.(Gly184Asp),ACTA1_00065,-,de novo,10508519;12921789;15236405,DNA,SEQ,-,-
+4,NM_001100.3:c.553C>A,-,r.(?),CGC > AGC,p.(Arg185Ser),ACTA1_00070,-,germline (inherited),12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.553C>G,-,r.(?),CGC > GGC,p.(Arg185Gly),ACTA1_00068,-,de novo,11333380;12921789;15198992,DNA,SEQ,-,-
+4,NM_001100.3:c.553C>T,-,r.(?),CGC > TGC,p.(Arg185Cys),ACTA1_00067,-,germline (inherited),10508519;12921789;15236405,DNA,SEQ,-,-
+4,NM_001100.3:c.554G>T,-,r.(?),CGC > CTC,p.(Arg185Leu),ACTA1_00069,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.556G>C,-,r.(?),GAT > CAT,p.(Asp186His),ACTA1_00220,-,de novo,-,DNA,SEQ,-,-
+4,NM_001100.3:c.557A>G,-,r.(?),GAT > GGT,p.(Asp186Gly),ACTA1_00169,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.570C>A,-,r.(?),TAC > TAA,p.(Tyr190*),ACTA1_00071,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.579G>T,-,r.(?),AAG > AAT,p.(Lys193Asn),ACTA1_00072,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.586A>C,-,r.(?),ACT > CCT,p.(Thr196Pro),ACTA1_00198,-,germline (inherited),19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.591G>T,-,r.(?),GAG > GAT,p.(Glu197Asp),ACTA1_00241,-,germline (inherited),-,DNA,PCR, SEQ,-,-
+4,NM_001100.3:c.592C>A,-,r.(?),CGC > AGC,p.(Arg198Ser),ACTA1_00188,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.592C>T,-,r.(?),CGT > TGT,p.(Arg198Cys),ACTA1_00073,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.593G>A,-,r.(?),CGT > CAT,p.(Arg198His),ACTA1_00075,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.593G>T,-,r.(?),CGT > CTT,p.(Arg198Leu),ACTA1_00074,-,germline (inherited),12921789,DNA,SEQ,-,-
+4,NM_001100.3:c.595G>A,-,r.(?),GGC > AGC,p.(Gly199Ser),ACTA1_00076,-,de novo,15236405,DNA,SEQ,-,-
+4,NM_001100.3:c.598T>C,-,r.(?),TAC > CAC,p.(Tyr200His),ACTA1_00232,-,de novo,-,DNA,SEQ,-,-
+4,NM_001100.3:c.599A>G,-,r.(?),TAC > TGC,p.(Tyr200Cys),ACTA1_00077,-,de novo,19562689,DNA,SEQ,-,-
+4,NM_001100.3:c.616G>A,-,r.(?),GCT > ACT,p.(Ala206Thr),ACTA1_00078,-,germline (inherited),19562689,DNA,SEQ,-,-
+4i,NM_001100.3:c.616+1G>A,-,r.spl?,-,-,ACTA1_00140,-,germline (inherited),19562689,DNA,SEQ,-,-
+4i,NM_001100.3:c.617-5C>A,-,r.616_617ins617-3_617-1,-,p.Thr205_Ala206insAla,ACTA1_00203,creation cryptic splice acceptor site predicted (+insert Ala translated from intron 4),germline (inherited),19562689,DNA, RNA,RT-PCR, SEQ,-,-
+5,NM_001100.3:c.620A>G,-,r.(?),GAG > GGG,p.(Glu207Gly),ACTA1_00170,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.621G>C,-,r.(?),GAG > GAC,p.(Glu207Asp),ACTA1_00079,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.627G>C,-,r.(?),GAG > GAC,p.(Glu209Asp),ACTA1_00080,pathogenicity unclear,germline (inherited),15138616,DNA,SEQ,-,-
+5,NM_001100.3:c.649A>T,-,r.(?),AAG > TAG,p.(Lys217*),ACTA1_00171,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.667C>G,-,r.(?),CTG > GTG,p.(Leu223Val),ACTA1_00234,-,unknown,-,DNA,SEQ,-,-
+5,NM_001100.3:c.668T>C,L221P,r.(?),CTG > CCG,p.(Leu223Pro),ACTA1_00081,not in >300 control chromosomes,germline (inherited),15468086,DNA,SEQ,-,-
+5,NM_001100.3:c.676G>C,-,r.(?),GAG > CAG,p.(Glu226Gln),ACTA1_00082,-,germline (inherited),12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.677A>G,-,r.(?),GAG > GGG,p.(Glu226Gly),ACTA1_00083,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.682G>C,-,r.(?),GAG > CAG,p.(Glu228Gln),ACTA1_00172,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.685A>G,-,r.(?),ATG > GTG,p.(Met229Val),ACTA1_00084,-,de novo,12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.686T>C,-,r.(?),ATG > ACG,p.(Met229Thr),ACTA1_00085,-,de novo,12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.687G>A,-,r.(?),ATG > ATA,p.(Met229Ile),ACTA1_00086,-,germline (inherited),12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.687G>C,-,r.(?),ATG > ATC,p.(Met229Ile),ACTA1_00087,-,germline (inherited),12921789;15236405,DNA,SEQ,-,-
+5,NM_001100.3:c.687G>T,-,r.(?),ATG > ATT,p.(Met229Ile),ACTA1_00088,-,de novo,19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.695C>T,-,r.(?),GCC > GTC,p.(Ala232Val),ACTA1_00089,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.715G>A,-,r.(?),GAA>AAA,p.Glu239Lys,ACTA1_00223,-,de novo,21570694,DNA,SEQ,-,-
+5,NM_001100.3:c.715G>T,-,r.(?),GAA > TAA,p.(Glu239*),ACTA1_00173,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.727G>A,-,r.(?),GAG > AAG,p.(Glu243Lys),ACTA1_00090,-,de novo,12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.737A>C,-,r.(?),GAC > GCC,p.(Asp246Ala),ACTA1_00240,-,germline (inherited),-,DNA,SEQ,-,-
+5,NM_001100.3:c.738C>A,-,r.(?),GAC > GAA,p.(Asp246Glu),ACTA1_00174,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.739G>A,-,r.(?),GGG > AGG,p.(Gly247Arg),ACTA1_00242,-,germline (inherited),-,DNA,PCR, SEQ,-,-
+5,NM_001100.3:c.739G>C,-,r.(?),GGG > CGG,p.(Gly247Arg),ACTA1_00091,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.742C>A,-,r.(?),CAG > AAG,p.(Gln248Lys),ACTA1_00092,-,germline (inherited),12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.743A>G,-,r.(?),CAG > CGG,p.(Gln248Arg),ACTA1_00093,-,germline (inherited),12921789;15236405,DNA,SEQ,-,-
+5,NM_001100.3:c.758G>A,-,r.(?),GGC > GAC,p.(Gly253Asp),ACTA1_00094,-,de novo,12921789;15236405,DNA,SEQ,-,-
+5,NM_001100.3:c.760A>T,-,r.(?),AAC > TAC,p.(Asn254Tyr),ACTA1_00175,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.764A>G,-,r.(?),GAG > GGG,p.(Glu255Gly),ACTA1_00209,-,de novo,19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.770T>G,-,r.(?),TTC > TGC,p.(Phe257Cys),ACTA1_00183,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.773G>A,-,r.(?),CGC > CAC,p.(Arg258His),ACTA1_00095,-,de novo,10508519;12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.773G>T,-,r.(?),CGC > CTC,p.(Arg258Leu),ACTA1_00096,-,germline (inherited),12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.782A>T,Glu259Val,r.(?),GAG > GTG,p.(Glu261Val),ACTA1_00097,-,germline (inherited),10508519;12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.794A>T,-,r.(?),CAG > CTG,p.(Gln265Leu),ACTA1_00098,-,de novo,10508519;11748499;12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.796C>A,-,r.(?),CCC > ACC,p.(Pro266Thr),ACTA1_00099,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.800C>G,-,r.(?),TCC > TGC,p.(Ser267Cys),ACTA1_00177,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.802T>C,-,r.(?),TTC > CTC,p.(Phe268Leu),ACTA1_00100,-,de novo,19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.807_808delinsAA,807_808delCGinsAA,r.(?),GGT > AGT,p.(Gly270Ser),ACTA1_00213,-,germline (inherited),19562689,DNA,SEQ,-,-
+5,NM_001100.3:c.808G>A,-,r.(?),GGT > AGT,p.(Gly270Ser),ACTA1_00101,consanguineous parents,de novo,15138616,DNA,SEQ,-,-
+5,NM_001100.3:c.808G>C,-,r.(?),GGT > CGT,p.(Gly270Arg),ACTA1_00102,-,germline (inherited),12921789,DNA,SEQ,-,-
+5,NM_001100.3:c.808G>T,G268C,r.(?),GGT > TGT,p.(Gly270Cys),ACTA1_00103,-,de novo,11333380;12921789,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-35delG,-,r.(=),-,-,ACTA1_00154,-,germline (inherited),15138616,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-15dup,809-15dupC,r.(?),-,p.(=),ACTA1_00237,Emory Genetics Lab,unknown,-,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-14G>C,-,r.(=),-,-,ACTA1_00155,-,germline (inherited),15138616,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-12dupC,-,r.(=),-,-,ACTA1_00214,known polymorphism,germline (inherited),15138616,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-2A>T,-,r.spl?,-,p.(?),ACTA1_00201,?recessive variant,germline (inherited),-,DNA,SEQ,-,-
+5i,NM_001100.3:c.809-1G>T,-,r.spl?,-,-,ACTA1_00141,-,germline (inherited),12921789,DNA,SEQ,-,-
+6,NM_001100.3:c.809G>A,-,r.(?),GGT > GAT,p.(Gly270Asp),ACTA1_00104,-,de novo,15336687,DNA,SEQ,-,-
+6,NM_001100.3:c.812T>G,-,r.(?),ATG > AGG,p.(Met271Arg),ACTA1_00105,-,de novo,12921789,DNA,SEQ,-,-
+6,NM_001100.3:c.814G>C,-,r.(?),GAG > CAG,p.(Glu272Gln),ACTA1_00179,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.821C>A,-,r.(?),GCG > GAG,p.(Ala274Glu),ACTA1_00106,-,germline (inherited),12921789,DNA,SEQ,-,-
+6,NM_001100.3:c.834G>T,-,r.(?),-,p.(Glu278Asp),ACTA1_00238,Emory Genetics Lab,unknown,-,DNA,SEQ,-,-
+6,NM_001100.3:c.841T>C,-,r.(?),TAC > CAC,p.(Tyr281His),ACTA1_00107,-,de novo,12921789;15236405,DNA,SEQ,-,-
+6,NM_001100.3:c.846C>G,-,r.(?),AAC > AAG,p.(Asn282Lys),ACTA1_00108,-,de novo,10508519;12921789;15236405,DNA,SEQ,-,-
+6,NM_001100.3:c.854T>A,-,r.(?),ATG > AAG,p.(Met285Lys),ACTA1_00109,-,de novo,12921789,DNA,SEQ,-,-
+6,NM_001100.3:c.854T>G,-,r.(?),ATG > AGG,p.(Met285Arg),ACTA1_00110,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.863A>G,-,r.(?),GAC > GGC,p.(Asp288Gly),ACTA1_00111,-,germline (inherited),10508519;12921789;15236405,DNA,SEQ,-,-
+6,NM_001100.3:c.868G>A,-,r.(?),GAC > AAC,p.(Asp290Asn),ACTA1_00180,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.871A>T,-,r.(?),ATC > TTC,p.(Ile291Phe),ACTA1_00112,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.880G>T,-,r.(?),GAC > TAC,p.(Asp294Tyr),ACTA1_00222,-,germline (inherited),-,DNA,SEQ,-,-
+6,NM_001100.3:c.881A>T,D292V,r.(?),GAC > GTC,p.(Asp294Val),ACTA1_00113,not in >300 control chromosomes,germline (inherited),15468086,DNA,SEQ,-,-
+6,NM_001100.3:c.902T>A,-,r.(?),ATG > AAG,p.(Met301Lys),ACTA1_00114,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.920T>G,-,r.?,ATG > AGG,p.(Met307Arg),ACTA1_00228,de novo, in patient,de novo,-,DNA,PCR, SEQ,-,-
+6,NM_001100.3:c.923A>G,-,r.(?),TAC > TGC,p.(Tyr308Cys),ACTA1_00230,-,unknown,-,DNA,PCR, SEQ,-,-
+6,NM_001100.3:c.925C>T,-,r.(?),CCT > TCT,p.(Pro309Ser),ACTA1_00243,-,unknown,-,DNA,SEQ,-,-
+6,NM_001100.3:c.983_985del,982_984delAAG,r.(?),-,p.(Lys328del),ACTA1_00205,-,germline (inherited),19562689,DNA,SEQ,-,-
+6,NM_001100.3:c.984G>C,-,r.(?),AAG > AAC,p.(Lys328Asn),ACTA1_00199,-,de novo,19562689,DNA,SEQ,-,-
+6i,NM_001100.3:c.990+1G>T,-,r.spl?,-,-,ACTA1_00142,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.996C>A,Ile332Ile,r.(?),ATC > ATA,p.(=),ACTA1_00147,-,germline (inherited),10528865,DNA,SEQ,-,-
+7,NM_001100.3:c.1000C>T,P332S,r.(?),CCG > TGG,p.(Pro334Ser),ACTA1_00117,not in >300 control chromosomes,germline (inherited),15468086,DNA,SEQ,-,-
+7,NM_001100.3:c.1001C>G,-,r.(?),CCG > CGG,p.(Pro334Arg),ACTA1_00204,-,de novo,19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1006G>A,-,r.(?),GAG > AAG,p.(Glu336Lys),ACTA1_00211,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1006G>C,-,r.(?),GAG > CAG,p.(Glu336Gln),ACTA1_00226,-,germline (inherited),-,DNA,PCR, SEQ,-,-
+7,NM_001100.3:c.1007A>C,E334A,r.(?),GAG > GCG,p.(Glu336Ala),ACTA1_00119,-,germline (inherited),15520409,DNA,SEQ,-,-
+7,NM_001100.3:c.1012A>G,-,r.(?),AAA > GAA,p.(Lys338Glu),ACTA1_00120,-,de novo,16945537,DNA,SEQ,-,-
+7,NM_001100.3:c.1013A>T,-,r.(?),AAA > ATA,p.(Lys338Ile),ACTA1_00121,-,germline (inherited),12921789,DNA,SEQ,-,-
+7,NM_001100.3:c.1019C>G,-,r.(?),TCG > TGG,p.(Ser340Trp),ACTA1_00233,-,unknown,-,DNA,SEQ,-,-
+7,NM_001100.3:c.1031delG,-,r.(?),-,p.(Gly344Alafs*77),ACTA1_00122,-,germline (inherited),15236405,DNA,SEQ,-,-
+7,NM_001100.3:c.1049C>T,-,r.(?),TCG > TTG,p.(Ser350Leu),ACTA1_00123,-,de novo,12921789,DNA,SEQ,-,-
+7,NM_001100.3:c.1057A>G,-,r.(?),ACC > GCC,p.(Thr353Ala),ACTA1_00224,-,de novo,-,DNA,PCR, SEQ,-,-
+7,NM_001100.3:c.1061T>A,-,r.(?),TTC > TAC,p.(Phe354Tyr),ACTA1_00159,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1061T>C,-,r.(?),TTC > TCC,p.(Phe354Ser),ACTA1_00124,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1075A>C,I357L,r.(?),ATC > CTC,p.(Ile359Leu),ACTA1_00125,-,de novo,11333380;12921789;15198992,DNA,SEQ,-,-
+7,NM_001100.3:c.1092delC,-,r.(?),-,p.(Tyr364*),ACTA1_00126,-,germline (inherited),17187373,DNA,SEQ,-,-
+7,NM_001100.3:c.1106C>T,-,r.(?),CCT > CTT,p.(Pro369Leu),ACTA1_00127,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1111A>C,-,r.(?),ATC > CTC,p.(Ile371Leu),ACTA1_00128,-,de novo,19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1114G>T,-,r.(?),GTC > TTC,p.(Val372Phe),ACTA1_00129,-,de novo,10508519;12921789,DNA,SEQ,-,-
+7,NM_001100.3:c.1120C>A,-,r.(?),CGC > AGC,p.(Arg374Ser),ACTA1_00130,-,germline (inherited),12921789,DNA,SEQ,-,-
+7,NM_001100.3:c.1120C>T,-,r.(?),CGC > TGC,p.(Arg374Cys),ACTA1_00131,-,de novo,19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1123A>C,-,r.(?),AAA > CAA,p.(Lys375Gln),ACTA1_00132,-,germline (inherited),11525890;12921789;15138616,DNA,SEQ,-,-
+7,NM_001100.3:c.1123A>G,-,r.(?),AAA > GAA,p.(Lys375Glu),ACTA1_00133,-,de novo,15336687,DNA,SEQ,-,-
+7,NM_001100.3:c.1125A>C,-,r.(?),AAA > AAC,p.(Lys375Asn),ACTA1_00181,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1127G>C,-,r.(?),TGC > TCC,p.(Cys376Ser),ACTA1_00182,-,germline (inherited),19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1130T>A,-,r.(?),TTC > TAC,p.(Phe377Tyr),ACTA1_00134,-,de novo,19562689,DNA,SEQ,-,-
+7,NM_001100.3:c.1130T>G,-,r.(?),TTC > TGC,p.(Phe377Cys),ACTA1_00135,-,germline (inherited),16967490,DNA,SEQ,-,-
+7,NM_001100.3:c.1132T>C,-,r.(?),TAG > CAG,p.(*378Glnext*47),ACTA1_00136,-,germline (inherited),16945536,DNA,SEQ,-,-
+7,NM_001100.3:c.1133A>G,-,r.(?),TAG > TGG,p.(*378Trpext*47),ACTA1_00137,-,de novo,16945536,DNA,SEQ,-,-
+7,NM_001100.3:c.1134G>T,-,r.(?),TAG > TAT,p.(*378Tyrext*47),ACTA1_00138,-,de novo,16945536,DNA,SEQ,-,-

@@ -1,0 +1,500 @@
+Exon	DNA change	Chromosomal Variant	Chromosome Number	Ref	Alt	Position	Var_pub_as	RNA change	Protein change	DNA_AllExon	Protein_AllExon	DB-ID	VariantÂ remarks	Genet_ori	Reference	Template	Technique	Frequency	RE-site	Column	Column2	Column3	Column4	Column5	Column6	Column7	Column8
+1i	NM_003494.3:c.88+38G>T	g.71681254G>T	2	G	T	71681254	-	r.(?)	p.(=)	-	-	DYSF_00495	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+1i	NM_003494.3:c.88+12629G>A	g.71693845G>A	2	G	A	71693845	-	r.(=)	p.(=)	c.88+12629G>A	p.(=)	DYSF_00413	located in exon 01b	germline (inherited)	dbSNP-rs6752632	DNA	SEQ	-	-								
+1i	NM_003494.3:c.88+12727G>A	g.71693943G>A	2	G	A	71693943	-	r.(=)	p.(=)	c.88+12727G>A	p.(=)	DYSF_00414	located in exon 01b	germline (inherited)	dbSNP-rs61333801	DNA	SEQ	-	-								
+1i_40i	NM_003494.3:c.89-643_4410-2493del	g.71707370_71838047del	2	del		71707370_71838047	89_4410del	r.89_4410del	p.Val31Glyfs*29	c.89-643_4567-2493del	p.Val31Glyfs*29	DYSF_00176	potential translation initiation at c.23 giving 632AA miniDYSF (73 kD)	germline (inherited)	20861509	DNA	SEQ	-	-								
+1i	NM_003494.3:c.89-29C>G	g.71707984C>G	2	C	G	71707984	-	r.(=)	p.(=)	c.89-29C>G	p.(=)	DYSF_00411	pathogenicity excluded through F1.104.1	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+1i	NM_003494.3:c.89-3T>C	g.71708010T>C	2	T	C	71708010	-	r.(spl?)	p.(?)	c.89-3T>C	p.(?)	DYSF_00114	not in 176 control chromosomes	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+2	NM_003494.3:c.105delC	g.71708029delC	2	delC		71708029	-	r.(?)	p.(Val37Serfs*6)	c.105delC	p.(Val37Serfs*6)	DYSF_00184	-	germline (inherited)	15477515	DNA	SEQ	-	-								
+2	NM_003494.3:c.107_108del	g.71708031_71708032del	2	del		71708031_71708032	-	r.(?)	p.(Lys36Serfs*12)	c.107_108del	p.(Lys36Serfs*12)	DYSF_00037	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+2	NM_003494.3:c.115_125dup	g.71708039_71708049dup	2	dup		71708039_71708049	-	r.(?)	p.(Asn43Argfs*4)	c.115_125dup	p.(Asn43Argfs*4)	DYSF_00371	-	germline (inherited)	-	DNA	SEQ	-	-								
+2i	NM_003494.3:c.144+46delG	g.71708114delG	2	delG		71708114	-	r.(=)	p.(=)	c.144+46delG	p.(=)	DYSF_00375	pathogenicity excluded through F1.65.2.1	germline (inherited)	18853459	DNA	SEQ	-	-								
+3	NM_003494.3:c.154T>C	g.71709018T>C	2	T	C	71709018	-	r.154u>c	p.Trp52Arg	c.154T>C	p.Trp52Arg	DYSF_00305	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+3	NM_003494.3:c.164dupA	g.71709028dup	2	dup		71709028	-	r.(?)	p.(IIle57Hisfs*8)	c.164dupA	p.(IIle57Hisfs*8)	DYSF_00010	-	germline (inherited)	09731526;11468312	DNA	SEQ	 SSCA	-	-							
+3	NM_003494.3:c.175delC	g.71709039delC	2	delC		71709039	-	r.(?)	p.(Leu59Trpfs*92)	c.175delC	p.(Leu59Trpfs*92)	DYSF_00466	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+3	NM_003494.3:c.200_201delinsAT	g.71709064_71709065delinsAT	2	delinsAT		71709064_71709065	-	r.(?)	p.(Val67Asp)	c.200_201delinsAT	p.(Val67Asp)	DYSF_00071	-	germline (inherited)	11134403	DNA	HD	 SEQ	 SSCA	-	RcaI+						
+3i	NM_003494.3:c.236+1G>T	g.71709101G>T	2	G	T	71709101	-	r.143_236del	p.Gly51Valfs*17	c.236+1G>T	p.Gly51Valfs*17	DYSF_00469	not in 200 control chromosomes	germline (inherited)	19493611	DNA	SSCA	 SEQ	-	-							
+3i	NM_003494.3:c.236+20G>A	g.71709120G>A	2	G	A	71709120	-	r.(=)	p.(=)	c.236+20G>A	p.(=)	DYSF_00380	-	germline (inherited)	dbSNP-rs12470028	DNA	SEQ	0.00-0.07	-								
+3i	NM_003494.3:c.236+31C>G	g.71709131C>G	2	C	G	71709131	-	r.(?)	p.(=)	-	-	DYSF_00496	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+4	NM_003494.3:c.247delG	g.71730354delG	2	delG		71730354	-	r.(?)	p.(Glu83Lysfs*68)	c.247delG	p.(Glu83Lysfs*68)	DYSF_00169	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+4	NM_003494.3:c.251C>T	g.71730358C>T	2	C	T	71730358	-	r.(?)	p.(Ala84Val)	c.251C>T	p.(Ala84Val)	DYSF_00382	UMD-Predictor score 41 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-								
+4	NM_003494.3:c.265C>T	g.71730372C>T	2	C	T	71730372	-	r.265c>u	p.Arg89*	c.265C>T	p.Arg89*	DYSF_00187	-	germline (inherited)	14673575	DNA	 RNA	SEQ	-	-							
+4	NM_003494.3:c.313dupC	g.71730420dup	2	dup		71730420	-	r.(?)	p.(Leu105Profs*43)	c.313dupC	p.(Leu105Profs*43)	DYSF_00240	-	germline (inherited)	16312142	DNA	SEQ	 SSCA	-	-							
+4	NM_003494.3:c.331C>T	g.71730438C>T	2	C	T	71730438	-	r.(?)	p.(Gln111*)	c.331C>T	p.(Gln111*)	DYSF_00246	-	germline (inherited)	-	DNA	SEQ	-	-								
+4i	NM_003494.3:c.343-29A>G	g.71738908A>G	2	A	G	71738908	-	r.(spl?)	p.(?)	c.343-29A>G	p.(?)	DYSF_00387	pathogenicity excluded through F1.61.1.2; potential branch point inactivation	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+4i_5i	NM_003494.3:c.343-?_457+?del	g.71738937_71739051del	2	del		71738937_71739051	-	r.(del)	p.(fs*?)	c.343-?_457+?del	p.(fs*?)	DYSF_00369	-	germline (inherited)	19594366	DNA	MLPA	 SEQ	-	-							
+5	NM_003494.3:c.353delT	g.71738947delT	2	delT		71738947	-	r.(?)	p.(Val118Alafs*33)	c.353delT	p.(Val149Alafs*33)	DYSF_00128	not in 78 control chromosomes	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+5	NM_003494.3:c.383G>A	g.71738977G>A	2	G	A	71738977	-	r.(?)	p.(Gly128Glu)	c.383G>A	p.(Gly159Glu)	DYSF_00060	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+5	NM_003494.3:c.393C>T	g.71738987C>T	2	C	T	71738987	-	r.393c>u	p.=	c.393C>T	p.=	DYSF_00119	-	germline (inherited)	-	DNA	SEQ	Nov-80	-								
+5	NM_003494.3:c.407del	g.71739001del	2	del		71739001	407delC	r.?	p.(Pro136Leufs*15)	c.407del	p.(Pro167Leufs*15)	DYSF_00463	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+5i	NM_003494.3:c.457+1dupG	g.71739052dup	2	dup		71739052	-	r.spl	p.?	c.457+1dupG	p.?	DYSF_00334	not in 200 control alleles	germline (inherited)	17698709;18853459	DNA	DHPLC	 SEQ	-	-							
+5i	NM_003494.3:c.457+2T>G	g.71739053T>G	2	T	G	71739053	IVS5+2T>G	r.spl	p.?	c.457+2T>G	p.?	DYSF_00195	-	germline (inherited)	16100712;17994539	DNA	SEQ	-	-								
+5i	NM_003494.3:c.457+17G>C	g.71739068G>C	2	G	C	71739068	-	r.(spl?)	p.(=)	c.457+17G>C	p.(=)	DYSF_00272	-	germline (inherited)	-	DNA	SEQ	-	-								
+6	NM_003494.3:c.463G>A	g.71740851G>A	2	G	A	71740851	-	r.(?)	p.(Gly155Arg)	c.556G>A	p.(Gly186Arg)	DYSF_00335	not in 200 control alleles; ; UMD-Predictor score 82 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+6	NM_003494.3:c.490G>T	g.71740878G>T	2	G	T	71740878	-	r.(?)	p.(Gly164*)	c.583G>T	p.(Gly195*)	DYSF_00406	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+6	NM_003494.3:c.504T>C	g.71740892T>C	2	T	C	71740892	-	r.(?)	p.(=)	c.597T>C	p.(=)	DYSF_00061	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+6	NM_003494.3:c.509C>A	g.71740897C>A	2	C	A	71740897	-	r.(?)	p.(Ala170Glu)	c.602C>A	p.(Ala201Glu)	DYSF_00117	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+6	NM_003494.3:c.510G>A	g.71740898G>A	2	G	A	71740898	-	r.(?)	p.(=)	-	-	DYSF_00497	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+6	NM_003494.3:c.526C>T	g.71740914C>T	2	C	T	71740914	-	r.(?)	p.(Gln176*)	c.619C>T	p.(Gln207*)	DYSF_00264	-	germline (inherited)	-	DNA	SEQ	-	-								
+6	NM_003494.3:c.533delG	g.71740921delG	2	delG		71740921	533del	r.(?)	p.(Gly178Glufs*49)	-	-	DYSF_00493	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+6	NM_003494.3:c.539dupC	g.71740927dup	2	dup		71740927	-	r.(?)	p.(Ala181Glyfs*29)	c.632dupC	p.(Ala212Glyfs*29)	DYSF_00286	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+6	NM_003494.3:c.544dupG	g.71740932dup	2	dup		71740932	-	r.(?)	p.(Ala182Glyfs*29)	c.637dupG	p.(Ala213Glyfs*29)	DYSF_00046	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+6	NM_003494.3:c.565C>G	g.71740953C>G	2	C	G	71740953	-	r.(?)	p.(Leu189Val)	c.658C>G	p.(Leu220Val)	DYSF_00031	-	germline (inherited)	Paula	 ASHG 2001 A2692	DNA	SEQ	 SSCA	 DHPLC	-	-					
+6	NM_003494.3:c.570T>C	g.71740958T>C	2	T	C	71740958	-	r.(?)	p.(=)	-	-	DYSF_00498	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+6	NM_003494.3:c.591C>G	g.71740979C>G	2	C	G	71740979	-	r.(?)	p.(Tyr197*)	c.684C>G	p.(Tyr228*)	DYSF_00336	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+6	NM_003494.3:c.593_594dup	g.71740981_71740982dup	2	dup		71740981_71740982	-	r.593_594dup	p.Gly199Profs*29	c.686_687dup	p.Gly230Profs*29	DYSF_00297	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+6	NM_003494.3:c.610C>T	g.71740998C>T	2	C	T	71740998	-	r.(?)	p.(Arg204*)	c.703C>T	p.(Arg235*)	DYSF_00064	-	germline (inherited)	-	DNA	SEQ	-	-								
+6i	NM_003494.3:c.663+1G>C	g.71741052G>C	2	G	C	71741052	IVS6+1G>C	r.spl	p.?	c.756+1G>C	p.?	DYSF_00135	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+6i	NM_003494.3:c.664-17C>T	g.71742736C>T	2	C	T	71742736	-	r.(=)	p.(=)	c.757-17C>T	p.(=)	DYSF_00410	pathogenicity excluded through F1.30.1.2	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+6i_7	NM_003494.3:c.664-7_669del	g.71742746_71742758del	2	del		71742746_71742758	-	r.spl	p.?	c.757-7_762del	p.?	DYSF_00171	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+7	NM_003494.3:c.681C>T	g.71742770C>T	2	C	T	71742770	-	r.(?)	p.(=)	-	-	DYSF_00499	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+7	NM_003494.3:c.691C>T	g.71742780C>T	2	C	T	71742780	-	r.(?)	p.(Gln231*)	c.784C>T	p.(Gln262*)	DYSF_00139	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+7	NM_003494.3:c.701G>A	g.71742790G>A	2	G	A	71742790	-	r.701g>a	p.Gly234Glu	c.794G>A	p.Gly265Glu	DYSF_00306	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+7	NM_003494.3:c.757C>T	g.71742846C>T	2	C	T	71742846	-	r.(?)	p.(Arg253Trp)	c.850C>T	p.(Arg284Trp)	DYSF_00205	-	germline (inherited)	16010686;18853459	DNA	SEQ	-	-								
+7	NM_003494.3:c.763delC	g.71742852delC	2	delC		71742852	-	r.(?)	p.(His255Thrfs*33)	c.856delC	p.(His286Thrfs*33)	DYSF_00248	-	germline (inherited)	-	DNA	SEQ	-	-								
+7i	NM_003494.3:c.792+11T>C	g.71742892T>C	2	T	C	71742892	-	r.(=)	p.(=)	c.885+11T>C	p.(=)	DYSF_00273	-	germline (inherited)	-	DNA	SEQ	-	-								
+7i	NM_003494.3:c.793-34C>T	g.71743276C>T	2	C	T	71743276	-	r.(spl?)	p.(?)	c.886-34C>T	p.(?)	DYSF_00461	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+7i	NM_003494.3:c.793-27A>G	g.71743283A>G	2	A	G	71743283	-	r.(?)	p.(=)	-	-	DYSF_00500	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+8	NM_003494.3:c.793-68G>A	g.71743242G>A	2	G	A	71743242	-	r.(spl?)	p.(?)	c.886-68G>A	p.(?)	DYSF_00274	-	germline (inherited)	-	DNA	SEQ	-	-								
+8	NM_003494.3:c.796_797del	g.71743313_71743314del	2	del		71743313_71743314	793_794delCT (error)	r.796_797del	p.Leu266Phefs*6	c.889_890del	p.Leu297Phefs*6	DYSF_00357	no pathogenic variant 2nd allele	germline (inherited)	17897828	DNA	 RNA	RT-PCR	 SEQ	-	?						
+8	NM_003494.3:c.797T>C	g.71743314T>C	2	T	C	71743314	-	r.(?)	p.(Leu266Pro)	c.890T>C	p.(Leu297Pro)	DYSF_00206	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+8	NM_003494.3:c.799_800del	g.71743316_71743317del	2	del		71743316_71743317	-	r.(?)	p.(Phe267Leufs*5)	c.892_893del	p.(Phe298Leufs*5)	DYSF_00337	not in 200 control alleles	germline (inherited)	17698709;18853459	DNA	DHPLC	 SEQ	-	-							
+8	NM_003494.3:c.827delA	g.71743344delA	2	delA		71743344	-	r.(?)	p.(Glu276Glyfs*12)	c.920delA	p.(Glu307Glyfs*12)	DYSF_00429	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+8	NM_003494.3:c.851T>C	g.71743368T>C	2	T	C	71743368	-	r.(?)	p.(Ile284Thr)	c.944T>C	p.(Ile315Thr)	DYSF_00338	not in 200 control alleles; UMD-Predictor score 93 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+8i	NM_003494.3:c.855+1delG	g.71743373delG	2	delG		71743373	-	r.spl	p.?	c.948+1delG	p.?	DYSF_00207	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+8i	NM_003494.3:c.855+4T>C	g.71743376T>C	2	T	C	71743376	-	r.(?)	p.(=)	c.948+4T>C	p.(=)	DYSF_00056	-	germline (inherited)	12796534	DNA	SSCA	10/100	-								
+8i	NM_003494.3:c.855+39T>C	g.71743411T>C	2	T	C	71743411	-	r.(?)	p.(=)	-	-	DYSF_00501	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+9	NM_003494.3:c.857T>A	g.71744120T>A	2	T	A	71744120	-	r.(?)	p.(Val286Glu)	c.950T>A	p.(Val317Glu)	DYSF_00296	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+9	NM_003494.3:c.863dupA	g.71744126dup	2	dup		71744126	-	r.863dup	p.Asp288Glufs*40	c.956dupA	p.Asp319Glufs*40	DYSF_00186	-	germline (inherited)	14673575	DNA	 RNA	SEQ	-	-							
+9	NM_003494.3:c.879_883dup	g.71744142_71744146dup	2	dup		71744142_71744146	-	r.(?)	p.(Asp295Glyfs*45)	c.972_976dup	p.(Asp326Glyfs*45)	DYSF_00339	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+9	NM_003494.3:c.895G>A	g.71744158G>A	2	G	A	71744158	-	r.895g>a	p.Gly299Arg	c.988G>A	p.Gly330Arg	DYSF_00236	not in 400 control chromosomes	germline (inherited)	16705711;17828519	DNA	 RNA	RT-PCR	 SEQ	-	BsaJI-						
+9	NM_003494.3:c.895G>C	g.71744158G>C	2	G	C	71744158	-	r.(?)	p.(Gly299Arg)	c.988G>C	p.(Gly330Arg)	DYSF_00355	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+9	NM_003494.3:c.895G>T	g.71744158G>T	2	G	T	71744158	-	r.(?)	p.(Gly299Trp)	c.988G>T	p.(Gly330Trp)	DYSF_00365	-	germline (inherited)	18306167	DNA	SEQ	-	-								
+9	NM_003494.3:c.896G>A	g.71744159G>A	2	G	A	71744159	-	r.(?)	p.(Gly299Glu)	c.989G>A	p.(Gly330Glu)	DYSF_00208	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+9i	NM_003494.3:c.907-3C>A	g.71747305C>A	2	C	A	71747305	-	r.(?)	p.(=)	-	-	DYSF_00502	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+10	NM_003494.3:c.927C>G	g.71747328C>G	2	C	G	71747328	-	r.(?)	p.(Tyr309*)	c.1020C>G	p.(Tyr340*)	DYSF_00482	not in 200 control chromosomes	germline (inherited)	19493611	DNA	SSCA	 SEQ	-	-							
+10i	NM_003494.3:c.937+1G>A	g.71747339G>A	2	G	A	71747339	IVS10+1G>A	r.spl	p.?	c.1030+1G>A	p.?	DYSF_00116	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+10i	NM_003494.3:c.937+43delT	g.71747381delT	2	delT		71747381	-	r.(=)	p.(=)	c.1030+43delT	p.(=)	DYSF_00190	-	germline (inherited)	-	DNA	SEQ	Jun-40	-								
+10i	NM_003494.3:c.938-68T>C	g.71747851T>C	2	T	C	71747851	-	r.(?)	p.(=)	c.1031-68T>C	p.(=)	DYSF_00275	-	germline (inherited)	-	DNA	SEQ	-	-								
+10i	NM_003494.3:c.938-64C>T	g.71747855C>T	2	C	T	71747855	-	r.(?)	p.(=)	c.1031-64C>T	p.(=)	DYSF_00276	-	germline (inherited)	-	DNA	SEQ	-	-								
+10i	NM_003494.3:c.938-34T>A	g.71747885T>A	2	T	A	71747885	-	r.(=)	p.(=)	c.1031-34T>A	p.(=)	DYSF_00412	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+10i	NM_003494.3:c.938-20G>A	g.71747899G>A	2	G	A	71747899	-	r.(?)	p.(=)	c.1031-20G>A	p.(=)	DYSF_00277	-	germline (inherited)	-	DNA	SEQ	-	-								
+11	NM_003494.3:c.942C>T	g.71747923C>T	2	C	T	71747923	-	r.(?)	p.(=)	c.1035C>T	p.(=)	DYSF_00145	-	germline (inherited)	12796534	DNA	SSCA	5/100	-								
+11	NM_003494.3:c.1004G>C	g.71747985G>C	2	G	C	71747985	-	r.(?)	p.(Gly335Ala)	c.1097G>C	p.(Gly366Ala)	DYSF_00372	pathogenicity excluded through F1-113-1-1; UMD-Predictor score 59 (non-pathogenic)	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+11	NM_003494.3:c.1016C>G	g.71747997C>G	2	C	G	71747997	-	r.(?)	p.(Thr339Arg)	c.1109C>G	p.(Thr370Arg)	DYSF_00464	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+11	NM_003494.3:c.1020C>A	g.71748001C>A	2	C	A	71748001	-	r.(?)	p.(Ser340Arg)	c.1113C>A	p.(Ser371Arg)	DYSF_00360	-	germline (inherited)	Gonzalez-Quereda ESHG2008 P01.222	DNA	SEQ	-	-								
+11	NM_003494.3:c.1020C>G	g.71748001C>G	2	C	G	71748001	-	r.(?)	p.(Ser340Arg)	c.1113C>G	p.(Ser371Arg)	DYSF_00465	-	germline (inherited)	19730931	DNA	SEQ	-	-								
+11i	NM_003494.3:c.1053+5G>A	g.71748039G>A	2	G	A	71748039	IVS11+5G>A	r.(spl?)	p.(?)	c.1146+5G>A	p.(?)	DYSF_00259	-	germline (inherited)	18396043	DNA	SEQ	-	-								
+11i	NM_003494.3:c.1053+54C>T	g.71748088C>T	2	C	T	71748088	-	r.(?)	p.(=)	c.1146+54C>T	p.(=)	DYSF_00278	-	germline (inherited)	-	DNA	SEQ	-	-								
+11i	NM_003494.3:c.1054-43_1059delinsA	g.71753307_71753355delinsA	2	delinsA		71753307_71753355	-	r.spl	p.?	c.1147-43_1152delinsA	p.?	DYSF_00191	-	germline (inherited)	-	DNA	SEQ	-	-								
+11i	NM_003494.3:c.1054-34C>T	g.71753316C>T	2	C	T	71753316	-	r.(?)	p.(=)	-	-	DYSF_00503	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+12	NM_003494.3:c.1054C>A	g.71753350C>A	2	C	A	71753350	-	r.(?)	p.(Leu352Met)	c.1147C>A	p.(Leu383Met)	DYSF_00115	not in 234 control chromosomes	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+12	NM_003494.3:c.1064_1065del	g.71753360_71753361del	2	del		71753360_71753361	-	r.(?)	p.(Lys355Argfs*4)	c.1157_1158del	p.(Lys386Argfs*4)	DYSF_00312	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+12	NM_003494.3:c.1101C>A	g.71753397C>A	2	C	A	71753397	-	r.(?)	p.(Asn367Lys)	c.1194C>A	p.(Asn398Lys)	DYSF_00459	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+12	NM_003494.3:c.1120G>C	g.71753416G>C	2	G	C	71753416	-	r.(?)	p.(Val374Leu)	c.1213G>C	p.(Val405Leu)	DYSF_00039	-	germline (inherited)	16100712	DNA	SEQ	-	-								
+12	NM_003494.3:c.1155C>A	g.71753451C>A	2	C	A	71753451	-	r.1155c>a	p.=	c.1248C>A	p.=	DYSF_00017	-	germline (inherited)	Mela	 ICHG2001 P1505 - {DB: ROMA}	DNA	 RNA	HD	 RT-PCR	 SEQ	-	-				
+12	NM_003494.3:c.1157_1168del	g.71753453_71753464del	2	del		71753453_71753464	-	r.(?)	p.(Phe386_Asp390delinsTyr)	c.1250_1261del	p.(Phe417_Asp390delinsTyr)	DYSF_00313	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+12	NM_003494.3:c.1165G>C	g.71753461G>C	2	G	C	71753461	-	r.1165g>c	p.Glu389Gln	c.1258G>C	p.Glu420Gln	DYSF_00118	not in 60 control chromosomes	germline (inherited)	15515206	DNA	 RNA	RT-PCR	 SEQ	-	-						
+12	NM_003494.3:c.1168G>A	g.71753464G>A	2	G	A	71753464	-	r.(?)	p.(Asp390Asn)	c.1261G>A	p.(Asp421Asn)	DYSF_00030	not in 85 controls	germline (inherited)	-	DNA	SEQ	-	BsaJI-								
+12	NM_003494.3:c.1168_1180+1dup	g.71753464_71753477dup	2	dup		71753464_71753477	1165_1178dup	r.(?)	p.(fs*)	c.1261_1173+1dup	p.(fs*)	DYSF_00427	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+12	NM_003494.3:c.1176G>A	g.71753472G>A	2	G	A	71753472	-	r.(?)	p.(=)	c.1269G>A	p.(=)	DYSF_00052	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+12	NM_003494.3:c.1177C>T	g.71753473C>T	2	C	T	71753473	-	r.(?)	p.(Gln393*)	c.1270C>T	p.(Gln424*)	DYSF_00044	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+12_12i	NM_003494.3:c.1178_1180+4dup	g.71753474_71753480dup	2	dup		71753474_71753480	1178_1180+dup	r.spl	p.?	c.1271_1173+4dup	p.?	DYSF_00287	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+12_12i	NM_003494.3:c.1180_1180+7del	g.71753476_71753483del	2	del		71753476_71753483	-	r.1054_1284del	p.Glu353_Leu429del	c.1273_1173+7del	p.Glu384_Leu429del	DYSF_00261	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+12i	NM_003494.3:c.1180+2T>C	g.71753478T>C	2	T	C	71753478	IVS12+2T>C	r.spl	p.(?)	c.1273+2T>C	p.(?)	DYSF_00344	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+12i	NM_003494.3:c.1180+5G>A	g.71753481G>A	2	G	A	71753481	-	r.(spl?)	p.(?)	c.1273+5G>A	p.(?)	DYSF_00045	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+12i	NM_003494.3:c.1180+11C>T	g.71753487C>T	2	C	T	71753487	-	r.(=)	p.(=)	c.1273+11C>T	p.(=)	DYSF_00062	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+12i	NM_003494.3:c.1181-48A>G	g.71755380A>G	2	A	G	71755380	-	r.(?)	p.(?)	c.1274-48A>G	p.(?)	DYSF_00124	-	germline (inherited)	-	DNA	SSCA	Nov-84	-								
+12i	NM_003494.3:c.1181-2A>C	g.71755426A>C	2	A	C	71755426	IVS12-2A>C	r.1181_1212del	p.Met394Asnfs*7	c.1274-2A>C	p.Met425Asnfs*7	DYSF_00196	-	germline (inherited)	16100712	DNA	 RNA	RT-PCR	 SEQ	-	-						
+13	NM_003494.3:c.1186G>C	g.71755433G>C	2	G	C	71755433	-	r.(?)	p.(Asp396His)	c.1279G>C	p.(Asp427His)	DYSF_00032	-	germline (inherited)	Paula	 ASHG 2001 A2692	DNA	SEQ	 SSCA	 DHPLC	-	-					
+13	NM_003494.3:c.1254delC	g.71755501delC	2	delC		71755501	-	r.(?)	p.(Phe419Leufs*41)	c.1347delC	p.(Phe450Leufs*41)	DYSF_00345	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+13	NM_003494.3:c.1276G>A	g.71755523G>A	2	G	A	71755523	-	r.(?)	p.(Gly426Arg)	c.1369G>A	p.(Gly457Arg)	DYSF_00314	not in 200 control alleles; ; UMD-Predictor score 100 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+13	NM_003494.3:c.1277G>T	g.71755524G>T	2	G	T	71755524	-	r.(spl?)	p.(Gly426Val)	c.1370G>T	p.(Gly457Val)	DYSF_00185	-	germline (inherited)	15477515	DNA	SEQ	-	HphI+								
+13i	NM_003494.3:c.1284+2T>C	g.71755533T>C	2	T	C	71755533	IVS13+2T>C	r.spl	p.(?)	c.1377+2T>C	p.(?)	DYSF_00150	-	germline (inherited)	12767493	DNA	SEQ	 SSCA	-	-							
+13i	NM_003494.3:c.1285-35G>T	g.71762116G>T	2	G	T	71762116	-	r.(=)	p.(=)	c.1378-35G>T	p.(=)	DYSF_00373	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+13i	NM_003494.3:c.1285-2A>G	g.71762149A>G	2	A	G	71762149	IVS13-2A>G	r.spl	p.?	c.1378-2A>G	p.?	DYSF_00366	-	germline (inherited)	18306167	DNA	SEQ	-	-								
+14	NM_003494.3:c.1343T>C	g.71762209T>C	2	T	C	71762209	-	r.(?)	p.(Leu448Pro)	-	-	DYSF_00487	mRNA increased	germline (inherited)	Nilsson & Tarnopolsky 201	 submitted	DNA	SEQ	-	-							
+14i	NM_003494.3:c.1353+1G>A	g.71762220G>A	2	G	A	71762220	IVS14+1G>A	r.1353_1354ins1353+1_1354-1{1353+1g>a}	p.Phe452Metfs*39	c.1446+1G>A	p.Phe483Metfs*39	DYSF_00301	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+14i	NM_003494.3:c.1353+13C>T	g.71762232C>T	2	C	T	71762232	-	r.(=)	p.(=)	c.1446+13C>T	p.(=)	DYSF_00279	-	germline (inherited)	-	DNA	SEQ	-	-								
+14i	NM_003494.3:c.1354-88A>G	g.71762310A>G	2	A	G	71762310	-	r.(=)	p.(=)	c.1447-88A>G	p.(=)	DYSF_00280	-	germline (inherited)	-	DNA	SEQ	-	-								
+14i	NM_003494.3:c.1354-1G>A	g.71762397G>A	2	G	A	71762397	-	r.spl	p.?	c.1447-1G>A	p.?	DYSF_00245	-	germline (inherited)	-	DNA	SEQ	-	-								
+15	NM_003494.3:c.1357C>T	g.71762401C>T	2	C	T	71762401	-	r.1357c>u	p.Pro453Ser	c.1450C>T	p.Pro484Ser	DYSF_00307	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+15	NM_003494.3:c.1362C>T	g.71762406C>T	2	C	T	71762406	-	r.(?)	p.(=)	c.1455C>T	p.(=)	DYSF_00374	pathogenicity excluded through F1-138-1-1	 UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-							
+15	NM_003494.3:c.1368C>A	g.71762412C>A	2	C	A	71762412	-	r.(?)	p.(Cys456*)	c.1461C>A	p.(Cys487*)	DYSF_00043	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+15	NM_003494.3:c.1368C>G	g.71762412C>G	2	C	G	71762412	-	r.(?)	p.(Cys456Trp)	c.1461C>G	p.(Cys487Trp)	DYSF_00209	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+15	NM_003494.3:c.1369G>A	g.71762413G>A	2	G	A	71762413	-	r.1369g>a	p.Glu457Lys	c.1462G>A	p.Glu488Lys	DYSF_00127	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	2/182	-						
+15	NM_003494.3:c.1375dupA	g.71762419dup	2	dup		71762419	-	r.(?)	p.(Met459Asnfs*15)	c.1468dupA	p.(Met490Asnfs*15)	DYSF_00363	-	germline (inherited)	-	DNA	SEQ	-	-								
+15	NM_003494.3:c.1379_1381del	g.71762423_71762425del	2	del		71762423_71762425	-	r.(?)	p.(Arg460del)	c.1472_1474del	p.(Arg491del)	DYSF_00262	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+15	NM_003494.3:c.1392dup	g.71762436dup	2	dup		71762436	1392dupA	r.(?)	p.(Asp465Argfs*9)	-	-	DYSF_00504	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+15	NM_003494.3:c.1392dupA	g.71762436dup	2	dup		71762436	-	r.(?)	p.(Asp465Argfs*9)	c.1485dupA	p.(Asp496Argfs*9)	DYSF_00210	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+15i	NM_003494.3:c.1398-1G>A	g.71766286G>A	2	G	A	71766286	-	r.spl	p.?	-	-	DYSF_00505	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+16	NM_003494.3:c.1402C>T	g.71766291C>T	2	C	T	71766291	-	r.(?)	p.(Arg468Cys)	c.1495C>T	p.(Arg499Cys)	DYSF_00285	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+16	NM_003494.3:c.1413delC	g.71766302delC	2	delC		71766302	-	r.(?)	p.(His471Glnfs*10)	c.1506delC	p.(His502Glnfs*10)	DYSF_00201	-	germline (inherited)	16100712	DNA	SEQ	-	-								
+16	NM_003494.3:c.1448C>A	g.71766337C>A	2	C	A	71766337	-	r.1448c>a	p.Ser483*	c.1541C>A	p.Ser514*	DYSF_00238	-	germline (inherited)	16705711;17828519	DNA	 RNA	RT-PCR	 SEQ	-	-						
+16i	NM_003494.3:c.1480+1delG	g.71766370delG	2	delG		71766370	1481+1delG	r.1398_1480del	p.Trp466*	c.1573+1delG	p.Trp497*	DYSF_00271	-	germline (inherited)	16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+16i	NM_003494.3:c.1481-134A>G	g.71776346A>G	2	A	G	71776346	-	r.(?)	p.(=)	c.1574-134A>G	p.(=)	DYSF_00073	-	germline (inherited)	dbSNP-rs934061	DNA	SEQ	0.6	-								
+16i	NM_003494.3:c.1481-1G>A	g.71776479G>A	2	G	A	71776479	-	r.spl	p.?	c.1574-1G>A	p.?	DYSF_00362	-	germline (inherited)	-	DNA	SEQ	-	-								
+17i	NM_003494.3:c.1522+15C>G	g.71776536C>G	2	C	G	71776536	-	r.(?)	p.(=)	-	-	DYSF_00506	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+17i	NM_003494.3:c.1523-103G>A	g.71778068G>A	2	G	A	71778068	-	r.(=)	p.(=)	c.1616-103G>A	p.(=)	DYSF_00074	-	germline (inherited)	dbSNP-rs2303592	DNA	SEQ	0.03	-								
+18	NM_003494.3:c.1555G>A	g.71778203G>A	2	G	A	71778203	-	r.1523_1556del	p.Leu508Cysfs*108	c.1648G>A	p.Leu539Cysfs*108	DYSF_00298	not in 180 normal chromosomes; decreased mRNA levels	germline (inherited)	17070050;17287450	DNA	 RNA	RT-PCR	 SEQ	-	-						
+18	NM_003494.3:c.1566C>G	g.71778214C>G	2	C	G	71778214	-	r.(?)	p.(Tyr522*)	c.1659C>G	p.(Tyr553*)	DYSF_00131	-	germline (inherited)	12767493	DNA	SEQ	 SSCA	-	Sau3AI+							
+18	NM_003494.3:c.1617C>G	g.71778265C>G	2	C	G	71778265	-	r.(?)	p.(Tyr539*)	c.1710C>G	p.(Tyr570*)	DYSF_00315	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+18	NM_003494.3:c.1620delA	g.71778268delA	2	delA		71778268	-	r.(?)	p.(Glu541Serfs*86)	-	-	DYSF_00507	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+18i	NM_003494.3:c.1638+2T>A	g.71778288T>A	2	T	A	71778288	-	r.spl	p.?	-	-	DYSF_00508	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+19	NM_003494.3:c.1642delG	g.71778740delG	2	delG		71778740	-	r.(spl?)	p.(Glu548Lysfs*79)	c.1735delG	p.(Glu579Lysfs*79)	DYSF_00242	-	germline (inherited)	-	DNA	HD	-	-								
+19	NM_003494.3:c.1655_1668del	g.71778753_71778766del	2	del		71778753_71778766	-	r.(?)	p.(Tyr552Serfs*13)	c.1748_1761del	p.(Tyr583Serfs*13)	DYSF_00316	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+19	NM_003494.3:c.1658G>A	g.71778756G>A	2	G	A	71778756	-	r.(?)	p.(Arg553His)	c.1751G>A	p.(Arg584His)	DYSF_00460	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+19	NM_003494.3:c.1663C>T	g.71778761C>T	2	C	T	71778761	-	r.(?)	p.(Arg555Trp)	c.1756C>T	p.(Arg586Trp)	DYSF_00211	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+19	NM_003494.3:c.1717G>T	g.71778815G>T	2	G	T	71778815	-	r.(?)	p.(Glu573*)	c.1810G>T	p.(Glu604*)	DYSF_00136	-	germline (inherited)	12767493	DNA	SEQ	 SSCA	-	-							
+19	NM_003494.3:c.1731G>A	g.71778829G>A	2	G	A	71778829	-	r.1731g>a	p.=	c.1824G>A	p.=	DYSF_00250	10% RNA	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+19	NM_003494.3:c.1749_1750insT	g.71778847_71778848insT	2	insT		71778847_71778848	-	r.(?)	p.(Glu584*)	c.1842_1843insT	p.(Glu615*)	DYSF_00293	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+19i	NM_003494.3:c.1752+2T>A	g.71778852T>A	2	T	A	71778852	-	r.spl	p.?	c.1845+21843insT	p.?	DYSF_00166	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+19i	NM_003494.3:c.1753-24C>G	g.71780117C>G	2	C	G	71780117	-	r.(?)	p.(=)	c.1846-241843insT	p.(=)	DYSF_00075	-	germline (inherited)	dbSNP-rs2303595	DNA	SEQ	0.03	-								
+20	NM_003494.3:c.1758C>A	g.71780146C>A	2	C	A	71780146	-	r.(?)	p.(Tyr586*)	c.1851C>A	p.(Tyr617*)	DYSF_00137	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+20	NM_003494.3:c.1758C>G	g.71780146C>G	2	C	G	71780146	-	r.(?)	p.(Tyr586*)	c.1851C>G	p.(Tyr617*)	DYSF_00376	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+20	NM_003494.3:c.1765delA	g.71780153delA	2	delA		71780153	-	r.1765del	p.Arg589Glyfs*38	c.1858delA	p.Arg620Glyfs*38	DYSF_00252	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+20	NM_003494.3:c.1795_1799dup	g.71780183_71780187dup	2	dup		71780183_71780187	-	r.(?)	p.(Ala601Thrfs*28)	c.1888_1892dup	p.(Ala632Thrfs*28)	DYSF_00212	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+20	NM_003494.3:c.1813C>T	g.71780201C>T	2	C	T	71780201	-	r.(?)	p.(Gln605*)	c.1906C>T	p.(Gln636*)	DYSF_00001	-	germline (inherited)	09731526;11468312	DNA	SEQ	 SSCA	-	PstI-							
+20	NM_003494.3:c.1827T>C	g.71780215T>C	2	T	C	71780215	-	r.1827u>c	p.=	c.1920T>C	p.=	DYSF_00063	10% RNA	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+20	NM_003494.3:c.1834C>T	g.71780222C>T	2	C	T	71780222	Q611X	r.(?)	p.(Gln612*)	c.1927C>T	p.(Gln643*)	DYSF_00053	-	germline (inherited)	11053681	DNA	SEQ	 SSCA	-	-							
+20	NM_003494.3:c.(1852G>A)	g.71780240G>A	2	G	A	71780240	-	r.(?)	p.(Gly618Arg)	c.(1945G>A)	p.(Gly649Arg)	DYSF_00000	2nd varaint not mentioned specifically	germline (inherited)	17828519	DNA	SEQ	-	-								
+20	NM_003494.3:c.1852G>A	g.71780240G>A	2	G	A	71780240	2234G>A	r.1852g>a	p.Gly618Arg	c.1945G>A	p.Gly649Arg	DYSF_00174	not in 120 control chromosomes	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+20	NM_003494.3:c.1860C>T	g.71780248C>T	2	C	T	71780248	-	r.(?)	p.(=)	c.1953C>T	p.(=)	DYSF_00146	-	germline (inherited)	12796534	DNA	SSCA	1/100	-								
+20	NM_003494.3:c.1861G>A	g.71780249G>A	2	G	A	71780249	-	r.1861g>a	p.Gly621Arg	c.1954G>A	p.Gly652Arg	DYSF_00198	not in 320 control chromosomes	germline (inherited)	16100712;17994539	DNA	 RNA	RT-PCR	 SEQ	-	-						
+20	NM_003494.3:c.1861G>C	g.71780249G>C	2	G	C	71780249	-	r.(?)	p.(Gly621Arg)	-	-	DYSF_00509	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+20	NM_003494.3:c.1873G>T	g.71780261G>T	2	G	T	71780261	-	r.1873g>u	p.Asp625Tyr	c.1966G>T	p.Asp656Tyr	DYSF_00311	normal RNA levels	germline (inherited)	17287450	DNA	 RNA	RT-PCR	 SEQ	-	-						
+20	NM_003494.3:c.1877T>C	g.71780265T>C	2	T	C	71780265	-	r.(?)	p.(Met626Thr)	-	-	DYSF_00430	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+20	NM_003494.3:c.1890G>A	g.71780278G>A	2	G	A	71780278	-	r.(?)	p.(=)	-	-	DYSF_00510	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+20	NM_003494.3:c.1911C>A	g.71780299C>A	2	C	A	71780299	-	r.(?)	p.(Tyr637*)	c.2004C>A	p.(Tyr668*)	DYSF_00346	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+20i	NM_003494.3:c.1931-116T>C	g.71780821T>C	2	T	C	71780821	-	r.(?)	p.(=)	c.2024-116T>C	p.(=)	DYSF_00076	-	germline (inherited)	dbSNP-rs2302597	DNA	SEQ	0.27	-								
+20i	NM_003494.3:c.1931-31C>A	g.71780906C>A	2	C	A	71780906	-	r.(=)	p.(=)	c.2024-31C>A	p.(=)	DYSF_00281	-	germline (inherited)	-	DNA	SEQ	-	-								
+20i	NM_003494.3:c.1931-15G>T	g.71780922G>T	2	G	T	71780922	-	r.(?)	p.(=)	-	-	DYSF_00511	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+21	NM_003494.3:c.1948delC	g.71780954delC	2	delC		71780954	-	r.(?)	p.(Leu650Tyrfs*6)	c.2041delC	p.(Leu681Tyrfs*6)	DYSF_00317	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+21	NM_003494.3:c.1976dupT	g.71780982dup	2	dup		71780982	-	r.1976dup	p.Val660Glyfs*12	c.2069dupT	p.Val691Glyfs*12	DYSF_00189	-	germline (inherited)	14673575	DNA	 RNA	SEQ	-	-							
+21	NM_003494.3:c.1980G>A	g.71780986G>A	2	G	A	71780986	-	r.(?)	p.(=)	c.2073G>A	p.(=)	DYSF_00377	UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-								
+21	NM_003494.3:c.1984_1994del	g.71780990_71781000del	2	del		71780990_71781000	-	r.1984_1994del	p.Ser662Glyfs*6	c.2077_2087del	p.Ser693Glyfs*6	DYSF_00303	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+21i	NM_003494.3:c.2055+1G>A	g.71781062G>A	2	G	A	71781062	-	r.spl	p.?	c.2148+1G>A	p.?	DYSF_00359	-	germline (inherited)	Gonzalez-Quereda ESHG2008 P01.222	DNA	SEQ	-	-								
+21i	NM_003494.3:c.2055+16C>T	g.71781077C>T	2	C	T	71781077	-	r.(?)	p.(?)	c.2148+16C>T	p.(?)	DYSF_00122	-	germline (inherited)	-	DNA	SSCA	Feb-76	-								
+21i	NM_003494.3:c.2055+50A>G	g.71781111A>G	2	A	G	71781111	-	r.(?)	p.(=)	c.2148+50A>G	p.(=)	DYSF_00077	-	germline (inherited)	dbSNP-rs733654	DNA	SEQ	0.03	-								
+21i	NM_003494.3:c.2055+105_2055+106del	g.71781166_71781167del	2	del		71781166_71781167	-	r.(=)	p.(=)	c.2148+105_2148+106del	p.(=)	DYSF_00378	-	germline (inherited)	dbSNP-rs5832058	DNA	SEQ	-	-								
+21i	NM_003494.3:c.2056-853T>C	g.71782242T>C	2	T	C	71782242	-	r.(?)	p.(=)	c.2149-853T>C	p.(=)	DYSF_00078	-	germline (inherited)	dbSNP-rs734248	DNA	SEQ	0.76	-								
+21i	NM_003494.3:c.2056-331C>G	g.71782764C>G	2	C	G	71782764	-	r.(?)	p.(=)	c.2149-331C>G	p.(=)	DYSF_00079	-	germline (inherited)	dbSNP-rs745993	DNA	SEQ	0.57	-								
+21i	NM_003494.3:c.2056-43G>T	g.71783052G>T	2	G	T	71783052	-	r.(?)	p.(=)	-	-	DYSF_00512	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+22	NM_003494.3:c.2073G>A	g.71783112G>A	2	G	A	71783112	2446G>A (Q691Q)	r.(?)	p.(=)	c.2166G>A	p.(=)	DYSF_00181	-	germline (inherited)	15469449	DNA	SEQ	 SSCA	-	-							
+22	NM_003494.3:c.2077delC	g.71783116delC	2	delC		71783116	-	r.(?)	p.(His693Thrfs*4)	c.2170delC	p.(His724Thrfs*4)	DYSF_00347	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+22	NM_003494.3:c.2113G>A	g.71783152G>A	2	G	A	71783152	4887	r.(?)	p.(Val705Met)	c.2206G>A	p.(Val736Met)	DYSF_00041	-	germline (inherited)	-	DNA	SEQ	-	-								
+22i	NM_003494.3:c.2162+16C>T	g.71783217C>T	2	C	T	71783217	-	r.=	p.=	c.2255+16C>T	p.=	DYSF_00467	-	germline (inherited)	17932988	DNA	 RNA	RT-PCR	 SEQ	-	-						
+22i	NM_003494.3:c.2163-11G>A	g.71788871G>A	2	G	A	71788871	-	r.(?)	p.(=)	-	-	DYSF_00513	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+22i	NM_003494.3:c.2163-1G>T	g.71788881G>T	2	G	T	71788881	-	r.spl	p.?	c.2256-1G>T	p.?	DYSF_00468	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+23	NM_003494.3:c.2192C>G	g.71788911C>G	2	C	G	71788911	-	r.(?)	p.(Pro731Arg)	c.2285C>G	p.(Pro762Arg)	DYSF_00318	not in 200 control alleles; UMD-Predictor score 82 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+23	NM_003494.3:c.2200_2204del	g.71788919_71788923del	2	del		71788919_71788923	2573-7del	r.2200_2204del	p.Thr734Profs*18	c.2293_2297del	p.Thr765Profs*18	DYSF_00022	not in 120 control chromosomes	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+23	NM_003494.3:c.2200_2205delinsT	g.71788919_71788924delinsT	2	delinsT		71788919_71788924	-	r.(?)	p.(Thr734Serfs*18)	-	-	DYSF_00491	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+23	NM_003494.3:c.2217C>A	g.71788936C>A	2	C	A	71788936	-	r.(?)	p.(Tyr739*)	c.2310C>A	p.(Tyr770*)	DYSF_00319	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+23	NM_003494.3:c.2283C>A	g.71789002C>A	2	C	A	71789002	-	r.(?)	p.(=)	c.2376C>A	p.(=)	DYSF_00379	pathogenicity excluded through F-18-1-2	 UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	17698709;18853459	DNA	SEQ	-	-							
+24	NM_003494.3:c.2367C>A	g.71791199C>A	2	C	A	71791199	-	r.(?)	p.(Ser789Arg)	c.2460C>A	p.(Ser820Arg)	DYSF_00193	-	germline (inherited)	-	DNA	SEQ	-	-								
+24	NM_003494.3:c.2372C>G	g.71791204C>G	2	C	G	71791204	-	r.(?)	p.(Pro791Arg)	c.2465C>G	p.(Pro822Arg)	DYSF_00007	shared common haplotype	germline (inherited)	10196377;11468312;11053681	DNA	SEQ	-	-								
+24	NM_003494.3:c.2393T>C	g.71791225T>C	2	T	C	71791225	-	r.(?)	p.(Leu798Pro)	c.2486T>C	p.(Leu829Pro)	DYSF_00263	not in 200 control chromosomes	germline (inherited)	-	DNA	SEQ	-	-								
+24	NM_003494.3:c.2452C>T	g.71791284C>T	2	C	T	71791284	-	r.(?)	p.(Arg818Trp)	c.2545C>T	p.(Arg849Trp)	DYSF_00462	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+24	NM_003494.3:c.2456G>A	g.71791288G>A	2	G	A	71791288	-	r.(?)	p.(Arg819Gln)	c.2549G>A	p.(Arg850Gln)	DYSF_00381	UMD-Predictor score 59 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-								
+24	NM_003494.3:c.2494C>T	g.71791326C>T	2	C	T	71791326	-	r.(?)	p.(Gln832*)	c.2587C>T	p.(Gln863*)	DYSF_00282	not in 100 control chromosomes	germline (inherited)	16891820	DNA	SEQ	-	-								
+24	NM_003494.3:c.2496_2499del	g.71791328_71791331del	2	del		71791328_71791331	2496_2499delGACA	r.(?)	p.(Thr833Serfs*3)	-	-	DYSF_00514	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+24	NM_003494.3:c.2497_2500del	g.71791329_71791332del	2	del		71791329_71791332	(Gln832GlnfsX3)	r.(?)	p.(Thr833Serfs*3)	c.2590_2593del	p.(Thr864Serfs*3)	DYSF_00348	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+24	NM_003494.3:c.2500A>G	g.71791332A>G	2	A	G	71791332	-	r.(?)	p.(Ile834Val)	c.2593A>G	p.(Ile865Val)	DYSF_00120	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+24i	NM_003494.3:c.2511+1G>A	g.71791344G>A	2	G	A	71791344	IVS24+1G>A	r.spl	p.?	c.2604+1G>A	p.?	DYSF_00340	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+24i_29i	NM_003494.3:c.2512-?_3174+?del	g.71795081_71797871del	2	del		71795081_71797871	ex25-29del	r.(?)	p.(Tyr838_Arg1058del)	c.2605-?_3267+?del	p.(Tyr869_Arg1089del)	DYSF_00051	-	germline (inherited)	11053681	DNA	SEQ	 SSCA	-	-							
+25	NM_003494.3:c.2547dupA	g.71795116dup	2	dup		71795116	-	r.(?)	p.(Val850Serfs*15)	c.2640dupA	p.(Val881Serfs*15)	DYSF_00243	-	germline (inherited)	-	DNA	HD	-	-								
+25	NM_003494.3:c.2582_2583del	g.71795151_71795152del	2	del		71795151_71795152	-	r.(?)	p.(Ser861Cysfs*3)	c.2675_2676del	p.(Ser892Cysfs*3)	DYSF_00040	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+25	NM_003494.3:c.(2583A>G)	g.71795152A>G	2	A	G	71795152	2956T>C (S861S)	r.(?)	p.(=)	c.(2676A>G)	p.(=)	DYSF_00000	variant description incorrect	germline (inherited)	15469449	DNA	SEQ	 SSCA	-	-							
+25	NM_003494.3:c.2583A>T	g.71795152A>T	2	A	T	71795152	-	r.2583a>u	p.=	c.2676A>T	p.=	DYSF_00018	-	germline (inherited)	Mela	 ICHG2001 P1505 - {DB: ROMA}	DNA	 RNA	HD	 RT-PCR	 SEQ	-	-				
+25	NM_003494.3:c.2641A>C	g.71795210A>C	2	A	C	71795210	-	r.(?)	p.(Thr881Pro)	c.2734A>C	p.(Thr912Pro)	DYSF_00069	-	germline (inherited)	Rao	 Am.J.Hum.Genet. 71: S427	DNA	SEQ	-	-							
+25i	NM_003494.3:c.2643+1G>A	g.71795213G>A	2	G	A	71795213	IVS25+1G>A	r.spl	p.?	c.2736+1G>A	p.?	DYSF_00066	-	germline (inherited)	12767493	DNA	SEQ	 SSCA	-	-							
+25i	NM_003494.3:c.2643+2T>C	g.71795214T>C	2	T	C	71795214	-	r.spl?	p.(?)	c.2736+2T>C	p.(?)	DYSF_00470	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+25i	NM_003494.3:c.2643+2T>G	g.71795214T>G	2	T	G	71795214	IVS25+2T>G	r.2512_2643del	p.Tyr838_Thr881del	c.2736+2T>G	p.Tyr869_Thr912del	DYSF_00269	-	germline (inherited)	16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+25i	NM_003494.3:c.2644-2A>G	g.71795300A>G	2	A	G	71795300	3017-2A>G	r.spl	p.?	c.2737-2A>G	p.?	DYSF_00149	-	germline (inherited)	11532985;12767493	DNA	SEQ	 SSCA	-	-							
+26	NM_003494.3:c.2659A>T	g.71795317A>T	2	A	T	71795317	-	r.(?)	p.(Lys887*)	c.2752A>T	p.(Lys918*)	DYSF_00471	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+26	NM_003494.3:c.2690C>T	g.71795348C>T	2	C	T	71795348	-	r.(?)	p.(Thr897Met)	-	-	DYSF_00515	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+26	NM_003494.3:c.2706dupC	g.71795364dup	2	dup		71795364	-	r.(?)	p.(Lys903Glnfs*4)	c.2799dupC	p.(Lys934Glnfs*4)	DYSF_00257	-	germline (inherited)	-	DNA	SEQ	-	-								
+26	NM_003494.3:c.2763G>A	g.71795421G>A	2	G	A	71795421	-	r.(?)	p.(=)	-	-	DYSF_00516	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+26	NM_003494.3:c.2779delG	g.71795437delG	2	delG		71795437	-	r.(?)	p.(Ala927Leufs*21)	c.2872delG	p.(Ala958Leufs*21)	DYSF_00213	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+26	NM_003494.3:c.2790G>C	g.71795448G>C	2	G	C	71795448	-	r.2790g>c	p.Trp930Cys	c.2883G>C	p.Trp961Cys	DYSF_00268	not in 100 control chromosomes	germline (inherited)	16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+26	NM_003494.3:c.2802G>A	g.71795460G>A	2	G	A	71795460	-	r.(?)	p.(=)	c.2895G>A	p.(=)	DYSF_00057	-	germline (inherited)	12796534	DNA	SSCA	Feb-54	-								
+26i	NM_003494.3:c.2810+1G>A	g.71795469G>A	2	G	A	71795469	IVS26+1G>A	r.spl	p.?	c.2903+1G>A	p.?	DYSF_00341	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+26i	NM_003494.3:c.2810+1G>C	g.71795469G>C	2	G	C	71795469	IVS26+1G>C	r.spl	p.?	c.2903+1G>C	p.?	DYSF_00349	-	germline (inherited)	17994539	DNA	SEQ	-	-								
+27	NM_003494.3:c.2813T>G	g.71796952T>G	2	T	G	71796952	-	r.2813u>g	p.Leu938Arg	c.2906T>G	p.Leu969Arg	DYSF_00304	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+27	NM_003494.3:c.2837delA	g.71796976delA	2	delA		71796976	-	r.(?)	p.(His946Profs*2)	c.2930delA	p.(His977Profs*2)	DYSF_00172	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+27	NM_003494.3:c.2858dupT	g.71796997dup	2	dup		71796997	-	r.(?)	p.(Phe954Valfs*2)	c.2951dupT	p.(Phe985Valfs*2)	DYSF_00214	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+27	NM_003494.3:c.2875C>T	g.71797014C>T	2	C	T	71797014	-	r.2875c>u	p.Arg959Trp	c.2968C>T	p.Arg990Trp	DYSF_00016	-	germline (inherited)	16100712;17994539	DNA	 RNA	RT-PCR	 SEQ	-	-						
+27	NM_003494.3:c.2894G>A	g.71797033G>A	2	G	A	71797033	-	r.(?)	p.(Trp965*)	c.2987G>A	p.(Trp996*)	DYSF_00320	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+27	NM_003494.3:c.2901dupC	g.71797040dup	2	dup		71797040	-	r.(?)	p.(Met968Hisfs*3)	c.2994dupC	p.(Met999Hisfs*3)	DYSF_00034	-	germline (inherited)	{DB: Zatz}	DNA	DHPLC	 SEQ	 SSCA	-	-						
+27	NM_003494.3:c.2902A>T	g.71797041A>T	2	A	T	71797041	-	r.(?)	p.(Met968Leu)	c.2995A>T	p.(Met999Leu)	DYSF_00289	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+27i	NM_003494.3:c.2926-40T>C	g.71797319T>C	2	T	C	71797319	-	r.(?)	p.(=)	-	-	DYSF_00517	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+28	NM_003494.3:c.2974T>C	g.71797407T>C	2	T	C	71797407	-	r.(?)	p.(Trp992Arg)	c.3067T>C	p.(Trp1023Arg)	DYSF_00283	not in 100 control chromosomes	germline (inherited)	16891820	DNA	SEQ	-	-								
+28	NM_003494.3:c.2975G>A	g.71797408G>A	2	G	A	71797408	-	r.(?)	p.(Trp992*)	c.3068G>A	p.(Trp1023*)	DYSF_00321	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+28	NM_003494.3:c.2996G>A	g.71797429G>A	2	G	A	71797429	-	r.(?)	p.(Trp999*)	c.3089G>A	p.(Trp1030*)	DYSF_00033	-	germline (inherited)	Paula	 ASHG 2001 A2692	DNA	SEQ	 SSCA	 DHPLC	-	AvaII-					
+28	NM_003494.3:c.2997G>T	g.71797430G>T	2	G	T	71797430	-	r.(?)	p.(Trp999Cys)	c.3090G>T	p.(Trp1030Cys)	DYSF_00132	-	germline (inherited)	12767493	DNA	SEQ	 SSCA	-	AvaII-							
+28	NM_003494.3:c.3025G>A	g.71797458G>A	2	G	A	71797458	-	r.(?)	p.(Glu1009Lys)	-	-	DYSF_00518	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+28	NM_003494.3:c.3028C>T	g.71797461C>T	2	C	T	71797461	-	r.(?)	p.(Gln1010*)	c.3121C>T	p.(Gln1041*)	DYSF_00472	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+28	NM_003494.3:c.3031G>C	g.71797464G>C	2	G	C	71797464	-	r.(spl?)	p.(Gly1011Arg)	c.3124G>C	p.(Gly1042Arg)	DYSF_00473	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+28i	NM_003494.3:c.3031+2T>C	g.71797466T>C	2	T	C	71797466	-	r.spl?	p.(?)	c.3124+2T>C	p.(?)	DYSF_00265	-	germline (inherited)	-	DNA	SEQ	-	-								
+28i	NM_003494.3:c.3032-17G>A	g.71797712G>A	2	G	A	71797712	-	r.(=)	p.(=)	c.3125-17G>A	p.(=)	DYSF_00080	-	germline (inherited)	dbSNP-rs3764971	DNA	SEQ	0.4	-								
+28i	NM_003494.3:c.3032-16G>A	g.71797713G>A	2	G	A	71797713	-	r.(=)	p.(=)	c.3125-16G>A	p.(=)	DYSF_00383	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+29	NM_003494.3:c.3035G>A	g.71797732G>A	2	G	A	71797732	-	r.(spl?)	p.(Trp1012*)	c.3128G>A	p.(Trp1043*)	DYSF_00215	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+29	NM_003494.3:c.3041A>G	g.71797738A>G	2	A	G	71797738	-	r.(?)	p.(Tyr1014Cys)	c.3134A>G	p.(Tyr1045Cys)	DYSF_00055	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+29	NM_003494.3:c.3059dupC	g.71797756dup	2	dup		71797756	-	r.(?)	p.(Glu1021Glyfs*11)	c.3152dupC	p.(Glu1052Glyfs*11)	DYSF_00247	-	germline (inherited)	-	DNA	SEQ	-	-								
+29	NM_003494.3:c.3061dupG	g.71797758dup	2	dup		71797758	-	r.3061dup	p.Glu1021Glyfs*11	c.3154dupG	p.Glu1052Glyfs*11	DYSF_00302	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+29	NM_003494.3:c.3065G>A	g.71797762G>A	2	G	A	71797762	-	r.(?)	p.(Arg1022Gln)	c.3158G>A	p.(Arg1053Gln)	DYSF_00121	not in 170 control chromosomes	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+29	NM_003494.3:c.3073_3080dup	g.71797770_71797777dup	2	dup		71797770_71797777	-	r.(?)	p.(Trp1027*)	c.3166_3173dup	p.(Trp1058*)	DYSF_00035	-	germline (inherited)	{DB: Zatz}	DNA	SEQ	 SSCA	 DHPLC	-	-						
+29	NM_003494.3:c.3086C>T	g.71797783C>T	2	C	T	71797783	-	r.(?)	p.(Pro1029Leu)	c.3179C>T	p.(Pro1060Leu)	DYSF_00322	not in 200 control alleles; UMD-Predictor score >65	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+29	NM_003494.3:c.3112C>T	g.71797809C>T	2	C	T	71797809	-	r.(?)	p.(Arg1038*)	c.3205C>T	p.(Arg1069*)	DYSF_00216	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+29	NM_003494.3:c.3113G>A	g.71797810G>A	2	G	A	71797810	-	r.(?)	p.(Arg1038Gln)	c.3206G>A	p.(Arg1069Gln)	DYSF_00154	not in 200 control chromosomes	germline (inherited)	14678801;16100712;17994539	DNA	SEQ	-	-								
+29	NM_003494.3:c.3115C>T	g.71797812C>T	2	C	T	71797812	-	r.3115c>u	p.Arg1039Trp	c.3208C>T	p.Arg1070Trp	DYSF_00234	not in 228 control chromosomes	germline (inherited)	-	DNA	 RNA	SEQ	-	-							
+29	NM_003494.3:c.3116G>T	g.71797813G>T	2	G	T	71797813	-	r.3116g>u	p.Arg1039Leu	c.3209G>T	p.Arg1070Leu	DYSF_00309	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+29	NM_003494.3:c.3121C>T	g.71797818C>T	2	C	T	71797818	3483C>T	r.3121c>u	p.Arg1041Cys	c.3214C>T	p.Arg1072Cys	DYSF_00180	-	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+29	NM_003494.3:c.3126G>A	g.71797823G>A	2	G	A	71797823	-	r.(?)	p.(Trp1042*)	c.3219G>A	p.(Trp1073*)	DYSF_00217	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+29	NM_003494.3:c.3130C>A	g.71797827C>A	2	C	A	71797827	-	r.3130c>a	p.Arg1044Ser	c.3223C>A	p.Arg1075Ser	DYSF_00308	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+29	NM_003494.3:c.3137G>A	g.71797834G>A	2	G	A	71797834	-	r.(?)	p.(Arg1046His)	c.3230G>A	p.(Arg1077His)	DYSF_00023	-	germline (inherited)	11468312	DNA	SEQ	 SSCA	-	-							
+29	NM_003494.3:c.3149_3150del	g.71797846_71797847del	2	del		71797846_71797847	-	r.(?)	p.(Leu1050Glnfs*63)	c.3242_3243del	p.(Leu1081Glnfs*63)	DYSF_00036	-	germline (inherited)	{DB: Zatz}	DNA	DHPLC	 SEQ	 SSCA	-	-						
+29i	NM_003494.3:c.3175-61G>C	g.71801267G>C	2	G	C	71801267	-	r.(=)	p.(=)	c.3268-61G>C	p.(=)	DYSF_00385	pathogenicity excluded through F1.9.1.2	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+29i	NM_003494.3:c.3175-31G>A	g.71801297G>A	2	G	A	71801297	-	r.(spl?)	p.(=)	c.3268-31G>A	p.(=)	DYSF_00384	pathogenicity excluded through F1.9.1.2	germline (inherited)	18853459	DNA	SEQ	-	-								
+30	NM_003494.3:c.3179G>C	g.71801332G>C	2	G	C	71801332	-	r.(?)	p.(Arg1060Thr)	c.3272G>C	p.(Arg1091Thr)	DYSF_00160	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+30	NM_003494.3:c.3181delC	g.71801334delC	2	delC		71801334	-	r.(?)	p.(Gln1061Argfs*59)	c.3274delC	p.(Gln1092Argfs*59)	DYSF_00290	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+30	NM_003494.3:c.3191_3196dup	g.71801344_71801349dup	2	dup		71801344_71801349	-	r.(?)	p.(Ala1064_Glu1065dup)	c.3284_3289dup	p.(Ala1095_Glu1096dup)	DYSF_00112	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+30	NM_003494.3:c.3225delT	g.71801378delT	2	delT		71801378	-	r.(?)	p.(Phe1075Leufs*45)	c.3318delT	p.(Phe1106Leufs*45)	DYSF_00323	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+30	NM_003494.3:c.3307A>T	g.71801460A>T	2	A	T	71801460	-	r.(?)	p.(Lys1103*)	c.3400A>T	p.(Lys1134*)	DYSF_00284	not in 100 control chromosomes	germline (inherited)	16891820	DNA	SEQ	-	-								
+30	NM_003494.3:c.3321_3324dup	g.71801474_71801477dup	2	dup		71801474_71801477	-	r.(?)	p.(Val1109Serfs*6)	c.3414_3417dup	p.(Val1140Serfs*6)	DYSF_00218	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+30	NM_003494.3:c.3327_3328del	g.71801480_71801481del	2	del		71801480_71801481	3327_3328delGT	r.(?)	p.(Phe1110Cysfs*3)	-	-	DYSF_00519	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+30i	NM_003494.3:c.3348+3_3348+6del	g.71801504_71801507del	2	del		71801504_71801507	IVS30+1delGTAT	r.spl?	p.(?)	c.3441+3_3441+6del	p.(?)	DYSF_00219	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+30i	NM_003494.3:c.3349-54T>G	g.71816669T>G	2	T	G	71816669	-	r.(=)	p.(=)	c.3442-54T>G	p.(=)	DYSF_00386	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+30i	NM_003494.3:c.3349-2A>G	g.71816721A>G	2	A	G	71816721	-	r.spl	p.?	c.3442-2A>G	p.?	DYSF_00144	-	germline (inherited)	-	DNA	SEQ	-	-								
+31	NM_003494.3:c.3373delG	g.71816747delG	2	delG		71816747	-	r.(?)	p.(Glu1125Lysfs*9)	c.3466delG	p.(Glu1156Lysfs*9)	DYSF_00024	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+31	NM_003494.3:c.3389_3399dup	g.71816763_71816773dup	2	dup		71816763_71816773	-	r.(?)	p.(Phe1135Profs*3)	c.3482_3492dup	p.(Phe1166Profs*3)	DYSF_00324	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+31i	NM_003494.3:c.3442+4A>G	g.71816820A>G	2	A	G	71816820	-	r.(spl?)	p.(?)	c.3535+4A>G	p.(?)	DYSF_00389	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+31i	NM_003494.3:c.3442+14C>T	g.71816830C>T	2	C	T	71816830	-	r.(=)	p.(=)	c.3535+14C>T	p.(=)	DYSF_00388	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+31i	NM_003494.3:c.3443-33A>G	g.71817308A>G	2	A	G	71817308	IVS31-33A>G	r.3443_3520del	p.Gly1149_Asp1174del	c.3536-33A>G	p.Gly1180_Asp1205del	DYSF_00266	not in 100 control chromosomes; splice effect analysed by cloning	germline (inherited)	16606933;16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+32	NM_003494.3:c.3444_3445delinsAA	g.71817342_71817343delinsAA	2	delinsAA		71817342_71817343	3817-8TG>AA (Tyr1148X)	r.(?)	p.(Tyr1148*)	c.3537_3538delinsAA	p.(Tyr1179*)	DYSF_00168	-	germline (inherited)	15469449	DNA	SEQ	 SSCA	-	-							
+32	NM_003494.3:c.3477C>A	g.71817375C>A	2	C	A	71817375	-	r.(?)	p.(Tyr1159*)	c.3570C>A	p.(Tyr1190*)	DYSF_00220	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+32	NM_003494.3:c.3478C>T	g.71817376C>T	2	C	T	71817376	-	r.(?)	p.(Gln1160*)	c.3571C>T	p.(Gln1191*)	DYSF_00025	-	germline (inherited)	11468312;10496277	DNA	SEQ	 SSCA	-	-							
+32	NM_003494.3:c.3480G>A	g.71817378G>A	2	G	A	71817378	3853G>A (Q1160Q)	r.(?)	p.(=)	c.3573G>A	p.(=)	DYSF_00182	-	germline (inherited)	15469449	DNA	SEQ	 SSCA	-	-							
+32	NM_003494.3:c.3516_3517del	g.71817414_71817415del	2	del		71817414_71817415	-	r.3516_3517del	p.Ser1173*	c.3609_3610del	p.Ser1204*	DYSF_00163	r.3516_3517del RNA 20% of total	germline (inherited)	-	DNA	 RNA	RT_PCR	 SEQ	-	-						
+32	NM_003494.3:c.3517dup	g.71817415dup	2	dup		71817415	3517dupT	r.(?)	p.(Ser1173Phefs*2)	-	-	DYSF_00520	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+32	NM_003494.3:c.3517dupT	g.71817415dup	2	dup		71817415	-	r.(?)	p.(Ser1173Phefs*2)	c.3610dupT	p.(Ser1204Phefs*2)	DYSF_00325	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+32	NM_003494.3:c.3519dupT	g.71817417dup	2	dup		71817417	3518_3519insT	r.(?)	p.(Asp1174*)	c.3612dupT	p.(Asp1205*)	DYSF_00158	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+32i	NM_003494.3:c.3520+34G>T	g.71817452G>T	2	G	T	71817452	-	r.(?)	p.(=)	-	-	DYSF_00521	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+32i	NM_003494.3:c.3520+153A>T	g.71817571A>T	2	A	T	71817571	-	r.(=)	p.(=)	c.3613+153A>T	p.(=)	DYSF_00081	-	germline (inherited)	dbSNP-rs720541	DNA	SEQ	0.75	-								
+32i	NM_003494.3:c.3521-1732G>A	g.71823962G>A	2	G	A	71823962	-	r.(=)	p.(=)	c.3614-1732G>A	p.(=)	DYSF_00082	-	germline (inherited)	dbSNP-rs1529407	DNA	SEQ	0.04	-								
+32i	NM_003494.3:c.3521-17C>T	g.71825677C>T	2	C	T	71825677	-	r.(=)	p.(=)	c.3614-17C>T	p.(=)	DYSF_00157	-	germline (inherited)	-	DNA	SEQ	-	-								
+32i	NM_003494.3:c.3521-12C>T	g.71825682C>T	2	C	T	71825682	-	r.(=)	p.(=)	c.3614-12C>T	p.(=)	DYSF_00390	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+33	NM_003494.3:c.3534C>T	g.71825707C>T	2	C	T	71825707	-	r.(?)	p.(=)	-	-	DYSF_00522	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+33	NM_003494.3:c.3601_3607del	g.71825774_71825780del	2	del		71825774_71825780	-	r.(?)	p.(Gln1201Serfs*58)	c.3694_3700del	p.(Gln1232Serfs*58)	DYSF_00113	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+33	NM_003494.3:c.3618C>G	g.71825791C>G	2	C	G	71825791	-	r.0	p.0	c.3711C>G	p.0	DYSF_00164	not detectable in RNA	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+33	NM_003494.3:c.3624C>G	g.71825797C>G	2	C	G	71825797	-	r.(?)	p.(Ile1208Met)	c.3717C>G	p.(Ile1239Met)	DYSF_00221	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+33	NM_003494.3:c.3683T>C	g.71825856T>C	2	T	C	71825856	-	r.(?)	p.(Leu1228Pro)	c.3776T>C	p.(Leu1259Pro)	DYSF_00326	not in 200 control alleles; UMD-Predictor score 71 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+33	NM_003494.3:c.3687C>A	g.71825860C>A	2	C	A	71825860	-	r.(?)	p.(Tyr1229*)	c.3780C>A	p.(Tyr1260*)	DYSF_00327	-	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+33	NM_003494.3:c.3702T>C	g.71825875T>C	2	T	C	71825875	-	r.(spl?)	p.(?)	c.3795T>C	p.(?)	DYSF_00391	pathogenicity excluded through F1-174-1-1	 UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-						
+33i	NM_003494.3:c.3702+1G>A	g.71825876G>A	2	G	A	71825876	IVS33+1G>A	r.spl	p.?	c.3795+1G>A	p.?	DYSF_00356	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+33i	NM_003494.3:c.3702+9G>T	g.71825884G>T	2	G	T	71825884	IVS33+9G>T	r.(spl?)	p.?	-	-	DYSF_00488	mRNA increased	germline (inherited)	Nilsson & Tarnopolsky 201	 submitted	DNA	SEQ	-	-							
+33i	NM_003494.3:c.3702+202T>C	g.71826077T>C	2	T	C	71826077	-	r.(?)	p.(=)	c.3795+202T>C	p.(=)	DYSF_00083	-	germline (inherited)	dbSNP-rs934062	DNA	SEQ	0.32	-								
+33i	NM_003494.3:c.3702+227C>T	g.71826102C>T	2	C	T	71826102	-	r.(?)	p.(=)	c.3795+227C>T	p.(=)	DYSF_00084	-	germline (inherited)	dbSNP-rs2303602	DNA	SEQ	0.17	-								
+33i	NM_003494.3:c.3703-12C>T	g.71827820C>T	2	C	T	71827820	3521-12C>T	r.(=)	p.(=)	c.3796-12C>T	p.(=)	DYSF_00392	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+33i	NM_003494.3:c.3703-1G>A	g.71827831G>A	2	G	A	71827831	IVS33-1G>A	r.spl	p.?	c.3796-1G>A	p.?	DYSF_00393	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+34	NM_003494.3:c.3708delA	g.71827837delA	2	delA		71827837	-	r.(?)	p.(Asp1237Thrfs*24)	-	-	DYSF_00452	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+34	NM_003494.3:c.3721G>C	g.71827850G>C	2	G	C	71827850	-	r.3721g>c	p.Gly1241Arg	c.3814G>C	p.Gly1272Arg	DYSF_00358	only one allele detected in RNA	germline (inherited)	17897828	DNA	 RNA	RT-PCR	 SEQ	-	?						
+34	NM_003494.3:c.3725G>A	g.71827854G>A	2	G	A	71827854	-	r.(?)	p.(=)	c.3818G>A	p.(=)	DYSF_00085	-	germline (inherited)	dbSNP-rs2303603	DNA	SEQ	0.02	-								
+34	NM_003494.3:c.3773delT	g.71827902delT	2	delT		71827902	-	r.(?)	p.(Phe1258Serfs*3)	c.3866delT	p.(Phe1289Serfs*3)	DYSF_00475	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+34	NM_003494.3:c.3802G>A	g.71827931G>A	2	G	A	71827931	-	r.3802g>a	p.Gly1268Arg	c.3895G>A	p.Gly1299Arg	DYSF_00167	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+34	NM_003494.3:c.(3805G>T)	g.71827934G>T	2	G	T	71827934	-	r.3805g>u	p.Glu1269*	c.(3898G>T)	p.Glu1300*	DYSF_00000	not in 180 normal chromosomes	germline (inherited)	17070050	RNA	RT-PCR	 SEQ	-	-							
+34	NM_003494.3:c.3805G>T	g.71827934G>T	2	G	T	71827934	-	r.(?)	p.(Glu1269*)	c.3898G>T	p.(Glu1300*)	DYSF_00299	-	germline (inherited)	Gonzalez-Quereda ESHG2008 P01.222	DNA	SEQ	-	-								
+34	NM_003494.3:c.3826C>G	g.71827955C>G	2	C	G	71827955	-	r.(?)	p.(Leu1276Val)	c.3919C>G	p.(Leu1307Val)	DYSF_00222	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+34	NM_003494.3:c.3832C>T	g.71827961C>T	2	C	T	71827961	-	r.(?)	p.(Gln1278*)	c.3925C>T	p.(Gln1309*)	DYSF_00173	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+34i	NM_003494.3:c.3843+1G>A	g.71827973G>A	2	G	A	71827973	-	r.spl	p.?	c.3936+1G>A	p.?	DYSF_00223	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+34i	NM_003494.3:c.3843+2T>A	g.71827974T>A	2	T	A	71827974	-	r.spl	p.?	c.3936+2T>A	p.?	DYSF_00125	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+34i	NM_003494.3:c.3843+18C>G	g.71827990C>G	2	C	G	71827990	-	r.(?)	p.(=)	-	-	DYSF_00523	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+34i	NM_003494.3:c.3844-206A>T	g.71828423A>T	2	A	T	71828423	-	r.(=)	p.(=)	c.3937-206A>T	p.(=)	DYSF_00086	-	germline (inherited)	dbSNP-rs2303604	DNA	SEQ	0.85	-								
+34i	NM_003494.3:c.3844-3C>T	g.71828626C>T	2	C	T	71828626	-	r.(?)	p.(=)	-	-	DYSF_00524	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+35i	NM_003494.3:c.3874-85G>T	g.71829821G>T	2	G	T	71829821	-	r.(=)	p.(=)	c.3967-85G>T	p.(=)	DYSF_00087	-	germline (inherited)	dbSNP-rs1529408	DNA	SEQ	0.84	-								
+35i	NM_003494.3:c.3874-30delG	g.71829876delG	2	delG		71829876	-	r.(=)	p.(=)	c.3967-30delG	p.(=)	DYSF_00394	pathogenicity excluded through F1.25.3.1	germline (inherited)	18853459	DNA	SEQ	-	-								
+36	NM_003494.3:c.3892A>G	g.71829924A>G	2	A	G	71829924	4265A>G	r.(?)	p.(Ile1298Val)	c.3985A>G	p.(Ile1329Val)	DYSF_00003	-	germline (inherited)	09731526;11468312;16934466	DNA	SEQ	 SSCA	-	-							
+36i_39i	NM_003494.3:c.3904-?_4333+?dup	g.71838375_71839936dup	2	dup		71838375_71839936	-	r.(dup)	p.(fs*?)	c.3997-?_4426+?dup	p.(fs*?)	DYSF_00368	-	germline (inherited)	19594366	DNA	MLPA	 SEQ	-	-							
+37	NM_003494.3:c.3967C>T	g.71838438C>T	2	C	T	71838438	-	r.(?)	p.(Gln1323*)	c.4060C>T	p.(Gln1354*)	DYSF_00224	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+37	NM_003494.3:c.3972C>T	g.71838443C>T	2	C	T	71838443	-	r.(?)	p.(=)	c.4065C>T	p.(=)	DYSF_00129	-	germline (inherited)	-	DNA	SEQ	May-46	-								
+37	NM_003494.3:c.3973A>G	g.71838444A>G	2	A	G	71838444	-	r.(?)	p.(Ile1325Val)	c.4066A>G	p.(Ile1356Val)	DYSF_00395	UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-								
+37	NM_003494.3:c.3992G>T	g.71838463G>T	2	G	T	71838463	-	r.(?)	p.(Arg1331Leu)	c.4085G>T	p.(Arg1362Leu)	DYSF_00155	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+37	NM_003494.3:c.4000A>G	g.71838471A>G	2	A	G	71838471	-	r.(?)	p.(Ile1334Val)	-	-	DYSF_00525	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+37	NM_003494.3:c.4003G>A	g.71838474G>A	2	G	A	71838474	4376G>A	r.4003g>a	p.Glu1335Lys	c.4096G>A	p.Glu1366Lys	DYSF_00153	-	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+37	NM_003494.3:c.4003G>T	g.71838474G>T	2	G	T	71838474	-	r.(?)	p.(Glu1335*)	c.4096G>T	p.(Glu1366*)	DYSF_00140	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+37	NM_003494.3:c.4004A>G	g.71838475A>G	2	A	G	71838475	-	r.(?)	p.(Glu1335Gly)	c.4097A>G	p.(Glu1366Gly)	DYSF_00350	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+37i	NM_003494.3:c.4005+1G>A	g.71838477G>A	2	G	A	71838477	IVS37+1G>A	r.spl	p.?	c.4098+1G>A	p.?	DYSF_00342	-	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+37i	NM_003494.3:c.4005+28delG	g.71838504delG	2	delG		71838504	-	r.(?)	p.(=)	-	-	DYSF_00526	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+37i	NM_003494.3:c.4006-40C>T	g.71838555C>T	2	C	T	71838555	-	r.(=)	p.(=)	c.4099-40C>T	p.(=)	DYSF_00088	-	germline (inherited)	dbSNP-rs2303605	DNA	SEQ	0.07	-								
+38	NM_003494.3:c.4008C>A	g.71838597C>A	2	C	A	71838597	-	r.4008c>a	p.=	c.4101C>A	p.=	DYSF_00042	10% RNA	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	-	-						
+38	NM_003494.3:c.4022T>C	g.71838611T>C	2	T	C	71838611	-	r.(?)	p.(Leu1341Pro)	c.4115T>C	p.(Leu1372Pro)	DYSF_00239	not in 400 control chromosomes	germline (inherited)	16705711;17828519	DNA	SEQ	-	BstUI+								
+38	NM_003494.3:c.4052A>G	g.71838641A>G	2	A	G	71838641	-	r.(?)	p.(Asn1351Ser)	c.4145A>G	p.(Asn1382Ser)	DYSF_00225	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+38	NM_003494.3:c.4060_4062del	g.71838649_71838651del	2	del		71838649_71838651	4060_4062delTCC	r.(?)	p.(Ser1354del)	c.4153_4155del	p.(Ser1385del)	DYSF_00416	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+38	NM_003494.3:c.4068C>T	g.71838657C>T	2	C	T	71838657	-	r.(?)	p.(=)	c.4161C>T	p.(=)	DYSF_00058	-	germline (inherited)	12796534	DNA	SSCA	Feb-54	-								
+38	NM_003494.3:c.4081T>C	g.71838670T>C	2	T	C	71838670	4454T>C	r.4081u>c	p.Cys1361Arg	c.4174T>C	p.Cys1392Arg	DYSF_00177	-	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+38	NM_003494.3:c.4089C>T	g.71838678C>T	2	C	T	71838678	-	r.(?)	p.(=)	c.4182C>T	p.(=)	DYSF_00396	UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+38	NM_003494.3:c.4090C>T	g.71838679C>T	2	C	T	71838679	-	r.(?)	p.(Gln1364*)	-	-	DYSF_00527	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+38i	NM_003494.3:c.4167+1G>C	g.71838757G>C	2	G	C	71838757	-	r.spl	p.?	c.4260+1G>C	p.?	DYSF_00067	-	germline (inherited)	Rao	 Am.J.Hum.Genet. 71: S427	DNA	SEQ	-	-							
+38i	NM_003494.3:c.4168-40A>G	g.71839731A>G	2	A	G	71839731	4168-40G>A	r.(=)	p.(=)	c.4261-40A>G	p.(=)	DYSF_00398	pathogenicity excluded through F1.103.1.1; potential branch point inactivation	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+38i	NM_003494.3:c.4168-20G>A	g.71839751G>A	2	G	A	71839751	-	r.(=)	p.(=)	c.4261-20G>A	p.(=)	DYSF_00397	-	germline (inherited)	18853459	DNA	SEQ	-	-								
+39	NM_003494.3:c.4191C>G	g.71839794C>G	2	C	G	71839794	-	r.(?)	p.(Tyr1397*)	c.4284C>G	p.(Tyr1428*)	DYSF_00328	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+39	NM_003494.3:c.4192_4193insC	g.71839795_71839796insC	2	insC		71839795_71839796	-	r.(?)	p.(Cys1398Serfs*11)	c.4285_4286insC	p.(Cys1429Serfs*11)	DYSF_00295	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+39	NM_003494.3:c.4194C>A	g.71839797C>A	2	C	A	71839797	-	r.(?)	p.(Cys1398*)	c.4287C>A	p.(Cys1429*)	DYSF_00203	-	germline (inherited)	16100712;17994539	DNA	SEQ	-	-								
+39	NM_003494.3:c.4200delC	g.71839803delC	2	delC		71839803	-	r.(?)	p.(Ile1401Serfs*47)	c.4293delC	p.(Ile1432Serfs*47)	DYSF_00399	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+39	NM_003494.3:c.4200dup	g.71839803dup	2	dup		71839803	4200dupC	r.(?)	p.(Ile1401Hisfs*8)	-	-	DYSF_00528	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+39	NM_003494.3:c.4200dupC	g.71839803dup	2	dup		71839803	-	r.(?)	p.(Ile1401Hisfs*8)	c.4293dupC	p.(Ile1432Hisfs*8)	DYSF_00065	-	germline (inherited)	Rao	 Am.J.Hum.Genet. 71: S427	DNA	SEQ	-	-							
+39	NM_003494.3:c.4201dupA	g.71839804dup	2	dup		71839804	-	r.(?)	p.(Ile1401Asnfs*8)	c.4294dupA	p.(Ile1432Asnfs*8)	DYSF_00226	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+39	NM_003494.3:c.4253G>A	g.71839856G>A	2	G	A	71839856	-	r.(?)	p.(Gly1418Asp)	c.4346G>A	p.(Gly1449Asp)	DYSF_00288	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+39	NM_003494.3:c.4323G>A	g.71839926G>A	2	G	A	71839926	-	r.(=)	p.(=)	c.4416G>A	p.(=)	DYSF_00400	pathogenicity excluded through F1-25-1-1	 UMD-Predictor score 29 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-							
+40	NM_003494.3:c.4390G>T	g.71840520G>T	2	G	T	71840520	-	r.4390c>u	p.Glu1443*	c.4483G>T	p.Glu1474*	DYSF_00267	-	germline (inherited)	16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+40i	NM_003494.3:c.4410+13T>G	g.71840553T>G	2	T	G	71840553	-	r.(?)	p.(=)	c.4503+13T>G	p.(=)	DYSF_00050	-	germline (inherited)	-	DNA	SSCA	21/100	-								
+40i	NM_003494.3:c.4411-14413G>A	g.71856682G>A	2	G	A	71856682	-	r.(?)	p.(=)	c.4504-14413G>A	p.(=)	DYSF_00089	-	germline (inherited)	dbSNP-rs227771	DNA	SEQ	0.25	-								
+40i	NM_003494.3:c.4411-10202C>T	g.71860893C>T	2	C	T	71860893	-	r.(?)	p.(=)	c.4504-10202C>T	p.(=)	DYSF_00090	-	germline (inherited)	dbSNP-rs847622	DNA	SEQ	0.52	-								
+40i	NM_003494.3:c.4411-4253A>G	g.71866842A>G	2	A	G	71866842	-	r.(?)	p.(=)	c.4504-4253A>G	p.(=)	DYSF_00091	-	germline (inherited)	dbSNP-rs227782	DNA	SEQ	0.63	-								
+40i	NM_003494.3:c.4411-56A>G	g.71871039A>G	2	A	G	71871039	-	r.(?)	p.(=)	c.4504-56A>G	p.(=)	DYSF_00092	-	germline (inherited)	dbSNP-rs84181	DNA	SEQ	0.72	-								
+40i	NM_003494.3:c.4411-27delA	g.71871068delA	2	delA		71871068	-	r.(=)	p.(=)	-	-	DYSF_00529	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+40i	NM_003494.3:c.4411-5C>G	g.71871090C>G	2	C	G	71871090	IVS40-5C>G	r.(spl?)	p.(fs*?)	c.4504-5C>G	p.(fs*?)	DYSF_00260	creates new splice acceptor site	germline (inherited)	18396043	DNA	SEQ	-	-								
+41	NM_003494.3:c.4433G>A	g.71871117G>A	2	G	A	71871117	-	r.(?)	p.(Trp1478*)	c.4589G>A	p.(Trp1530*)	DYSF_00401	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+41	NM_003494.3:c.4439A>C	g.71871123A>C	2	A	C	71871123	-	r.4439a>c	p.Lys1480Thr	c.4595A>C	p.Lys1532Thr	DYSF_00165	-	germline (inherited)	-	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+41	NM_003494.3:c.4497delT	g.71871181delT	2	delT		71871181	-	r.(?)	p.(Phe1499Leufs*4)	c.4653delT	p.(Phe1551Leufs*4)	DYSF_00133	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+41	NM_003494.3:c.4504C>T	g.71871188C>T	2	C	T	71871188	-	r.4504c>u	p.=	c.4660C>T	p.=	DYSF_00019	-	germline (inherited)	Mela	 ICHG2001 P1505 - {DB: ROMA}	DNA	 RNA	HD	 RT-PCR	 SEQ	-	-				
+41i	NM_003494.3:c.4509+40C>T	g.71871233C>T	2	C	T	71871233	-	r.(=)	p.(=)	c.4665+40C>T	p.(=)	DYSF_00402	-	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+41i	NM_003494.3:c.4509+43A>G	g.71871236A>G	2	A	G	71871236	-	r.(?)	p.(=)	c.4665+43A>G	p.(=)	DYSF_00093	-	germline (inherited)	dbSNP-rs84182	DNA	SEQ	0.18	-								
+41i	NM_003494.3:c.4509+3843C>T	g.71875036C>T	2	C	T	71875036	-	r.(?)	p.(=)	c.4665+3843C>T	p.(=)	DYSF_00094	-	germline (inherited)	dbSNP-rs227777	DNA	SEQ	0.75	-								
+41i	NM_003494.3:c.4509+5295C>A	g.71876488C>A	2	C	A	71876488	-	r.(?)	p.(=)	c.4665+5295C>A	p.(=)	DYSF_00095	-	germline (inherited)	dbSNP-rs227775	DNA	SEQ	0.68	-								
+41i	NM_003494.3:c.4509+5675A>G	g.71876868A>G	2	A	G	71876868	-	r.(?)	p.(=)	c.4665+5675A>G	p.(=)	DYSF_00096	-	germline (inherited)	dbSNP-rs3791822	DNA	SEQ	0.01	-								
+41i	NM_003494.3:c.4510-292A>G	g.71883000A>G	2	A	G	71883000	-	r.(?)	p.(=)	c.4666-292A>G	p.(=)	DYSF_00097	-	germline (inherited)	dbSNP-rs3749025	DNA	SEQ	0.04	-								
+42	NM_003494.3:c.4514A>G	g.71883296A>G	2	A	G	71883296	4887A>G	r.4514a>g	p.Tyr1505Cys	c.4670A>G	p.Tyr1557Cys	DYSF_00179	-	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+42	NM_003494.3:c.4577A>C	g.71883359A>C	2	A	C	71883359	-	r.(?)	p.(Lys1526Thr)	c.4733A>C	p.(Lys1578Thr)	DYSF_00329	not in 200 control alleles; UMD-Predictor score 80 (deleterious)	 together with clear pathogenic variant	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-						
+42	NM_003494.3:c.4585C>T	g.71883367C>T	2	C	T	71883367	-	r.(?)	p.(Arg1529Trp)	c.4741C>T	p.(Arg1581Trp)	DYSF_00351	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+42	NM_003494.3:c.4628G>A	g.71883410G>A	2	G	A	71883410	-	r.(?)	p.(Gly1543Asp)	c.4784G>A	p.(Gly1595Asp)	DYSF_00403	-	germline (inherited)	17698709;18853459	DNA	SEQ	-	-								
+42i	NM_003494.3:c.4639-38G>A	g.71885970G>A	2	G	A	71885970	-	r.(=)	p.(=)	c.4795-38G>A	p.(=)	DYSF_00404	-	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+43	NM_003494.3:c.4639G>C	g.71886008G>C	2	G	C	71886008	-	r.(spl?)	p.(Gly1547Arg)	c.4795G>C	p.(Gly1599Arg)	DYSF_00038	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+43	NM_003494.3:c.4640G>A	g.71886009G>A	2	G	A	71886009	-	r.(?)	p.(Gly1547Asp)	c.4796G>A	p.(Gly1599Asp)	DYSF_00159	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+43	NM_003494.3:c.4684dupA	g.71886053dup	2	dup		71886053	-	r.(?)	p.(Met1562Asnfs*39)	c.4840dupA	p.(Met1614Asnfs*39)	DYSF_00477	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+43	NM_003494.3:c.4685dupT	g.71886054dup	2	dup		71886054	-	r.(?)	p.(Met1562Ilefs*39)	c.4841dupT	p.(Met1614Ilefs*39)	DYSF_00478	-	germline (inherited)	20544924	DNA	SEQ	-	-								
+43	NM_003494.3:c.4720G>T	g.71886089G>T	2	G	T	71886089	-	r.(?)	p.(Gly1574*)	c.4876G>T	p.(Gly1626*)	DYSF_00141	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+43	NM_003494.3:c.4731G>A	g.71886100G>A	2	G	A	71886100	-	r.(?)	p.(=)	c.4887G>A	p.(=)	DYSF_00405	pathogenicity excluded through F1-155-1-2	 UMD-Predictor score 18 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-							
+43	NM_003494.3:c.4742G>A	g.71886111G>A	2	G	A	71886111	-	r.(?)	p.(Arg1581His)	c.4898G>A	p.(Arg1633His)	DYSF_00147	-	germline (inherited)	12796534	DNA	SEQ	2/100	-								
+43	NM_003494.3:c.4747T>G	g.71886116T>G	2	T	G	71886116	-	r.(?)	p.(Tyr1583Asp)	-	-	DYSF_00489	-	germline (inherited)	Nilsson & Tarnopolsky 201	 submitted	DNA	SEQ	-	-							
+43	NM_003494.3:c.4748_4750delinsT	g.71886117_71886119delinsT	2	delinsT		71886117_71886119	-	r.(?)	p.(Tyr1583Phefs*17)	c.4904_4906delinsT	p.(Tyr1635Phefs*17)	DYSF_00026	-	germline (inherited)	11468312;10496277	DNA	SEQ	 SSCA	-	-							
+43	NM_003494.3:c.4754_4765del	g.71886123_71886134del	2	del		71886123_71886134	-	r.(?)	p.(Val1585_Phe1588del)	c.4910_4921del	p.(Val1637_Phe1640del)	DYSF_00049	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+43	NM_003494.3:c.4756C>T	g.71886125C>T	2	C	T	71886125	-	r.(?)	p.(Arg1586*)	c.4912C>T	p.(Arg1638*)	DYSF_00027	-	germline (inherited)	11468312	DNA	SEQ	 SSCA	-	-							
+43	NM_003494.3:c.4794G>T	g.71886163G>T	2	G	T	71886163	-	r.spl?	p.(Lys1619Asn)	c.4950G>T	p.(Lys1671Asn)	DYSF_00170	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+43i	NM_003494.3:c.4795-630C>T	g.71887060C>T	2	C	T	71887060	-	r.(?)	p.(=)	c.4951-630C>T	p.(=)	DYSF_00098	-	germline (inherited)	dbSNP-rs982415	DNA	SEQ	0.83	-								
+43i	NM_003494.3:c.4795-1G>T	g.71887689G>T	2	G	T	71887689	-	r.spl	p.?	c.4951-1G>T	p.?	DYSF_00456	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+44	NM_003494.3:c.4820T>C	g.71887715T>C	2	T	C	71887715	-	r.(?)	p.(Ile1607Thr)	c.4976T>C	p.(Ile1659Thr)	DYSF_00059	-	germline (inherited)	12796534	DNA	SSCA	Feb-54	-								
+44	NM_003494.3:c.4867C>T	g.71887762C>T	2	C	T	71887762	-	r.(?)	p.(=)	c.5023C>T	p.(=)	DYSF_00407	pathogenicity excluded through F1-148-1-1	 UMD-Predictor score 23 (non-pathogenic)	germline (inherited)	18853459	DNA	SEQ	-	-							
+44	NM_003494.3:c.4872delG	g.71887767delG	2	delG		71887767	5245delG	r.(?)	p.(Glu1624Aspfs*10)	c.5028delG	p.(Glu1676Aspfs*10)	DYSF_00178	-	germline (inherited)	11053681	DNA	SEQ	 SSCA	-	-							
+44	NM_003494.3:c.4872_4876delinsCCCC	g.71887767_71887771delinsCCCC	2	delinsCCCC		71887767_71887771	-	r.(?)	p.(Glu1624Aspfs*10)	c.5028_5032delinsCCCC	p.(Glu1676Aspfs*10)	DYSF_00005	-	germline (inherited)	9731527	DNA	SEQ	 SSCA	-	BmyI-;AvaII+							
+44	NM_003494.3:c.4876delG	g.71887771delG	2	delG		71887771	-	r.(?)	p.(Val1626Tyrfs*8)	c.5032delG	p.(Val1678Tyrfs*8)	DYSF_00227	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+44	NM_003494.3:c.4883G>T	g.71887778G>T	2	G	T	71887778	-	r.(?)	p.(Gly1628Val)	c.5039G>T	p.(Gly1680Val)	DYSF_00479	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+44i	NM_003494.3:c.4886+1320A>G	g.71889101A>G	2	A	G	71889101	-	r.(?)	p.(=)	c.5042+1320A>G	p.(=)	DYSF_00099	-	germline (inherited)	dbSNP-rs3791825	DNA	SEQ	0.79	-								
+44i	NM_003494.3:c.4886+1375C>G	g.71889156C>G	2	C	G	71889156	-	r.(?)	p.(=)	c.5042+1375C>G	p.(=)	DYSF_00100	-	germline (inherited)	dbSNP-rs3791826	DNA	SEQ	0.78	-								
+44i	NM_003494.3:c.4887-1083C>G	g.71890315C>G	2	C	G	71890315	-	r.(?)	p.(=)	c.5043-1083C>G	p.(=)	DYSF_00101	-	germline (inherited)	dbSNP-rs3791827	DNA	SEQ	0.66	-								
+44i	NM_003494.3:c.4887-37C>T	g.71891361C>T	2	C	T	71891361	-	r.(?)	p.(=)	c.5043-37C>T	p.(=)	DYSF_00102	-	germline (inherited)	dbSNP-rs2303599	DNA	SEQ	0.63	-								
+45	NM_003494.3:c.4943A>G	g.71891454A>G	2	A	G	71891454	-	r.(?)	p.(Tyr1648Cys)	c.5099A>G	p.(Tyr1700Cys)	DYSF_00291	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+45	NM_003494.3:c.4968_4972dup	g.71891479_71891483dup	2	dup		71891479_71891483	-	r.(?)	p.(Lys1658Thrfs*66)	c.5124_6028dup	p.(Lys1710Thrfs*66)	DYSF_00480	-	germline (inherited)	19528035	DNA	SEQ	-	-								
+45	NM_003494.3:c.4969G>A	g.71891480G>A	2	G	A	71891480	-	r.4969g>a	p.Glu1657Lys	c.5125G>A	p.Glu1709Lys	DYSF_00300	not in 180 normal chromosomes	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+45	NM_003494.3:c.4985C>G	g.71891496C>G	2	C	G	71891496	5358C>G	r.4985c>g	p.Thr1662Arg	c.5141C>G	p.Thr1714Arg	DYSF_00175	not in 120 control chromosomes	germline (inherited)	15469449	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+45	NM_003494.3:c.5022delT	g.71891533delT	2	delT		71891533	-	r.5022del	p.Phe1674Leufs*48	c.5178delT	p.Phe1726Leufs*48	DYSF_00188	-	germline (inherited)	14673575	DNA	 RNA	SEQ	-	-							
+45	NM_003494.3:c.5033G>A	g.71891544G>A	2	G	A	71891544	-	r.(?)	p.(Cys1678Tyr)	c.5189G>A	p.(Cys1730Tyr)	DYSF_00352	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+45	NM_003494.3:c.5033G>C	g.71891544G>C	2	G	C	71891544	-	r.(?)	p.(Cys1678Ser)	c.5189G>C	p.(Cys1730Ser)	DYSF_00200	not in 200 control chromosomes	germline (inherited)	16100712;17994539	DNA	SEQ	-	-								
+45	NM_003494.3:c.5036G>A	g.71891547G>A	2	G	A	71891547	-	r.(?)	p.(Gly1679Glu)	c.5192G>A	p.(Gly1731Glu)	DYSF_00142	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+45_45i	NM_003494.3:c.5039_5057+4dup	g.71891550_71891572dup	2	dup		71891550_71891572	5038_5057+3dup	r.spl	p.?	c.5195_5213+4dup	p.?	DYSF_00006	-	germline (inherited)	09731527;11468312	DNA	SEQ	 SSCA	-	-							
+45i	NM_003494.3:c.5057+4_5057+6del	g.71891572_71891574del	2	del		71891572_71891574	IVS45+4_6delCGT	r.4979_5057del	p.Gly1660Alafs*36	c.5213+4_5213+6del	p.Gly1712Alafs*36	DYSF_00152	not in 200 control chromosomes	germline (inherited)	14678801;16100712;17994539	DNA	 RNA	RT-PCR	 SEQ	-	Csp6I-						
+45i	NM_003494.3:c.5057+5G>A	g.71891573G>A	2	G	A	71891573	IVS45+5G>A	r.[4979_5057del; 5057_5058ins5057+1_5057+109{5057+5g>a}]	p.fs*	c.5213+5G>A	p.fs*	DYSF_00013	mapped by linkage analysis	germline (inherited)	10766988	DNA	 RNA	RT-PCR	 SEQ	 SSCA	-	-					
+45i	NM_003494.3:c.5057+5G>T	g.71891573G>T	2	G	T	71891573	-	r.(spl?0	p.(?)	-	-	DYSF_00530	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+46	NM_003494.3:c.5066dupC	g.71892300dup	2	dup		71892300	5066_5067dupC	r.(?)	p.(Asn1690Glufs*21)	-	-	DYSF_00490	-	germline (inherited)	Nilsson & Tarnopolsky 201	 submitted	DNA	SEQ	-	-							
+46	NM_003494.3:c.5077C>T	g.71892311C>T	2	C	T	71892311	-	r.(?)	p.(Arg1693Trp)	c.5233C>T	p.(Arg1745Trp)	DYSF_00197	not in 200 control chromosomes	germline (inherited)	16100712	DNA	SEQ	-	-								
+46	NM_003494.3:c.5078G>A	g.71892312G>A	2	G	A	71892312	-	r.(?)	p.(Arg1693Gln)	c.5234G>A	p.(Arg1745Gln)	DYSF_00228	-	germline (inherited)	16010686;18853459	DNA	SEQ	-	-								
+46	NM_003494.3:c.5105T>C	g.71892339T>C	2	T	C	71892339	-	r.(?)	p.(Leu1702Pro)	c.5261T>C	p.(Leu1754Pro)	DYSF_00415	-	germline (inherited)	-	DNA	PCR	 SEQ	-	-							
+46	NM_003494.3:c.5149C>T	g.71892383C>T	2	C	T	71892383	-	r.(?)	p.(Arg1717Trp)	c.5305C>T	p.(Arg1769Trp)	DYSF_00258	-	germline (inherited)	-	DNA	SEQ	-	-								
+46	NM_003494.3:c.5194G>C	g.71892428G>C	2	G	C	71892428	-	r.(?)	p.(Glu1732Gln)	c.5350G>C	p.(Glu1784Gln)	DYSF_00292	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+46	NM_003494.3:c.5194G>T	g.71892428G>T	2	G	T	71892428	-	r.(?)	p.(Glu1732*)	c.5350G>T	p.(Glu1784*)	DYSF_00028	-	germline (inherited)	11468312	DNA	SEQ	 SSCA	-	-							
+46	NM_003494.3:c.5200G>T	g.71892434G>T	2	G	T	71892434	-	r.(spl?)	p.(Glu1734*)	c.5356G>T	p.(Glu1786*)	DYSF_00192	-	germline (inherited)	-	DNA	SEQ	-	-								
+46i	NM_003494.3:c.5200+1G>A	g.71892435G>A	2	G	A	71892435	IVS46+1G>A	r.spl	p.?	c.5356+1G>A	p.?	DYSF_00204	-	germline (inherited)	16100712;17994539	DNA	SEQ	-	-								
+46i	NM_003494.3:c.5201-37C>T	g.71894469C>T	2	C	T	71894469	-	r.(=)	p.(=)	-	-	DYSF_00531	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+47	NM_003494.3:c.5201A>G	g.71894506A>G	2	A	G	71894506	-	r.5201g>a	p.Glu1734Gly	c.5357A>G	p.Glu1786Gly	DYSF_00310	normal RNA levels	germline (inherited)	17287450	DNA	 RNA	RT-PCR	 SEQ	-	-						
+47	NM_003494.3:c.5243A>T	g.71894548A>T	2	A	T	71894548	-	r.(?)	p.(Glu1748Val)	c.5399A>T	p.(Glu1800Val)	DYSF_00229	UMD-Predictor score 88 (pathogenic)	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+47	NM_003494.3:c.5272C>T	g.71894577C>T	2	C	T	71894577	-	r.(?)	p.(Gln1758*)	c.5428C>T	p.(Gln1810*)	DYSF_00048	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+47	NM_003494.3:c.5289G>C	g.71894594G>C	2	G	C	71894594	-	r.(?)	p.(Glu1763Asp)	c.5445G>C	p.(Glu1815Asp)	DYSF_00481	not in 200 control chromosomes; reduced mRNA levels; MLPA negative	germline (inherited)	21658164	DNA	SEQ	-	-								
+47	NM_003494.3:c.5296G>A	g.71894601G>A	2	G	A	71894601	-	r.(?)	p.(Glu1766Lys)	-	-	DYSF_00532	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+47	NM_003494.3:c.5296G>T	g.71894601G>T	2	G	T	71894601	-	r.(?)	p.(Glu1766*)	c.5452G>T	p.(Glu1818*)	DYSF_00230	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+47	NM_003494.3:c.5302C>T	g.71894607C>T	2	C	T	71894607	-	r.5302c>u	p.Arg1768Trp	c.5458C>T	p.Arg1820Trp	DYSF_00126	-	germline (inherited)	16996541	DNA	 RNA	RT-PCR	 SEQ	-	-						
+47	NM_003494.3:c.5314_5318del	g.71894619_71894623del	2	del		71894619_71894623	-	r.(?)	p.(Ser1772Profs*54)	c.5470_5474del	p.(Ser1824Profs*54)	DYSF_00231	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+47i	NM_003494.3:c.5341-2A>C	g.71895882A>C	2	A	C	71895882	-	r.spl	p.?	-	-	DYSF_00533	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+47i	NM_003494.3:c.5341-1G>A	g.71895883G>A	2	G	A	71895883	-	r.spl	p.?	c.5497-1G>A	p.?	DYSF_00161	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+48	NM_003494.3:c.5429G>A	g.71895972G>A	2	G	A	71895972	5492G>A	r.[5341_5429del	 5341_5525del	 5341_5667del]	p.[Gly11781Valfs*17	 Gly1781Leufs*6	 Gly1781_Lys1889del]	c.5585G>A	p.[Gly11833Valfs*17	 Gly11833Leufs*6	 Gly11833_Lys1941del]	DYSF_00130	mRNA from peripheral blood/muscle; not in 240 control chromosomes	germline (inherited)	20535123	DNA	 RNA	SEQ	 RT-PCR	-	HphI-
+48i	NM_003494.3:c.5429+1G>T	g.71895973G>T	2	G	T	71895973	-	r.spl	p.?	-	-	DYSF_00534	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+48i	NM_003494.3:c.5430-2A>G	g.71896240A>G	2	A	G	71896240	-	r.spl	p.?	c.5586-2A>G	p.?	DYSF_00294	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+49	NM_003494.3:c.5441G>A	g.71896253G>A	2	G	A	71896253	-	r.(?)	p.(Arg1814His)	-	-	DYSF_00535	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+49	NM_003494.3:c.5444G>T	g.71896256G>T	2	G	T	71896256	-	r.(?)	p.(Cys1815Phe)	c.5600G>T	p.(Cys1867Phe)	DYSF_00483	-	germline (inherited)	20544924	DNA	SEQ	-	-								
+49	NM_003494.3:c.5497G>T	g.71896309G>T	2	G	T	71896309	-	r.(?)	p.(Glu1833*)	c.5653G>T	p.(Glu1885*)	DYSF_00009	-	germline (inherited)	09731526;11468312;10496277	DNA	SEQ	 SSCA	-	-							
+49	NM_003494.3:c.5509G>A	g.71896321G>A	2	G	A	71896321	-	r.(?)	p.(Asp1837Asn)	c.5665G>A	p.(Asp1889Asn)	DYSF_00014	-	germline (inherited)	{DB: NegrÃ£o}	DNA	SEQ	 SSCA	-	-							
+49	NM_003494.3:c.5525G>A	g.71896337G>A	2	G	A	71896337	G5898A	r.5525g>a	p.Gly1842Asp	c.5681G>A	p.Gly1894Asp	DYSF_00484	not in 100 control chromosomes	germline (inherited)	15116377	DNA	SEQ	-	-								
+49i	NM_003494.3:c.5525+1G>A	g.71896338G>A	2	G	A	71896338	-	r.spl	p.?	c.5681+1G>A	p.?	DYSF_00194	-	germline (inherited)	-	DNA	SEQ	-	-								
+49i	NM_003494.3:c.5525+3A>G	g.71896340A>G	2	A	G	71896340	IVS49+3A>G	r.5430_5525del	p.Arg1810_Gly1842delinsSer	c.5681+3A>G	p.Arg1862_Gly1894delinsSer	DYSF_00241	-	germline (inherited)	17070050	DNA	 RNA	RT-PCR	 SEQ	-	-						
+49i	NM_003494.3:c.5526-40delA	g.71896695delA	2	delA		71896695	-	r.(=)	p.(=)	-	-	DYSF_00536	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+49i	NM_003494.3:c.5526-1G>A	g.71896734G>A	2	G	A	71896734	-	r.spl	p.?	c.5682-1G>A	p.?	DYSF_00485	-	germline (inherited)	20544924	DNA	SEQ	-	-								
+50	NM_003494.3:c.5529G>A	g.71896738G>A	2	G	A	71896738	-	r.(?)	p.(Trp1843*)	c.5685G>A	p.(Trp1895*)	DYSF_00353	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+50	NM_003494.3:c.5570A>G	g.71896779A>G	2	A	G	71896779	-	r.(?)	p.(His1857Arg)	c.5726A>G	p.(His1909Arg)	DYSF_00011	-	germline (inherited)	09731526;11468312	DNA	SEQ	 SSCA	-	-							
+50	NM_003494.3:c.5572delT	g.71896781delT	2	delT		71896781	-	r.(?)	p.(Tyr1858Ilefs*108)	c.5728delT	p.(Tyr1910Ilefs*108)	DYSF_00047	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+50	NM_003494.3:c.5594delG	g.71896803delG	2	delG		71896803	-	r.(?)	p.(Gly1865Alafs*101)	c.5750delG	p.(Gly1917Alafs*101)	DYSF_00002	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+50	NM_003494.3:c.5601C>G	g.71896810C>G	2	C	G	71896810	-	r.(?)	p.(Phe1867Leu)	-	-	DYSF_00537	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+50	NM_003494.3:c.5612G>A	g.71896821G>A	2	G	A	71896821	5622T>C (error)	r.5612u>c	p.Phe1871Ser	c.5768G>A	p.Phe1923Ser	DYSF_00356	-	germline (inherited)	17897828	DNA	 RNA	RT-PCR	 SEQ	-	?						
+50	NM_003494.3:c.5626G>A	g.71896835G>A	2	G	A	71896835	-	r.(?)	p.(Asp1876Asn)	c.5782G>A	p.(Asp1928Asn)	DYSF_00015	-	germline (inherited)	{DB: NegrÃ£o}	DNA	SEQ	 SSCA	-	-							
+50i	NM_003494.3:c.5667+199A>G	g.71897075A>G	2	A	G	71897075	-	r.(?)	p.(=)	c.5823+199A>G	p.(=)	DYSF_00103	-	germline (inherited)	dbSNP-rs3791829	DNA	SEQ	0.73	-								
+50i	NM_003494.3:c.5667+1075G>A	g.71897951G>A	2	G	A	71897951	-	r.(?)	p.(=)	c.5823+1075G>A	p.(=)	DYSF_00104	-	germline (inherited)	dbSNP-rs3791830	DNA	SEQ	0.66	-								
+50i	NM_003494.3:c.5668-2222C>A	g.71899105C>A	2	C	A	71899105	-	r.(?)	p.(=)	c.5824-2222C>A	p.(=)	DYSF_00105	-	germline (inherited)	dbSNP-rs3791832	DNA	SEQ	0.66	-								
+50i	NM_003494.3:c.5668-2147C>T	g.71899180C>T	2	C	T	71899180	-	r.(?)	p.(=)	c.5824-2147C>T	p.(=)	DYSF_00106	-	germline (inherited)	dbSNP-rs3791833	DNA	SEQ	0.11	-								
+50i	NM_003494.3:c.5668-1881C>T	g.71899446C>T	2	C	T	71899446	-	r.(?)	p.(=)	c.5824-1881C>T	p.(=)	DYSF_00107	-	germline (inherited)	dbSNP-rs3791834	DNA	SEQ	0.04	-								
+50i	NM_003494.3:c.5668-1319C>T	g.71900008C>T	2	C	T	71900008	-	r.(?)	p.(=)	c.5824-1319C>T	p.(=)	DYSF_00108	-	germline (inherited)	dbSNP-rs3791836	DNA	SEQ	0.02	-								
+50i	NM_003494.3:c.5668-41C>T	g.71901286C>T	2	C	T	71901286	-	r.(=)	p.(=)	-	-	DYSF_00538	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+50i	NM_003494.3:c.5668-7G>A	g.71901320G>A	2	G	A	71901320	IVS50-7G>A	r.[=	 5667_5668ins5668-5_5668-1{5668-7g>a}]	p.Asp1890Valfs*78	c.5824-7G>A	p.Asp1942Valfs*78	DYSF_00199	-	germline (inherited)	16100712;17994539	DNA	 RNA	RT-PCR	 SEQ	-	-					
+51	NM_003494.3:c.5668G>A	g.71901327G>A	2	G	A	71901327	-	r.(?)	p.(Asp1890Asn)	-	-	DYSF_00539	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+51	NM_003494.3:c.5675delT	g.71901334delT	2	delT		71901334	-	r.(?)	p.(Phe1892Serfs*74)	c.5831delT	p.(Phe1944Serfs*74)	DYSF_00143	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+51	NM_003494.3:c.5692A>G	g.71901351A>G	2	A	G	71901351	-	r.(?)	p.(Thr1898Ala)	c.5848A>G	p.(Thr1950Ala)	DYSF_00162	-	germline (inherited)	Haldane	 MDC2004 (P03)	DNA	SEQ	 SSCA	-	-						
+51	NM_003494.3:c.5698_5699del	g.71901357_71901358del	2	del		71901357_71901358	6071delAG	r.(?)	p.(Ser1900Glnfs*14)	c.5854_5855del	p.(Ser1952Glnfs*14)	DYSF_00012	-	germline (inherited)	09731526;11468312;10496277	DNA	SEQ	 SSCA	-	-							
+51	NM_003494.3:c.5713C>T	g.71901372C>T	2	C	T	71901372	-	r.(?)	p.(Arg1905*)	c.5869C>T	p.(Arg1957*)	DYSF_00021	founder haplotype	germline (inherited)	16087766	DNA	SEQ	 SSCA	-	-							
+51	NM_003494.3:c.5739T>G	g.71901398T>G	2	T	G	71901398	-	r.(?)	p.(Asn1913Lys)	c.5895T>G	p.(Asn1965Lys)	DYSF_00244	-	germline (inherited)	-	DNA	HD	-	-								
+51	NM_003494.3:c.5765T>C	g.71901424T>C	2	T	C	71901424	T6138C	r.5765u>c	p.Leu1922Pro	c.5921T>C	p.Leu1974Pro	DYSF_00486	not in 100 control chromosomes	germline (inherited)	15116377	DNA	SEQ	-	-								
+51i	NM_003494.3:c.5767+1G>A	g.71901427G>A	2	G	A	71901427	IVS51+1G>A	r.spl	p.?	c.5923+1G>A	p.?	DYSF_00343	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+51i	NM_003494.3:c.5768-16T>C	g.71906171T>C	2	T	C	71906171	-	r.(?)	p.(=)	c.5924-16T>C	p.(=)	DYSF_00109	-	germline (inherited)	dbSNP-rs1863812	DNA	SEQ	0.71	-								
+51i_52i	NM_003494.3:c.5768-?_5946+?del	g.71906187_71906365del	2	del		71906187_71906365	5768_5946del	r.(del)	p.(Ser1924Glnfs*13)	c.5924-?_6009+?del	p.(fs*?)	DYSF_00367	-	germline (inherited)	19594366	DNA	MLPA	 SEQ	-	-							
+52	NM_003494.3:c.5782_5785dup	g.71906201_71906204dup	2	dup		71906201_71906204	-	r.(?)	p.(Leu1929Argfs*22)	c.5938_5841dup	p.(Leu1981Argfs*22)	DYSF_00138	-	germline (inherited)	12796534	DNA	SEQ	 SSCA	-	-							
+52	NM_003494.3:c.5805delA	g.71906224delA	2	delA		71906224	-	r.(?)	p.(Ala1936Profs*30)	c.5961delA	p.(Ala1988Profs*30)	DYSF_00330	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+52	NM_003494.3:c.5813_5821del	g.71906232_71906240del	2	del		71906232_71906240	-	r.(?)	p.(Thr1938_Lys1940del)	c.5969_5977del	p.(Thr1990_Lys1992del)	DYSF_00232	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+52	NM_003494.3:c.5813_5821dup	g.71906232_71906240dup	2	dup		71906232_71906240	-	r.5813_5821dup	p.Thr1938_Lys1940dup	c.5969_5977dup	p.Thr1990_Lys1992dup	DYSF_00235	not in 228 control chromosomes	germline (inherited)	-	DNA	 RNA	SEQ	-	-							
+52	NM_003494.3:c.5824T>G	g.71906243T>G	2	T	G	71906243	-	r.(?)	p.(Cys1942Gly)	c.5980T>G	p.(Cys1994Gly)	DYSF_00202	not in 200 control chromosomes	germline (inherited)	16100712	DNA	SEQ	-	-								
+52	NM_003494.3:c.5829C>A	g.71906248C>A	2	C	A	71906248	-	r.(?)	p.(=)	c.5985C>A	p.(=)	DYSF_00408	pathogenicity excluded through F1-49-1-2	germline (inherited)	18853459	DNA	SEQ	-	-								
+52	NM_003494.3:c.5836_5839del	g.71906255_71906258del	2	del		71906255_71906258	-	r.(?)	p.(Gln1946Trpfs*19)	c.5992_5995del	p.(Gln1998Trpfs*19)	DYSF_00068	-	germline (inherited)	Rao	 Am.J.Hum.Genet. 71: S427	DNA	SEQ	-	-							
+52	NM_003494.3:c.5859A>C	g.71906278A>C	2	A	C	71906278	-	r.5859a>c	p.=	c.6015A>C	p.=	DYSF_00020	-	germline (inherited)	Mela	 ICHG2001 P1505 - {DB: ROMA}	DNA	 RNA	RT-PCR	 HD	 SSCA	 SEQ	0.04	-			
+52	NM_003494.3:c.5871_5872del	g.71906290_71906291del	2	del		71906290_71906291	5869_5870delGT	r.(?)	p.(Ser1958Profs*3)	c.6027_6028del	p.(Ser2010Profs*3)	DYSF_00331	not in 200 control alleles	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+52	NM_003494.3:c.5884C>T	g.71906303C>T	2	C	T	71906303	-	r.(?)	p.(Gln1962*)	c.6040C>T	p.(Gln2014*)	DYSF_00476	-	germline (inherited)	20544924	DNA	SEQ	-	-								
+52	NM_003494.3:c.5899G>A	g.71906318G>A	2	G	A	71906318	-	r.(?)	p.(Gly1967Ser)	c.6055G>A	p.(Gly2019Ser)	DYSF_00332	not in 200 control alleles; UMD-Predictor score 63 (borderline)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+52	NM_003494.3:c.5903G>A	g.71906322G>A	2	G	A	71906322	-	r.(?)	p.(Trp1968*)	c.6059G>A	p.(Trp2020*)	DYSF_00233	-	germline (inherited)	16010686;17698709;18853459	DNA	SEQ	-	-								
+52	NM_003494.3:c.5908C>T	g.71906327C>T	2	C	T	71906327	-	r.(?)	p.(Pro1970Ser)	c.6064C>T	p.(Pro2022Ser)	DYSF_00333	not in 200 control alleles; UMD-Predictor score 76 (deleterious)	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+52i	NM_003494.3:c.5946+1G>A	g.71906366G>A	2	G	A	71906366	IVS52+1G>A	r.spl	p.?	c.6102+1G>A	p.?	DYSF_00008	-	germline (inherited)	09731526;11468312;10496277	DNA	SEQ	 SSCA	-	-							
+52i	NM_003494.3:c.5947-33G>A	g.71908098G>A	2	G	A	71908098	-	r.(=)	p.(=)	c.6103-33G>A	p.(=)	DYSF_00409	-	germline (inherited)	18853459	DNA	DHPLC	 SEQ	-	-							
+53	NM_003494.3:c.5945delC	g.71906364delC	2	delC		71906364	-	r.(?)	p.(Ala1982Glyfs*6)	c.6101delC	p.(Ala2034Glyfs*6)	DYSF_00249	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+53	NM_003494.3:c.5979dup	g.71908163dup	2	dup		71908163	5979dupA	r.(?)	p.(Glu1994Argfs*3)	-	-	DYSF_00540	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+53	NM_003494.3:c.5979dupA	g.71908163dup	2	dup		71908163	-	r.(?)	p.(Glu1994Argfs*3)	c.6135dupA	p.(Glu2046Argfs*3)	DYSF_00054	-	germline (inherited)	16010686	DNA	SEQ	-	-								
+53	NM_003494.3:c.5999G>A	g.71908183G>A	2	G	A	71908183	-	r.(?)	p.(Arg2000Gln)	c.6155G>A	p.(Arg2052Gln)	DYSF_00029	-	germline (inherited)	11468312	DNA	SEQ	 SSCA	-	-							
+53	NM_003494.3:c.6008G>A	g.71908192G>A	2	G	A	71908192	-	r.(?)	p.(Gly2003Asp)	-	-	DYSF_00541	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+53	NM_003494.3:c.6008G>T	g.71908192G>T	2	G	T	71908192	-	r.(?)	p.(Gly2003Val)	c.6164G>T	p.(Gly2055Val)	DYSF_00364	-	germline (inherited)	-	DNA	SEQ	-	-								
+53	NM_003494.3:c.6053C>A	g.71908237C>A	2	C	A	71908237	-	r.(?)	p.(Pro2018Gln)	-	-	DYSF_00542	Emory Genetics Lab	unknown	-	DNA	SEQ	-	-								
+53i	NM_003494.3:c.6057-83T>A	g.71909577T>A	2	T	A	71909577	-	r.(?)	p.(=)	c.6213-83T>A	p.(=)	DYSF_00110	-	germline (inherited)	dbSNP-rs3749027	DNA	SEQ	0.04	-								
+54	NM_003494.3:c.(6057delG)	g.71909660delG	2	delG		71909660	6429delG	r.6120del	p.Arg2019Sers*17	c.(6213delG)	p.Arg2071Sers*17	DYSF_00000	mapped by linkage; DNA variant not specifically reported (6056 or 6057delG)	germline (inherited)	16023782	RNA	RT-PCR	 SEQ	-	-							
+54	NM_003494.3:c.6063C>T	g.71909666C>T	2	C	T	71909666	-	r.(?)	p.(=)	c.6219C>T	p.(=)	DYSF_00148	-	germline (inherited)	12796534	DNA	SSCA	1/100	-								
+54	NM_003494.3:c.6119G>A	g.71909722G>A	2	G	A	71909722	-	r.(?)	p.(Trp2040*)	c.6275G>A	p.(Trp2092*)	DYSF_00256	-	germline (inherited)	-	DNA	SEQ	-	-								
+54	NM_003494.3:c.6124C>T	g.71909727C>T	2	C	T	71909727	-	r.(?)	p.(Arg2042Cys)	c.6280C>T	p.(Arg2094Cys)	DYSF_00004	-	germline (inherited)	18832576	DNA	DHPLC	 SEQ	-	-							
+54	NM_003494.3:c.6154_6165dup	g.71909757_71909768dup	2	dup		71909757_71909768	6166+12insATCCTCTTCATC	r.(?)	p.(Ile2052_Ile2055dup)	c.6310_6321dup	p.(Ile2104_Ile2107dup)	DYSF_00354	not in 320 control chromosomes	germline (inherited)	17994539	DNA	SEQ	-	-								
+54	NM_003494.3:c.6203C>T	g.71909806C>T	2	C	T	71909806	-	r.(spl?)	p.(Pro2068Leu)	c.6359C>T	p.(Pro2120Leu)	DYSF_00183	-	germline (inherited)	15477515	DNA	SEQ	-	BstNI+								
+54i_55	NM_003494.3:c.6204-?_*271+?del	g.71909807_71913893del	2	del		71909807_71913893	g.71	912	399_g.71	927	449 (GRCh37/hg19)	r.?	p.?	c.6360-?_*271+?del	p.?	DYSF_00455	-	germline (inherited)	-	DNA	arrayCGH	-	-				
+54i	NM_003494.3:c.6204+15C>T	g.71909822C>T	2	C	T	71909822	-	r.(?)	p.(=)	c.6360+15C>T	p.(=)	DYSF_00111	-	germline (inherited)	-	DNA	SEQ	16/148	-								
+55	NM_003494.3:c.6217A>G	g.71913596A>G	2	A	G	71913596	-	r.6217a>g	p.Met2073Val	c.6373A>G	p.Met2125Val	DYSF_00134	not in 400 control chromosomes	germline (inherited)	17129727;17828519	DNA	 RNA	RT-PCR	 SEQ	-	BstXI-						
+55	NM_003494.3:c.6241T>G	g.71913620T>G	2	T	G	71913620	6304T>G (*2102Glyext*33)	r.(?)	p.(*2081Glyext*33)	-	-	DYSF_00492	-	unknown	-	DNA	PCR	 SEQ	-	-							
+55	NM_003494.3:c.*53G>A	g.71913675G>A	2	G	A	71913675	-	r.(?)	p.(=)	c.*53G>A	p.(=)	DYSF_00123	-	germline (inherited)	-	DNA	SEQ	 SSCA	-	-							
+55	NM_003494.3:c.*95C>A	g.71913717C>A	2	C	A	71913717	-	r.(?)	p.(=)	c.*95C>A	p.(=)	DYSF_00072	-	germline (inherited)	dbSNP-rs1802426	DNA	SEQ	-	-								
+55	NM_003494.3:c.*107T>A	g.71913729T>A	2	T	A	71913729	-	r.*107u>a	p.=	c.*107T>A	p.=	DYSF_00237	not in 400 control chromosomes	germline (inherited)	16705711;17828519	DNA	 RNA	RT-PCR	 SEQ	-	-						
