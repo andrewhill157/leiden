@@ -24,7 +24,7 @@ class LeidenDatabase:
                 html = urllib.urlopen(self.__geneHomepageURL).read()
                 self.__geneHomepageSoup = BeautifulSoup(html)
             else:
-                print 'Specified gene not available in Leiden Database.'
+                raise Exception('Specified gene not available in Leiden Database.')
 
         """
         TODO document

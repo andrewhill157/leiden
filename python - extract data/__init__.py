@@ -1,26 +1,31 @@
 from extractData import *
+import sys
 
 # Constant for file type
-FILE_EXTENSION = 'txt'
+FILE_EXTENSION = '.txt'
 ROW_DELIMITER = '\n'
 COLUMN_DELIMITER = ','
 
-# define the gene you want to parse
-geneID = 'DYSF'
-refSeqID = 'NM_003494.3'
+# User passes the geneID and refSeqID they want to extract
+if len(sys.argv) is not 3:
+	raise Exception("Must use two input arguments")
+	
+geneID = str(sys.argv[1])
+refSeqID = str(sys.argv[2])
 
 database = LeidenDatabase(geneID, refSeqID)
-geneName = database.getGeneName()
-fileName = ".".join([geneName, FILE_EXTENSION])
+fileName = "".join([geneID, FILE_EXTENSION])
+mutalizerInputFile = "".join([geneID, "_MutalizerInput", FILE_EXTENSION]);
 
 # write table data to file in Unicode encoding (some characters are no ASCII encodable)
-with open(fileName, 'w') as f:
+with open(fileName, 'w') as f, open(mutalizerInputFile, 'w') as mutalizer:
 		entries = database.getTableData()
 		fileLines = []
 		headers = database.getTableHeaders()
 		fileLines.append(COLUMN_DELIMITER.join(headers))
                                  
 		for rows in entries:
-                    fileLines.append(COLUMN_DELIMITER.join(rows))
-                    
-                f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
+			fileLines.append(COLUMN_DELIMITER.join(rows))
+			f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
+			
+			mutalizer.write("".join([rows[1].encode("UTF-8"), "\n"]))
