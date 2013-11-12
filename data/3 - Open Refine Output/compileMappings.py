@@ -28,28 +28,67 @@ def combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile):
 
 		return combinedData
 
-def findStringIndex(headerEntries, columnLabel):
+"""
+Given a list of strings and a string to search for, returns the first index of the first element in the list that contains the search string.
+Note that the comparison is case sensitive and the element at a given index must only contain the search element, not exactly match the search element.
+@params stringList - list of strings
+@params searchString - a string to search for in elements of stringList
+@returns - index of the first instance of the search string in an element of the list. Returns -1 if the search string is not found.
+"""
+def findStringIndex(stringList, searchString):
 	i = 0
-	for entry in headerEntries:
-		if columnLabel in entry:
+	for entry in stringList:
+		if searchString in entry:
 			return i
 		else: 
 			i = i + 1
+	return -1
 
-
+"""
+Given a mapping of the form NC_######.#:g.<HVGS notation>, where NC_###### is the chromosome reference ID, 
+returns tha chromosome number from the mutation mapping. For example, calling on NC_000001.2:g.524264A>C 
+would return 1. 
+The mapping is assumed to be in valid HVGS notation.
+@params mapping - string with the mapping of a mutation in HVGS notation as shown above.
+@returns - chromosome number of the mutation as a string
+"""
 def getChromosomeNumber(mapping):
 	m = re.search('([0]+)([1-9][0-9])([.])', mapping)
 	print m.group(2)
 	return m.group(2)
 
+"""
+Given a mapping of the form NC_######.#:g.<HVGS notation>, where NC_###### is the chromosome reference ID, 
+returns tha coordinate from the mutation mapping. For example, calling on NC_0000001.2:g.524264A>C 
+would return 524264. 
+The mapping is assumed to be in valid HVGS notation.
+@params mapping - string with the mapping of a mutation in HVGS notation as shown above.
+@returns - coordinates of the mutation as a string
+"""
 def getCoordinates(mapping):
 	m = re.search('([g][.])([0-9]+)([_])?([0-9]+)', mapping)
 	return m.group(2)
 
+"""
+Given a mapping of the form NC_######.#:g.<HVGS notation>, where NC_###### is the chromosome reference ID, 
+returns tha REF (reference) base from the mutation mapping. For example, calling on NC_0000001:g.524264A>C 
+would return A. 
+The mapping is assumed to be in valid HVGS notation.
+@params mapping - string with the mapping of a mutation in HVGS notation as shown above.
+@returns - reference base of the mutation (base before the mutation) as a string
+"""
 def getRef(mapping):
 	m = re.search('([A-Z])([>])([A-Z])', mapping)
 	return m.group(1)
 
+"""
+Given a mapping of the form NC_######.#:g.<HVGS notation>, where NC_###### is the chromosome reference ID, 
+returns tha ALT (reference) base from the mutation mapping. For example, calling on NC_0000001:g.524264A>C 
+would return C. 
+The mapping is assumed to be in valid HVGS notation.
+@params mapping - string with the mapping of a mutation in HVGS notation as shown above.
+@returns - alternate base of the mutation (base after the mutation) as a string
+"""
 def getAlt(mapping):
 	m = re.search('([A-Z])([>])([A-Z])', mapping)
 	return m.group(3)
