@@ -114,7 +114,7 @@ for files in os.listdir(os.path.dirname(os.path.abspath(__file__))):
 
 		combinedData = combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile)
 		VCFData = convertToVCF(combinedData)
-		writeListOfListsToFile(VCFData, "_".join(["MAPPED", rawLeidenDataFile]))
+		writeListOfListsToFile(VCFData, "_".join([removeFileExtension(rawLeidenDataFile), "_MAPPED.txt"]))
 
 
 
