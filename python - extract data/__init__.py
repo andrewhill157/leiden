@@ -26,6 +26,5 @@ with open(fileName, 'w') as f, open(mutalizerInputFile, 'w') as mutalizer:
                                  
 		for rows in entries:
 			fileLines.append(COLUMN_DELIMITER.join(rows))
-			f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
-			
 			mutalizer.write("".join([rows[1].encode("UTF-8"), "\n"]))
+		f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
