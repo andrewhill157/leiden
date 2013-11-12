@@ -20,6 +20,7 @@ def combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile):
 		i = 0
 		for line in leidenData:
 			temp = line.split(",")
+
 			temp.insert(2, errors[i])
 			temp.insert(3, mappings[i])
 			combinedData.append(temp)
@@ -37,8 +38,9 @@ def findStringIndex(headerEntries, columnLabel):
 
 
 def getChromosomeNumber(mapping):
-	chromosomeNumberIndex = mapping.find(".") - 1
-	return mapping[chromosomeNumberIndex]
+	m = re.search('([0]+)([1-9][0-9])([.])', mapping)
+	print m.group(2)
+	return m.group(2)
 
 def getCoordinates(mapping):
 	m = re.search('([g][.])([0-9]+)([_])?([0-9]+)', mapping)
