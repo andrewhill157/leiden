@@ -141,18 +141,29 @@ def removeFileExtension(fileName):
 	extensionIndex = fileName.find(".")
 	return fileName[0:extensionIndex]
 
+def combineMappingData(rawLeidenDataFile)
+	try:
+		if ".txt" in files and "MutalizerOutput" not in files and "_MAPPED" not in files:
+			rawLeidenDataFile = files
+			
+			mutalyzerOutputFile = "".join([removeFileExtension(files), "_MutalizerOutput.txt"])
+
+			combinedData = combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile)
+			VCFData = convertToVCF(combinedData)
+			writeListOfListsToFile(VCFData, "_".join([removeFileExtension(rawLeidenDataFile), "_MAPPED.txt"]))
+	except: 
+		print ": ".join(["Error processing gene", files])
+				
+arguments = len(sys.argv)
+if arguments > 1:
+	for files in sys.argv[1:]:
+		combineMappingData(files)
+else:
+	for files in os.listdir(os.path.dirname(os.path.abspath(__file__))):
+		combineMappingData(files)
 
 
-for files in os.listdir(os.path.dirname(os.path.abspath(__file__))):
-	if ".txt" in files and "MutalizerOutput" not in files and "MAPPED_" not in files:
-		print files
-		rawLeidenDataFile = files
-		
-		mutalyzerOutputFile = "".join([removeFileExtension(files), "_MutalizerOutput.txt"])
 
-		combinedData = combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile)
-		VCFData = convertToVCF(combinedData)
-		writeListOfListsToFile(VCFData, "_".join([removeFileExtension(rawLeidenDataFile), "_MAPPED.txt"]))
 
 
 
