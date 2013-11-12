@@ -53,8 +53,7 @@ The mapping is assumed to be in valid HVGS notation.
 @returns - chromosome number of the mutation as a string
 """
 def getChromosomeNumber(mapping):
-	m = re.search('([0]+)([1-9][0-9])([.])', mapping)
-	print m.group(2)
+	m = re.search('([0]+)([1-9][0-9]?)([.])', mapping)
 	return m.group(2)
 
 """
@@ -66,7 +65,7 @@ The mapping is assumed to be in valid HVGS notation.
 @returns - coordinates of the mutation as a string
 """
 def getCoordinates(mapping):
-	m = re.search('([g][.])([0-9]+)([_])?([0-9]+)', mapping)
+	m = re.search('([g][.])([0-9]+[_]?[0-9]+)', mapping)
 	return m.group(2)
 
 """
