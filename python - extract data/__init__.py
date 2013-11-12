@@ -19,12 +19,12 @@ mutalizerInputFile = "".join([geneID, "_MutalizerInput", FILE_EXTENSION]);
 
 # write table data to file in Unicode encoding (some characters are no ASCII encodable)
 with open(fileName, 'w') as f, open(mutalizerInputFile, 'w') as mutalizer:
-		entries = database.getTableData()
-		fileLines = []
-		headers = database.getTableHeaders()
-		fileLines.append(COLUMN_DELIMITER.join(headers))
-                                 
-		for rows in entries:
-			fileLines.append(COLUMN_DELIMITER.join(rows))
-			mutalizer.write("".join([rows[1].encode("UTF-8"), "\n"]))
-		f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
+	entries = database.getTableData()
+	fileLines = []
+	headers = database.getTableHeaders()
+	fileLines.append(COLUMN_DELIMITER.join(headers))
+                             
+	for rows in entries:
+		fileLines.append(COLUMN_DELIMITER.join(rows))
+		mutalizer.write("".join([rows[1].encode("UTF-8"), "\n"]))
+	f.write(ROW_DELIMITER.join(fileLines).encode("UTF-8"))
