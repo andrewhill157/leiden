@@ -46,10 +46,13 @@ def saveGeneData(geneID):
 TODO document
 """
 arguments = len(sys.argv)
-if arguments > 2:
-	raise Exception("Must use two input arguments")
-elif arguments == 2:
-	saveGeneData(str(sys.argv[1]))
+if arguments > 1:
+	for gene in sys.argv[1:]:
+		try:
+			saveGeneData(gene)
+		except:
+			print ": ".join(["Error processing gene", gene])
+
 else: 
 	for gene in LeidenDatabase.getAvailableGenes():
 		try:
