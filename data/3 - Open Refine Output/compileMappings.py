@@ -2,8 +2,11 @@ import sys
 import re
 import os
 
-mappingColumnLabel = "Chromosomal Variant"
+mappingColumnLabel = "Chromosomal Variant" # TODO this may not be necessary
 
+"""
+TODO document
+"""
 def combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile):
 	with open(rawLeidenDataFile) as leidenData, open(mutalyzerOutputFile) as mutalyzerOutput:
 		errors = []
@@ -92,6 +95,9 @@ def getAlt(mapping):
 	m = re.search('([A-Z])([>])([A-Z])', mapping)
 	return m.group(3)
 
+"""
+TODO document
+"""
 def convertToVCF(combinedData):
 	mappingIndex = findStringIndex(combinedData[0], "Chromosomal Variant")
 	VCFMapping = []
@@ -130,18 +136,31 @@ def convertToVCF(combinedData):
 
 	return VCFMapping
 
-
+"""
+Writes a list of lists to a file with a specified file name. 
+Elements of listOfLists (lists themselves) are each written to their own line in the file with a tab character separating each entry.
+@params listOfLists - list whose elements are lists of data elements such as strings, ints, etc. 
+@params fileName - File name of the file to write listOfLists to. Must be a valid file name with extension.
+"""
 def writeListOfListsToFile(listOfLists, fileName):
 	with open(fileName, 'w') as f:
 		for lists in listOfLists:
 			f.write("\t".join(lists))
 
-
+"""
+Removes the file extension from a given file. 
+@params fileName - name of the file whose extension is to be removed. fileName may not contain any other "." characters other than that that
+preceeds the file extension. Files without extensions are returned unmodified.
+@returns fileName with no file extension ("." character is also removed). For example an input of myFile.txt would return a new string, myFile
+"""
 def removeFileExtension(fileName):
 	extensionIndex = fileName.find(".")
 	return fileName[0:extensionIndex]
 
-def combineMappingData(rawLeidenDataFile)
+"""
+TODO document
+"""
+def combineMappingData(rawLeidenDataFile):
 	try:
 		if ".txt" in files and "MutalizerOutput" not in files and "_MAPPED" not in files:
 			rawLeidenDataFile = files
@@ -153,7 +172,22 @@ def combineMappingData(rawLeidenDataFile)
 			writeListOfListsToFile(VCFData, "_".join([removeFileExtension(rawLeidenDataFile), "_MAPPED.txt"]))
 	except: 
 		print ": ".join(["Error processing gene", files])
-				
+
+"""
+This script can be called in two ways:
+
+1. Call with no arguments. This will combine and process all text files in the directory that do not contain _MAPPED.
+Note that this requires any number of text files with raw Leiden Database data along with a set of corresponding files with 
+_MutalizerOutput as a post-fix to the original file name. These corresponding files are the output of the Mutalyzer remapping tool, 
+and contain remapped coordinates for mutations (one per line). For example ACTA1.txt and ACTA1_MutalizerOutput are corresponding.
+The product of a this call is a file with combined and processed data with the same name as the original raw Leiden Database data
+file with a post-fix of _MAPPED (ATCA1_MAPPED.txt, for example).
+
+2. Call with arguments specifying the name of the raw Leiden Database files. Any number of files can be included in the list, each 
+separated by a space. For example, python compileMappings.py ACTA1.txt DYSF.txt, etc. The same requirements for corresponding file names
+and output file names still apply when using this method. This is useful for specifying specific files to operate on rather than an entire
+directory. 
+"""	
 arguments = len(sys.argv)
 if arguments > 1:
 	for files in sys.argv[1:]:
