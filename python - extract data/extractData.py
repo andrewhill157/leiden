@@ -11,18 +11,18 @@ class LeidenDatabase:
     """
     TODO - make own exception definition for gene not found in DB. Document.
     """
-    def __init__(self, geneID, refSeqID):
+    def __init__(self, geneID):
         if geneID in LeidenDatabase.getAvailableGenes():
-            self.__variantDatabaseURL = LeidenDatabase.__getVariantDatabaseURL(geneID)
-            self.__geneHomepageURL = LeidenDatabase.__getGeneHomepageURL(geneID)
-            
-            self.__refSeqID = refSeqID
-            
-            html = urllib.urlopen(self.__variantDatabaseURL).read()
-            self.__databaseSoup = BeautifulSoup(html)
+			self.__variantDatabaseURL = LeidenDatabase.__getVariantDatabaseURL(geneID)
+			self.__geneHomepageURL = LeidenDatabase.__getGeneHomepageURL(geneID)
 
-            html = urllib.urlopen(self.__geneHomepageURL).read()
-            self.__geneHomepageSoup = BeautifulSoup(html)
+			html = urllib.urlopen(self.__variantDatabaseURL).read()
+			self.__databaseSoup = BeautifulSoup(html)
+
+			html = urllib.urlopen(self.__geneHomepageURL).read()
+			self.__geneHomepageSoup = BeautifulSoup(html)
+
+			self.__refSeqID = self.getTranscriptRefSeqID()
         else:
             raise Exception('Specified gene not available in Leiden Database.')
 
@@ -38,7 +38,7 @@ class LeidenDatabase:
     """
     @staticmethod
     def __getGeneHomepageURL(geneID):
-        return "".join(['http://www.dmd.nl/nmdb2/variants.php?select_db=', geneID])
+        return "".join(['http://www.dmd.nl/nmdb2/home.php?select_db=', geneID])
     
     """
     Given a list of HTML formatted link tags as strings, extract relevant information and return a string containing the
@@ -119,13 +119,11 @@ class LeidenDatabase:
     TODO document
     """
     def getTranscriptRefSeqID(self):
-            entries = self.__geneHomepageSoup.find_all('td')
-            for tags in entries:
-                    if tags.find('a') is not None:
-                            if tags.a.has_attr('string'):
-                                    if 'NM_' in tags.a.string:
-                                            return tags.a.string
-            return 'None found'
+		entries = self.__geneHomepageSoup.find_all('a')
+		for tags in entries:
+			if "NM_" in tags.get_text():
+				return tags.get_text()
+		return 'None found'
             
     """
     TODO document
