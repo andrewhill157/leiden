@@ -20,16 +20,16 @@ class LeidenDatabase:
         @param geneID: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin, as specified on the Leiden Database homepage (linked above).
         """
         if geneID in LeidenDatabase.getAvailableGenes():
-			self.__variantDatabaseURL = LeidenDatabase.__getVariantDatabaseURL(geneID)
-			self.__geneHomepageURL = LeidenDatabase.__getGeneHomepageURL(geneID)
+            self.__variantDatabaseURL = LeidenDatabase.__getVariantDatabaseURL(geneID)
+            self.__geneHomepageURL = LeidenDatabase.__getGeneHomepageURL(geneID)
 
-			html = urllib.urlopen(self.__variantDatabaseURL).read()
-			self.__databaseSoup = BeautifulSoup(html)
+            html = urllib.urlopen(self.__variantDatabaseURL).read()
+            self.__databaseSoup = BeautifulSoup(html)
 
-			html = urllib.urlopen(self.__geneHomepageURL).read()
-			self.__geneHomepageSoup = BeautifulSoup(html)
+            html = urllib.urlopen(self.__geneHomepageURL).read()
+            self.__geneHomepageSoup = BeautifulSoup(html)
 
-			self.__refSeqID = self.getTranscriptRefSeqID()
+            self.__refSeqID = self.getTranscriptRefSeqID()
         else:
             raise Exception('Specified gene not available in Leiden Database.')
 
@@ -70,7 +70,7 @@ class LeidenDatabase:
         """
         LINK_DELIMITER = ';'
         result = []
-        for links in linkHTML:	
+        for links in linkHTML:  
                 linkURL = links.get('href')
                 
                 # Only get the PUBMED ID for PUBMED links
@@ -103,7 +103,7 @@ class LeidenDatabase:
     @staticmethod
     def __removeTimesReported(hgvsNotation):
         """
-        If the variant enetry contains a (Reported N times) alongside the hgvs notation, returns a new string with this parenthetical removed.
+        If the variant entry contains a (Reported N times) alongside the hgvs notation, returns a new string with this parenthetical removed.
         @rtype: string
         @returns: hgvsMutation notation with instances of (Reported N times)  removed
         """
@@ -139,8 +139,8 @@ class LeidenDatabase:
         """
         entries = self.__geneHomepageSoup.find_all('a')
         for tags in entries:
-        	if "NM_" in tags.get_text():
-        		return tags.get_text()
+            if "NM_" in tags.get_text():
+                return tags.get_text()
         return ""
 
     def getTableHeaders(self):
