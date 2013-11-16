@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 import urllib
+import re
 
 class LeidenDatabase:
     """
-    TODO add documentation
+    Class providing functions to extract information about a variants listed under a specified gene on the Leiden Database (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db)).
     """
 
     __refSeqID = ""
@@ -14,7 +15,9 @@ class LeidenDatabase:
 
     def __init__(self, geneID):
         """
-        TODO add documentation
+        Initializes a LeidenDatabase object for the specified geneID.
+        Raises an exception if the specified geneID is not available in the Leiden Database (as listed in the dropdown at U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
+        @param geneID: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin, as specified on the Leiden Database homepage (linked above).
         """
         if geneID in LeidenDatabase.getAvailableGenes():
 			self.__variantDatabaseURL = LeidenDatabase.__getVariantDatabaseURL(geneID)
@@ -33,17 +36,24 @@ class LeidenDatabase:
     @staticmethod
     def __getVariantDatabaseURL(geneID):
         """
-        TODO add documentation
+        Constructs the URL linking to the table of variant entries for the specified geneID on the Leiden Database site.
+        @param geneID: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin, as specified on the Leiden Database homepage (linked above). \
+        The geneID is not checked against available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
+        @rtype: string
+        @returns: URL (contains http://) linking to the table of variant entries for the specified geneID on the Leiden Database site. The geneID is not checked against available genes \
+        on the Leiden Database, to the URL is not guaranteed to be valid.
         """
         return "".join(['http://www.dmd.nl/nmdb2/variants.php?select_db=', geneID, '&action=search_unique&order=Variant%2FDNA%2CASC&limit=1000'])
 
-    """
-    TODO document
-    """
     @staticmethod
     def __getGeneHomepageURL(geneID):
         """
-        TODO add documentation
+        Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
+        @param geneID: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin, as specified on the Leiden Database homepage (linked above). \
+        The geneID is not checked against available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
+        @rtype: string
+        @returns: URL linking to the homepage for the specified gene on the Leiden Database site. The geneID is not checked against available genes on the Leiden Database, to the URL is not guaranteed \
+        to be valid.
         """
         return "".join(['http://www.dmd.nl/nmdb2/home.php?select_db=', geneID])
     
@@ -83,32 +93,24 @@ class LeidenDatabase:
         """
         Given a URL to a publication listed at PUBMED, return a string containing the PUBMED ID of the publication.
         
-        @param linkURL: URL to the publication on PUBMED
+        @param linkURL: URL to the publication on PUBMED. Assumed to be a valid link to a paper on PUBMED with a PMID in the URL.
+        @rtype: string
+        @returns: PUBMED ID associated with linkURL (as specified by the 8 digit ID included in PUBMED URLs).
         """
-        temp = linkURL.rfind('/') # should use regex to make sure there are numbers after this
-        return linkURL[temp+1:]
+        m = re.search('([/])([0-9]+)', linkURL) 
+        return m.group(2) #return only the digits (PMID)
 
     @staticmethod
-    def __removeTimesReported(hvgsNotation):
+    def __removeTimesReported(hgvsNotation):
         """
-        TODO add documentation
+        If the variant enetry contains a (Reported N times) alongside the hgvs notation, returns a new string with this parenthetical removed.
+        @rtype: string
+        @returns: hgvsMutation notation with instances of (Reported N times)  removed
         """
-        if '(Reported' in hvgsNotation:
-                return hvgsNotation[0::hvgsNotation.find('(Reported') - 1]
+        if '(Reported' in hgvsNotation:
+                return hgvsNotation[0::hvgsNotation.find('(Reported') - 1]
         else:
-                return hvgsNotation
-
-    @staticmethod
-    def __isTranscriptRefSeqID(tag):
-        """
-        TODO add documentation
-        """
-        if tag.name is 'td':
-                print '1'
-                if tag.has_attr('a'):
-                        print '2'
-                        return 'NM_' in tag.a.string
-        return False
+                return hgvsNotation
 
     @staticmethod
     def getAvailableGenes():
@@ -131,17 +133,23 @@ class LeidenDatabase:
 
     def getTranscriptRefSeqID(self):
         """
-        TODO document
+        Returns the transcript refSeq ID (the cDNA transcript used a a coordinate reference denoted by NM_...) for the object's geneID.
+        @rtype: string
+        @returns: transcript refSeqID if found for the object's geneID. Returns an empty string if no refSeq ID is found.
         """
-		entries = self.__geneHomepageSoup.find_all('a')
-		for tags in entries:
-			if "NM_" in tags.get_text():
-				return tags.get_text()
-		return 'None found'
-            
+        entries = self.__geneHomepageSoup.find_all('a')
+        for tags in entries:
+        	if "NM_" in tags.get_text():
+        		return tags.get_text()
+        return ""
+
     def getTableHeaders(self):
         """
-        TODO add documentation
+        Returns the column labels from the table of variants in the Leiden Database variant listing for the object's geneID from left to right.
+        This is the first row in the table that contains the labels for entries in the rest of the table such as DNA change, RNA change, etc.
+        @rtype: list of strings
+        @returns: column labels from the table of variants in the Leiden Database variant listing for the object's geneID. Returned in left to right order as they \
+        appear on the Leiden Database. Empty list returned if no labels are found.
         """
         headers = self.__databaseSoup.find_all('th')
         result = []
