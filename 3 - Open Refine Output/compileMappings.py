@@ -1,13 +1,13 @@
 import sys
 import re
 import os
+import argparse
+import traceback
 
-mappingColumnLabel = "Chromosomal Variant" # TODO this may not be necessary
-
-"""
-TODO document
-"""
 def combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile):
+	"""
+	TODO document
+	"""
 	with open(rawLeidenDataFile) as leidenData, open(mutalyzerOutputFile) as mutalyzerOutput:
 		errors = []
 		mappings = []
@@ -166,7 +166,7 @@ def removeFileExtension(fileName):
 	@rtype: string
 	@returns: fileName with no file extension ("." character is also removed). For example an input of myFile.txt would return a new string, myFile
 	"""
-	return os.path.splitext(filename)[0]
+	return os.path.splitext(fileName)[0]
 
 
 def combineMappingData(rawLeidenDataFile):
@@ -182,30 +182,69 @@ def combineMappingData(rawLeidenDataFile):
 		combinedData = combineLeidenMutalyzer(rawLeidenDataFile, mutalyzerOutputFile)
 		VCFData = convertToVCF(combinedData)
 		writeListOfListsToFile(VCFData, "_".join([removeFileExtension(rawLeidenDataFile), "_MAPPED.txt"]))
-		
+
+def getFilesInCurrentDirectory():
+	"""
+	Returns a list of all files in the current directory (the directory the script is running in).
+	@rtype: list of strings
+	@returns: list of all files in the current directory (the directory the script is running in).
+	"""
+	return os.listdir(os.path.dirname(os.path.abspath(__file__)))
+
+def printErrors(args, fileName):
+	"""
+	Given the list of command line arguments passed to the script and a fileName, print error messages to the console.
+
+	@param args: a parser.parse_args() object from the argparse library. Assumed to contain an argument called debug to indicate verbosity of error messages. \
+	args.debug is true, full stack traces are printed for errors. A simple error message is printed otherwise.
+	@param fileName: a string with the fileName of the file that generated the error during processing.
+	"""	
+	if args.debug:
+		print "---> " + fileName + ": ERROR - NOT PROCESSED. STACK TRACE: "
+		tb = traceback.format_exc()
+		print tb
+	else:
+		print "---> " + fileName + ": ERROR - NOT PROCESSED. Use --debug option for more details."
+
 
 """
-This script can be called in two ways:
+Command line tool for extracting data from the leiden database.
+Execute script with -h option for details on arguments and description. 
+"""
+parser = argparse.ArgumentParser(description="Combines output from the Mutalyzer Batch Position Converter Tool and the original extracted data from the Leiden Database entry for a given gene. \
+	This produces a file in the called <geneID>_MAPPED, which contains the combined information of <geneID>.txt (original extracted Leiden Database data) and <geneID>_MutalizerOutput (contains the \
+		mutalizer output from all variants from the original Leiden Database. These two files are required and must be present in the same directory to run the script and must be named in this manner. \
+		 Note that the output file is also produced in this same directory. It is assumed that all variants from the original data are present in the both files.")
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-d", "--debug", action="store_true", help="When errors are encountered, a full stack traceback is printed.")
+group.add_argument("-a", "--all", action="store_true", help="All files with a .txt extension that do not contain MutalizerOutput or _MAPPED in the filename are processed.")
+parser.add_argument("fileNames", help="File name or multiple file names to compile. This should be a text file with the original extracted Leiden Database data (the file ACTA1.txt when calling \
+	python extractLeidenData.py ACTA1, for example)", nargs="*")
 
-1. Call with no arguments. This will combine and process all text files in the directory that do not contain _MAPPED.
-Note that this requires any number of text files with raw Leiden Database data along with a set of corresponding files with 
-_MutalizerOutput as a post-fix to the original file name. These corresponding files are the output of the Mutalyzer remapping tool, 
-and contain remapped coordinates for mutations (one per line). For example ACTA1.txt and ACTA1_MutalizerOutput are corresponding.
-The product of a this call is a file with combined and processed data with the same name as the original raw Leiden Database data
-file with a post-fix of _MAPPED (ATCA1_MAPPED.txt, for example).
+args = parser.parse_args()
 
-2. Call with arguments specifying the name of the raw Leiden Database files. Any number of files can be included in the list, each 
-separated by a space. For example, python compileMappings.py ACTA1.txt DYSF.txt, etc. The same requirements for corresponding file names
-and output file names still apply when using this method. This is useful for specifying specific files to operate on rather than an entire
-directory. 
-"""	
-arguments = len(sys.argv)
-if arguments > 1:
-	for files in sys.argv[1:]:
-		combineMappingData(files)
+# User has specified the aal option, process all files in the directory
+if args.all:
+	for files in getFilesInCurrentDirectory():
+		try:
+			combineMappingData(files)
+			print "---> " + files + ": COMPLETE"
+		except:
+			printErrors(args, files)
+
+# The user has not specified all, process their arguments
 else:
-	for files in os.listdir(os.path.dirname(os.path.abspath(__file__))):
-		combineMappingData(files)
+	# No arguments passed
+	if len(args.fileNames) == 0:
+		print "---> NO FILES PROCESSED: Must pass at least one file or use the --all option"
+	# Process each file the user passes as an argument
+	else:
+		for files in args.fileNames:
+			try:
+				combineMappingData(files)
+				print "---> " + files + ": COMPLETE"
+			except:
+				printErrors(args, files)
 
 
 
