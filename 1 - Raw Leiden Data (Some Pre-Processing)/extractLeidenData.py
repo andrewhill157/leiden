@@ -61,16 +61,16 @@ def save_gene_data(gene_id):
 
         for rows in entries:
             file_lines.append(column_delimiter.join(rows))
-            mutalizer.write("".join([rows[hgvs_mutation_column].encode("UTF-8"), "\n"]))
-        f.write(row_delimiter.join(file_lines).encode("UTF-8"))
+            mutalizer.write("".join([rows[hgvs_mutation_column], "\n"]))
+        f.write(row_delimiter.join(file_lines))
 
 
 def print_errors(commandline_args, gene_name):
     """
     Given the list of command line arguments passed to the script and a geneID, print error messages to the console.
 
-    @param commandline_args: a parser.parse_args() object from the argparse library. Assumed to contain an argument called
-    debug to indicate verbosity of error messages. args.debug is true, full stack traces are printed for errors.
+    @param commandline_args: a parser.parse_args() object from the argparse library. Assumed to contain an argument \
+    called debug to indicate verbosity of error messages. args.debug is true, full stack traces are printed for errors.\
     A simple error message is printed otherwise.
     @param gene_name: a string with the geneID of the gene that generated the error during processing.
     """

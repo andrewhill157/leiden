@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-import urllib
+import urllib.request
 import re
 
 
@@ -27,11 +27,12 @@ class LeidenDatabase:
             self.__variantDatabaseURL = LeidenDatabase.__get_variant_database_url(gene_id)
             self.__geneHomepageURL = LeidenDatabase.__get_gene_homepage_url(gene_id)
 
-            html = urllib.urlopen(self.__variantDatabaseURL).read()
-            self.__databaseSoup = BeautifulSoup(html)
-
-            html = urllib.urlopen(self.__geneHomepageURL).read()
-            self.__geneHomepageSoup = BeautifulSoup(html)
+            with urllib.request.urlopen(self.__variantDatabaseURL) as url:
+                html = url.read()
+                self.__databaseSoup = BeautifulSoup(html)
+            with urllib.request.urlopen(self.__geneHomepageURL) as url:
+                html = url.read()
+                self.__geneHomepageSoup = BeautifulSoup(html)
 
             self.__refSeqID = self.get_transcript_refseqid()
         else:
@@ -104,8 +105,9 @@ class LeidenDatabase:
         @rtype: string
         @return: PUBMED ID associated with link_url (as specified by the 8 digit ID included in PUBMED URLs).
         """
-        m = re.search('([/])([0-9]+)', link_url)
-        return m.group(2)  # return only the digits (PMID)
+        m = re.compile('\d{8}')
+        results = m.search(link_url)
+        return results.group()  # return only the digits (PMID)
 
     @staticmethod
     def __remove_times_reported(hgvs_notation):
@@ -132,9 +134,10 @@ class LeidenDatabase:
         """
         available_genes = []
         start_url = 'http://www.dmd.nl/nmdb2/home.php?action=switch_db'
-        url_text = urllib.urlopen(start_url).read()
-        url_soup = BeautifulSoup(url_text)
-        options = url_soup.find(id='SelectGeneDB').find_all('option')
+        with urllib.request.urlopen(start_url) as url:
+            url_text = url.read()
+            url_soup = BeautifulSoup(url_text)
+            options = url_soup.find(id='SelectGeneDB').find_all('option')
 
         for genes in options:
             available_genes.append(genes['value'])
