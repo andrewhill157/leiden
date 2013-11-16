@@ -92,26 +92,23 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
-if args.availableGenes:
-	print "---> IN PROGRESS..."
-	print  "\n".join(LeidenDatabase.getAvailableGenes())
+try: 
+	if args.availableGenes:
+		print "---> IN PROGRESS..."
+		print  "\n".join(LeidenDatabase.getAvailableGenes())
 
-elif not args.all:
-	for gene in args.geneID:
-		try:
+	elif not args.all:
+
+		for gene in args.geneID:
 			print "---> " + gene + ": IN PROGRESS..."
 			saveGeneData(gene)
 			print "---> " + gene + ": COMPLETE"
-		except:
-			printErrors(args, gene)
-
-else: 
-	for gene in LeidenDatabase.getAvailableGenes():
-		try:
+	else:
+		for gene in LeidenDatabase.getAvailableGenes():
 			print "---> " + gene + ": IN PROGRESS..."
 			saveGeneData(gene)
 			print "---> " + gene + ": COMPLETE"
-		except:
-			printErrors(args, gene)
+except:
+	printErrors(args, gene)
 		
 
