@@ -4,7 +4,7 @@ import argparse
 import traceback
 
 
-def combine_leiden_mutalyzer(raw_leiden_file, mutalyzer_output_file):
+def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     """
     TODO document
     """
@@ -110,7 +110,17 @@ def get_alt(mapping):
 
 def convert_to_vcf(combined_data):
     """
-    TODO document
+    Given the combined Leiden Data and Mutalyzer Output (remapped variants), convert the Chromosomal Variant column
+    to VCF format (Chromosome Number, Coordinate, Ref, Alt).
+    @param combined_data: combined Leiden and Mutalyzer output data as a list of lists, where each inner list contains \
+    data for a given row of the combined data table. Columns at the entries ordered left to right. The data must \
+    contain the column labels as the first inner list and it must contain a column named Chromosomal Variant.
+    @rtype: list of lists strings
+    @return: A new list with the Chromosomal Variant column split into four seperate columns. The first of these \
+    columns is in the original index of the Chromosomal Variant column in combined_data and the four inserted columns \
+    are CHROMOSOME NUMBER, COORDINATE, REF, and ALT from lowest to highest index. Currently, only SNPs are being \
+    processed, all other variant types are left unchanged. Variants with no remapped notation due to errors in \
+    remapping are returned unchanged. For unchanged entries, the inserted columns will contain an empty string.
     """
     mapping_index = find_string_index(combined_data[0], "Chromosomal Variant")
     vcf_mapping = []
@@ -174,7 +184,7 @@ def remove_file_extension(file_name):
     return os.path.splitext(file_name)[0]
 
 
-def combine_mapping_data(raw_leiden_data_file):
+def get_annotation_input(raw_leiden_data_file):
     """
     TODO document
     @param raw_leiden_data_file:
@@ -183,11 +193,10 @@ def combine_mapping_data(raw_leiden_data_file):
     if ".txt" in files and "MutalizerOutput" not in files and "_MAPPED" not in files:
         raw_leiden_data_file = files
 
-        mutalyzer_output_file = "".join([remove_file_extension(files), "_MutalizerOutput.txt"])
+        mutalyzer_output_file = remove_file_extension(files) + "_MutalizerOutput.txt"
 
-        combined_data = combine_leiden_mutalyzer(raw_leiden_data_file, mutalyzer_output_file)
-        vcf_data = convert_to_vcf(combined_data)
-        write_table_to_file(vcf_data, "_".join([remove_file_extension(raw_leiden_data_file), "_MAPPED.txt"]))
+        combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
+        return convert_to_vcf(combined_data)
 
 
 def list_file_in_directory():
@@ -242,7 +251,8 @@ args = parser.parse_args()
 if args.all:
     for files in list_file_in_directory():
         try:
-            combine_mapping_data(files)
+            annotation_input = get_annotation_input(files)
+            write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
             print("---> " + files + ": COMPLETE")
         except:
             print_errors(args, files)
@@ -256,7 +266,8 @@ else:
     else:
         for files in args.fileNames:
             try:
-                combine_mapping_data(files)
+                annotation_input = get_annotation_input(files)
+                write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
                 print("---> " + files + ": COMPLETE")
             except:
                 print_errors(args, files)
