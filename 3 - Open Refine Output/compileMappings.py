@@ -6,36 +6,17 @@ import traceback
 
 def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     """
-    Returns the combined data from the raw leiden data output file and the remapped mutalyzer output file for a given
-    gene.
-    @param raw_leiden_file: a text file containing the raw extracted Leiden Database data (as output by the \
-    extractLeidenData.py script. For example, ACTA1.txt as output by python extractLeidenData.py ACTA1.
-    @param mutalyzer_output_file: Mutalyzer batch position converter output text file from variant remapping \
-    (as obtained when submitting variants to Mutalyzer). For example, the resulting output file when submitting \
-    ACTA1_MutalizerInput.txt produced by python extractLeidenData.py ACTA1.
-    @rtype: list of lists of strings
-    @return: list of lists where each inner list is a row of the data combined from the raw_leiden_file and \
-    mutalyzer_output_file. The order of the columns matches the order of columns in raw_leiden_file from left to right.\
-    The two columns of data from mutalyzer_output file (Errors and Chromosomal Variant) are inserted at the as the \
-    second and third columns of the combined data respectively. The first inner list contains column labels for all \
-    columns in the combined data. The column labels from mutalyzer output are inserted in the same positions as their \
-    respective columns of data.
+    TODO document
     """
     with open(raw_leiden_file) as leidenData, open(mutalyzer_output_file) as mutalyzerOutput:
+        errors = []
+        mappings = []
 
-        # Identify the Errors and Chromosomal Variant columns in the Mutalyzer Output file
-        column_labels = mutalyzerOutput.readline().split("\t")
-        error_column = find_string_index(column_labels, "Errors")
-        variant_column = find_string_index(column_labels, "Chromosomal Variant")
-
-        errors = [column_labels[error_column]]
-        mappings = [column_labels[variant_column]]
-
-        # Store all entries in from the mutalyzer output
+        # Store all entries in from the mutalizer output
         for line in mutalyzerOutput:
             columns = line.split("\t")
-            errors.append(columns[error_column])
-            mappings.append(columns[variant_column])
+            errors.append(columns[1])
+            mappings.append(columns[2])
 
         # Insert the mutalyzer output into the data
         combined_data = []
@@ -208,14 +189,13 @@ def get_annotation_input(raw_leiden_data_file):
     TODO document
     @param raw_leiden_data_file:
     """
-
     # Do not want to process MutalizerOutput files of files that have already been combined (_MAPPED)
     if ".txt" in files and "MutalizerOutput" not in files and "_MAPPED" not in files:
         raw_leiden_data_file = files
 
         mutalyzer_output_file = remove_file_extension(files) + "_MutalizerOutput.txt"
-        combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
 
+        combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
         return convert_to_vcf(combined_data)
 
 
@@ -285,12 +265,9 @@ else:
     # Process each file the user passes as an argument
     else:
         for files in args.fileNames:
-            if ".txt" in files:
-                try:
-                    annotation_input = get_annotation_input(files)
-                    write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
-                    print("---> " + files + ": COMPLETE")
-                except:
-                    print_errors(args, files)
-            else:
-                print("---> " + files + ": ERROR - NOT PROCESSED. .txt extension must be included with file arguments.")
+            try:
+                annotation_input = get_annotation_input(files)
+                write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
+                print("---> " + files + ": COMPLETE")
+            except:
+                print_errors(args, files)
