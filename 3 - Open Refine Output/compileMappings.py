@@ -205,8 +205,19 @@ def remove_file_extension(file_name):
 
 def get_annotation_input(raw_leiden_data_file, mutalyzer_output_file):
     """
-    TODO document
-    @param raw_leiden_data_file:
+    Given a raw leiden database file and a mutalyzer output file, returns the data with remapped variants inserted
+    as new columns in the data in a VCF-like format (ERRORS, CHROMOSOME NUMBER, REF, and ALT are inserted columns).
+    Assumes that the two files have the same number of variants listed.
+    @param raw_leiden_data_file: path to .txt file with the raw leiden data output file (ACTA1.txt as output by python \
+    extractLeidenData.py ACTA1, for example).
+    @param mutalyzer_output_file: path to .txt file with the output from the mutalyzer remapping tool (output from \
+    Mutalyzer when submitting ACTA1_MutalizerInput.txt as produced by python extractLeidenData.py ACTA1, for example).
+    @rtype: list of lists of strings
+    @return: combined data from the two files with the remapped variants from mutalizer output files inserted under \
+    the column label Chromosomal Variant in addition to the 4 VCF format columns for given variants (ERRORS, \
+    CHROMOSOME NUMBER, REF, and ALT). All information from the raw_leiden_data_file is preserved. Inner lists of \
+    returned value are rows of the data and indices in the inner lists are column entries from left to right (in order \
+    of increasing index number).
     """
 
     # Do not want to process files with an _ in name (avoids trying to process _MAPPED and _MutalizerOutputFiles
