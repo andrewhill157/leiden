@@ -203,18 +203,15 @@ def remove_file_extension(file_name):
     return os.path.splitext(file_name)[0]
 
 
-def get_annotation_input(raw_leiden_data_file):
+def get_annotation_input(raw_leiden_data_file, mutalyzer_output_file):
     """
     TODO document
     @param raw_leiden_data_file:
     """
 
     # Do not want to process files with an _ in name (avoids trying to process _MAPPED and _MutalizerOutputFiles
-    if ".txt" in raw_leiden_data_file and "_" not in raw_leiden_data_file:
-        mutalyzer_output_file = remove_file_extension(raw_leiden_data_file) + "_MutalizerOutput.txt"
-        combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
-
-        return convert_to_vcf(combined_data)
+    combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
+    return convert_to_vcf(combined_data)
 
 
 def list_file_in_directory():
@@ -283,9 +280,9 @@ else:
     # Process each file the user passes as an argument
     else:
         for files in args.fileNames:
-            if ".txt" in files:
+            if ".txt" in files and not "_" in files:
                 try:
-                    annotation_input = get_annotation_input(files)
+                    annotation_input = get_annotation_input(files, remove_file_extension(files) + "_MutalizerOutput.txt")
                     write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
                     print("---> " + files + ": COMPLETE")
                 except:
