@@ -209,11 +209,9 @@ def get_annotation_input(raw_leiden_data_file):
     @param raw_leiden_data_file:
     """
 
-    # Do not want to process MutalizerOutput files of files that have already been combined (_MAPPED)
-    if ".txt" in files and "MutalizerOutput" not in files and "_MAPPED" not in files:
-        raw_leiden_data_file = files
-
-        mutalyzer_output_file = remove_file_extension(files) + "_MutalizerOutput.txt"
+    # Do not want to process files with an _ in name (avoids trying to process _MAPPED and _MutalizerOutputFiles
+    if ".txt" in raw_leiden_data_file and "_" not in raw_leiden_data_file:
+        mutalyzer_output_file = remove_file_extension(raw_leiden_data_file) + "_MutalizerOutput.txt"
         combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
 
         return convert_to_vcf(combined_data)
