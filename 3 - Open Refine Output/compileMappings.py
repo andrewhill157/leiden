@@ -260,6 +260,8 @@ original extracted data from the Leiden Database entry for a given gene. This pr
 <geneID>_MAPPED, which contains the combined information of <geneID>.txt (original extracted Leiden Database data) and \
 <geneID>_MutalizerOutput (contains the mutalizer output from all variants from the original Leiden Database. These two \
 files are required and must be present in the same directory to run the script and must be named in this manner. \
+It is assumed that there there are no other .txt files in the directory. All non .txt files are ignored and .txt files\
+with an '_' in the name (such as the file output by this script) are ignored. \
 Note that the output file is also produced in this same directory. It is assumed that all variants from the original \
 data are present in the both files.")
 group = parser.add_mutually_exclusive_group()
