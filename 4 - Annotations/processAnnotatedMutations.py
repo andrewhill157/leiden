@@ -3,14 +3,19 @@ import sys
 import glob
  
 def map_aa_codes(code):
+    """
+    TODO document
+    @param code:
+    @rtype: string
+    @return:
+    """
+
     # Mapping from three letter amino acid codes to one letter amino acid codes 
-    one_letter_aa_codes ={'VAL':'V', 'ILE':'I', 'LEU':'L', 'GLU':'E', 'GLN':'Q',
-    'ASP':'D', 'ASN':'N', 'HIS':'H', 'TRP':'W', 'PHE':'F', 'TYR':'Y',
-    'ARG':'R', 'LYS':'K', 'SER':'S', 'THR':'T', 'MET':'M', 'ALA':'A',
-    'GLY':'G', 'PRO':'P', 'CYS':'C'}
+    one_letter_aa_codes = dict(VAL='V', ILE='I', LEU='L', GLU='E', GLN='Q', ASP='D', ASN='N', HIS='H', TRP='W', PHE='F',
+                               TYR='Y', ARG='R', LYS='K', SER='S', THR='T', MET='M', ALA='A', GLY='G', PRO='P', CYS='C')
     
     # Mapping from one letter amino acid codes to three letter amino acid codes 
-    three_letter_aa_codes = dict([[v,k] for k,v in one_letter_aa_codes.items()])
+    three_letter_aa_codes = dict([[v,k] for k, v in one_letter_aa_codes.items()])
 
     if "*" in code:
         return code
@@ -23,23 +28,56 @@ def map_aa_codes(code):
         return "ERROR"
 
 def get_annotation_info(line):
+    """
+    TODO document
+    @param line:
+    @rtype: list of strings
+    @return:
+    """
+
     # Lines in original file are tab separated and info is in 8th column
     info_column = line.split("\t")[7]
     return info_column.split(";")
 
+
 def get_tagged_entry(annotation_info, tag):
+    """
+    TODO document
+    @param annotation_info:
+    @param tag:
+    @rtype: string
+    @return:
+    """
+
     for entry in annotation_info:
         if entry.startswith(tag):
             return remove_tag(entry, tag)
     return ""
-            
+
+
 def remove_tag(info_text, tag):
+    """
+    TODO document
+    @param: info_text
+    @param: tag
+    @rtype: string
+    @return:
+    """
+
     tag_length = len(tag)
     return info_text[tag_length:].strip()
 
+
 def remove_parentheses(annotation_text):
-    opening_parenthesis_index = annotation_text.find("(");
-    pdot_notation_index = annotation_text.find(".");
+    """
+    TODO document
+    @param annotation_text:
+    @rtype: string
+    @return:
+    """
+
+    opening_parenthesis_index = annotation_text.find("(")
+    pdot_notation_index = annotation_text.find(".")
     
     if opening_parenthesis_index > 0:
         closing_parenthesis_index = annotation_text.find(")")
@@ -50,6 +88,13 @@ def remove_parentheses(annotation_text):
 
         
 def get_laa_change(annotation_info):
+    """
+    TODO document
+    @param annotation_info:
+    @rtype: list of strings
+    @return:
+    """
+
     laa_change_tag = "LAA_CHANGE="
     raw_annotation = get_tagged_entry(annotation_info, laa_change_tag)
     
@@ -61,6 +106,13 @@ def get_laa_change(annotation_info):
                 
 
 def get_aa_change(annotation_info):
+    """
+    TODO document
+    @param annotation_info:
+    @rtype: list of strings
+    @return:
+    """
+
     aa_change_tag = "AA_CHANGE="
     raw_annotation = get_tagged_entry(annotation_info, aa_change_tag)
     raw_annotation = raw_annotation.split(",")
@@ -70,7 +122,15 @@ def get_aa_change(annotation_info):
             return change.split("/")
     return ""
 
+
 def is_concordant(laa_change, aa_change):
+    """
+    TODO document
+    @param laa_change:
+    @param aa_change:
+    @rtype: string
+    @return:
+    """
     try:
         if len(laa_change) is not 2 or len(aa_change) is not 2:
             return "ERROR"
@@ -84,12 +144,26 @@ def is_concordant(laa_change, aa_change):
     except: 
         return "ERROR"
 
+
 def get_severe_impact(annotation_info):
+    """
+    TODO document
+    @param annotation_info:
+    @rtype: string
+    @return
+    """
     severe_impact_flag = "SEVERE_IMPACT="
     return get_tagged_entry(annotation_info, severe_impact_flag)
 
 
 def get_allele_frequency(annotation_info):
+    """
+    TODO document
+    @param annotation_info:
+    @rtype:
+    @return:
+    """
+
     ac_flag = "AC_MAC26K="
     an_flag = "AN_MAC26K="
     
@@ -103,7 +177,13 @@ def get_allele_frequency(annotation_info):
         an = float(an)
         return (ac/an)*100
 
+
 def flag_annotation_file(annotation_file):
+    """
+    TODO document
+    @param annotation_file:
+    """
+
     # Do not process any flagged files in the directory
     if "FLAGGED_" not in annotation_file:
         results_file = "".join(["FLAGGED_", annotation_file])
