@@ -1,7 +1,8 @@
 import re
 import sys
 import glob
- 
+import argparse
+
 def map_aa_codes(code):
     """
     TODO document
@@ -99,7 +100,7 @@ def get_laa_change(annotation_info):
     raw_annotation = get_tagged_entry(annotation_info, laa_change_tag)
     
     if "-" in raw_annotation or "?" in raw_annotation or "=" in raw_annotation:
-        return "" # no change or unknown change in LAA
+        return ""  # no change or unknown change in LAA
     else:
         raw_annotation = remove_parentheses(raw_annotation);
         return re.split("[0-9]+", raw_annotation)
@@ -207,31 +208,31 @@ def flag_annotation_file(annotation_file):
                         if concordance == "OK":
                             flags.append("".join([concordance_flag, "CONCORDANT"]))
                         elif concordance == "FAIL":
-                            flags.append("".join([concordance_flag,"NOT_CONCORDANT"]))
+                            flags.append("".join([concordance_flag, "NOT_CONCORDANT"]))
                         elif concordance == "ERROR":
-                            flags.append("".join([concordance_flag,"ERROR"]))
+                            flags.append("".join([concordance_flag, "ERROR"]))
                     
                     # STEP 2 - Extract the SEVERE_IMPACT entry
                     severe_impact_flag = "SEVERE_IMPACT="
                     severe_impact = get_severe_impact(annotation_info)
-                    flags.append("".join([severe_impact_flag,severe_impact]))
+                    flags.append("".join([severe_impact_flag, severe_impact]))
                         
                     # STEP 3 - Check for overlap with HGMD
                     hgmd_flag = "HGMD="
                     if "HGMD_MUT" not in line:
-                        flags.append("".join([hgmd_flag,"NOT_IN_HGMD"]))
+                        flags.append("".join([hgmd_flag, "NOT_IN_HGMD"]))
                     else: 
-                        flags.append("".join([hgmd_flag,"OVERLAPS"]))
+                        flags.append("".join([hgmd_flag, "OVERLAPS"]))
                             
                     # Step 4 - Check for allele frequency information (above or below overall 0.5% frequency
                     allele_frequency_flag = "ALLELE_FREQUENCY="
                     allele_frequency = get_allele_frequency(annotation_info)
                     if allele_frequency == "":
-                        flags.append("".join([allele_frequency_flag,"NOT_IN_26K_DATABASE"]))
+                        flags.append("".join([allele_frequency_flag, "NOT_IN_26K_DATABASE"]))
                     elif allele_frequency > 0.5:
-                        flags.append("".join([allele_frequency_flag,"HIGH_FREQUENCY"]))
+                        flags.append("".join([allele_frequency_flag, "HIGH_FREQUENCY"]))
                     else: 
-                        flags.append("".join([allele_frequency_flag,"LOW_FREQUENCY"]))
+                        flags.append("".join([allele_frequency_flag, "LOW_FREQUENCY"]))
                         
                     # Write out lines to new file with [LIST_OF_FLAGS] inserted as the new first column
                     results.write(";".join(flags))
@@ -247,39 +248,46 @@ def flag_annotation_file(annotation_file):
                     results.write("".join([line[0], "FLAGS", "\t", line[1:]]))
         
 """
-This script can be called in two ways:
-    1. python processAnnotatedMutations.py myAnnotatedMutations.vcf myAnnotatedMutations2.vcf ...
-    2. python processAnnotatedMutations.py
-
-The first option will process all files specified as command line parameters. The second option will process all 
-.vcf files in the current directory (files with FLAGGED_ in the name will be ignored).
-
-The script will output files in the same directory as the script called FLAGGED_<original_file_name>.vcf
-For example, the command shown in number one above would produce files called FLAGGED_myAnnotatedMutations.vcf, etc.
-
-The output file will contain all header same information as the original file, except the column will now contain a semi-colon delimited list of 
-tags and corresponding values for each mutation: TAG1=VALUE;TAG2=VALUE;TAG3=VALUE... 
-Note that the original columns in the file will all be shifted right one column in the output.
-
-Tag and value definitions in resulting output file:
-CONCORDANCE=
-    - CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file match
-    - NOT_CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file do not match
-    - ERROR: There was an error processing the LAA_CHANGE and/or AA_CHANGE entry
-    - NO_AA_CHANGE: No amino acid change is predicted by the annotation
-
-SEVERE_IMPACT=
-    - The value of SEVERE_IMPACT in the original file is simply copied as the value of this tag for convenience
-
-HGMD=
-    - OVERLAPS - An HGMD_MUT entry is present in the original file
-    - NOT_IN_HGMD - No HGMD_MUT entry is present in the original file
-    
-ALLELE_FREQUENCY= 
-    - LOW_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is less than or equal to 0.5%
-    - HIGH_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is greater than 0.5%
-    - NOT_IN_26K_DATABASE: There were no AC_MAC26K or AN_MAC26K entries for this mutation
+BEGIN SCRIPT
 """
+
+parser = argparse.ArgumentParser(description="Given the VCF-like file output by annotation of variants, add a column \
+    of flags as the first column in the file to summarize information contained in the INFO column. \
+    The script will output files in the same directory as the script called <original_file_name>_FLAGGED.vcf \n\
+For example, the command shown in number one above would produce files called FLAGGED_myAnnotatedMutations.vcf, etc. \
+\n\
+The output file will contain all the same information as the original file, except the column will now contain a \
+semi-colon delimited list of tags and corresponding values for each mutation: TAG1=VALUE;TAG2=VALUE;TAG3=VALUE \
+Note that the original columns in the file will all be shifted right one column in the output.\
+Tag and value definitions in resulting output file: \n\
+CONCORDANCE= \n\
+    - CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file match \n\
+    - NOT_CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file do not match \n\
+    - ERROR: There was an error processing the LAA_CHANGE and/or AA_CHANGE entry \n\
+    - NO_AA_CHANGE: No amino acid change is predicted by the annotation \n\
+\n\
+SEVERE_IMPACT= \n\
+    - The value of SEVERE_IMPACT in the original file is simply copied as the value of this tag for convenience \n\
+\n\
+HGMD= \n\
+    - OVERLAPS - An HGMD_MUT entry is present in the original file \n\
+    - NOT_IN_HGMD - No HGMD_MUT entry is present in the original file \n\
+\n\
+ALLELE_FREQUENCY=  \n\
+    - LOW_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is less than or equal to 0.5% \n\
+    - HIGH_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is greater than 0.5% \n\
+    - NOT_IN_26K_DATABASE: There were no AC_MAC26K or AN_MAC26K entries for this mutation")
+
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-d", "--debug", action="store_true",
+                   help="When errors are encountered, a full stack traceback is printed.")
+group.add_argument("-a", "--all", action="store_true",
+                   help="Process all vcf files in the given directory. There can be no other types of VCF files in the \
+                   directory except those containing FLAGGED in the name, which are ignored.")
+parser.add_argument("file_name", help="File or files (including extension) to process.", nargs="*")
+
+args = parser.parse_args()
+
 arguments = len(sys.argv)
 if arguments > 1:
     for files in sys.argv[1:]:
