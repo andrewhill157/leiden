@@ -206,13 +206,13 @@ if arguments > 1:
         try:
             flag_annotation_file(files)
         except: 
-            print ": ".join(["Error Processing File", files])
+            print("Error Processing File: " + files)
 else:
     for files in glob.glob("*.vcf"):
         try:
             flag_annotation_file(files)
         except: 
-            print ": ".join(["Error Processing File", files])
+            print("Error Processing File: " + files)
     
 
 
