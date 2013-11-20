@@ -31,10 +31,10 @@ elif args.all:
     for gene in LeidenDatabase.get_available_genes():
         try:
             print("---> " + gene + ": IN PROGRESS...")
-            save_gene_data(gene)
+            LeidenDatabase.save_gene_data(gene)
             print("---> " + gene + ": COMPLETE")
         except:
-            print_errors(args, gene)
+            LeidenDatabase.print_errors(args, gene)
 
 # The user has not specified all, process their arguments
 else:
@@ -47,7 +47,7 @@ else:
         for gene in args.geneID:
             try:
                 print("---> " + gene + ": IN PROGRESS...")
-                save_gene_data(gene)
+                LeidenDatabase.save_gene_data(gene)
                 print("---> " + gene + ": COMPLETE")
             except:
-                print_errors(args, gene)
+                LeidenDatabase.print_errors(args, gene)
