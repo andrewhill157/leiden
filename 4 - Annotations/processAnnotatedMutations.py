@@ -2,6 +2,7 @@ import re
 import sys
 import glob
 import argparse
+import traceback
 
 def map_aa_codes(code):
     """
@@ -178,6 +179,14 @@ def get_allele_frequency(annotation_info):
         an = float(an)
         return (ac/an)*100
 
+def get_tagged_files(tag):
+    """
+    Returns a list of all .vcf files in the directory containing the specified substring, tag in the filename.
+    @param tag: a string which is present in the files you want to include in the returned list
+    @rtype: list of strings
+    @return: List of all files with a .vcf extension that tag as a substring in the filename.
+    """
+    return [x for x in glob.glob("*.vcf") if tag in x]
 
 def flag_annotation_file(annotation_file):
     """
@@ -185,68 +194,82 @@ def flag_annotation_file(annotation_file):
     @param annotation_file:
     """
 
-    # Do not process any flagged files in the directory
-    if "FLAGGED_" not in annotation_file:
-        results_file = "".join(["FLAGGED_", annotation_file])
+    results_file = "".join(["FLAGGED_", annotation_file])
 
-        with open(annotation_file) as entries, open(results_file, 'w') as results:
-            for line in entries:
-                # Only process flags for lines that are not header information
-                if "#" not in line:
-                    flags = []
-                    # STEP 1 - Check that LAA_CHANGE= and AA_CHANGE= entries are the same (that entries are concordant)
-                    annotation_info = get_annotation_info(line)
-                    laa_change = get_laa_change(annotation_info)
-                    aa_change = get_aa_change(annotation_info)
-                    
-                    concordance_flag = "CONCORDANCE="
-                    if laa_change is "" or aa_change is "":
-                        flags.append("".join([concordance_flag, "NO_AA_CHANGE"]))
-                        
-                    else:
-                        concordance = is_concordant(laa_change, aa_change)
-                        if concordance == "OK":
-                            flags.append("".join([concordance_flag, "CONCORDANT"]))
-                        elif concordance == "FAIL":
-                            flags.append("".join([concordance_flag, "NOT_CONCORDANT"]))
-                        elif concordance == "ERROR":
-                            flags.append("".join([concordance_flag, "ERROR"]))
-                    
-                    # STEP 2 - Extract the SEVERE_IMPACT entry
-                    severe_impact_flag = "SEVERE_IMPACT="
-                    severe_impact = get_severe_impact(annotation_info)
-                    flags.append("".join([severe_impact_flag, severe_impact]))
-                        
-                    # STEP 3 - Check for overlap with HGMD
-                    hgmd_flag = "HGMD="
-                    if "HGMD_MUT" not in line:
-                        flags.append("".join([hgmd_flag, "NOT_IN_HGMD"]))
-                    else: 
-                        flags.append("".join([hgmd_flag, "OVERLAPS"]))
-                            
-                    # Step 4 - Check for allele frequency information (above or below overall 0.5% frequency
-                    allele_frequency_flag = "ALLELE_FREQUENCY="
-                    allele_frequency = get_allele_frequency(annotation_info)
-                    if allele_frequency == "":
-                        flags.append("".join([allele_frequency_flag, "NOT_IN_26K_DATABASE"]))
-                    elif allele_frequency > 0.5:
-                        flags.append("".join([allele_frequency_flag, "HIGH_FREQUENCY"]))
-                    else: 
-                        flags.append("".join([allele_frequency_flag, "LOW_FREQUENCY"]))
-                        
-                    # Write out lines to new file with [LIST_OF_FLAGS] inserted as the new first column
-                    results.write(";".join(flags))
-                    results.write("\t")
-                    results.write(line)
-                
-                # Copy header data unchanged from original file
-                elif line.startswith("##"):
-                    results.write(line)
-                    
-                # Copy column labels with new column, FLAGS, inserted as label for first column
-                elif line.startswith("#"):
-                    results.write("".join([line[0], "FLAGS", "\t", line[1:]]))
-        
+    with open(annotation_file) as entries, open(results_file, 'w') as results:
+        for line in entries:
+            # Only process flags for lines that are not header information
+            if "#" not in line:
+                flags = []
+                # STEP 1 - Check that LAA_CHANGE= and AA_CHANGE= entries are the same (that entries are concordant)
+                annotation_info = get_annotation_info(line)
+                laa_change = get_laa_change(annotation_info)
+                aa_change = get_aa_change(annotation_info)
+
+                concordance_flag = "CONCORDANCE="
+                if laa_change is "" or aa_change is "":
+                    flags.append("".join([concordance_flag, "NO_AA_CHANGE"]))
+
+                else:
+                    concordance = is_concordant(laa_change, aa_change)
+                    if concordance == "OK":
+                        flags.append("".join([concordance_flag, "CONCORDANT"]))
+                    elif concordance == "FAIL":
+                        flags.append("".join([concordance_flag, "NOT_CONCORDANT"]))
+                    elif concordance == "ERROR":
+                        flags.append("".join([concordance_flag, "ERROR"]))
+
+                # STEP 2 - Extract the SEVERE_IMPACT entry
+                severe_impact_flag = "SEVERE_IMPACT="
+                severe_impact = get_severe_impact(annotation_info)
+                flags.append("".join([severe_impact_flag, severe_impact]))
+
+                # STEP 3 - Check for overlap with HGMD
+                hgmd_flag = "HGMD="
+                if "HGMD_MUT" not in line:
+                    flags.append("".join([hgmd_flag, "NOT_IN_HGMD"]))
+                else:
+                    flags.append("".join([hgmd_flag, "OVERLAPS"]))
+
+                # Step 4 - Check for allele frequency information (above or below overall 0.5% frequency
+                allele_frequency_flag = "ALLELE_FREQUENCY="
+                allele_frequency = get_allele_frequency(annotation_info)
+                if allele_frequency == "":
+                    flags.append("".join([allele_frequency_flag, "NOT_IN_26K_DATABASE"]))
+                elif allele_frequency > 0.5:
+                    flags.append("".join([allele_frequency_flag, "HIGH_FREQUENCY"]))
+                else:
+                    flags.append("".join([allele_frequency_flag, "LOW_FREQUENCY"]))
+
+                # Write out lines to new file with [LIST_OF_FLAGS] inserted as the new first column
+                results.write(";".join(flags))
+                results.write("\t")
+                results.write(line)
+
+            # Copy header data unchanged from original file
+            elif line.startswith("##"):
+                results.write(line)
+
+            # Copy column labels with new column, FLAGS, inserted as label for first column
+            elif line.startswith("#"):
+                results.write("".join([line[0], "FLAGS", "\t", line[1:]]))
+
+def print_errors(commandline_args, file_name):
+    """
+    Given the list of command line arguments passed to the script and a file_name, print error messages to the console.
+
+    @param commandline_args: a parser.parse_args() object from the argparse library. Assumed to contain an argument \
+    called debug to indicate verbosity of error messages. args.debug is true, full stack traces are printed for \
+    errors. A simple error message is printed otherwise.
+    @param file_name: a string with the file_name of the file that generated the error during processing.
+    """
+    if commandline_args.debug:
+        print("---> " + file_name + ": ERROR - NOT PROCESSED. STACK TRACE: ")
+        tb = traceback.format_exc()
+        print(tb)
+    else:
+        print("---> " + file_name + ": ERROR - NOT PROCESSED. Use --debug option for more details.")
+
 """
 BEGIN SCRIPT
 """
@@ -288,19 +311,20 @@ parser.add_argument("file_name", help="File or files (including extension) to pr
 
 args = parser.parse_args()
 
-arguments = len(sys.argv)
-if arguments > 1:
-    for files in sys.argv[1:]:
+if args.all:
+    for files in get_tagged_files("FINAL"):
         try:
             flag_annotation_file(files)
-        except: 
-            print("Error Processing File: " + files)
+            print("---> " + files + ": COMPLETE")
+        except:
+            print_errors(args, files)
 else:
-    for files in glob.glob("*.vcf"):
+    for files in args.file_name:
         try:
             flag_annotation_file(files)
+            print("---> " + files + ": COMPLETE")
         except: 
-            print("Error Processing File: " + files)
+            print_errors(args, files)
     
 
 
