@@ -1,6 +1,6 @@
 import unittest
 from unittest import TestCase
-import LeidenDatabase
+import Leiden
 
 
 __author__ = 'andrewhill'
@@ -8,8 +8,8 @@ __author__ = 'andrewhill'
 
 class TestLeidenDatabase(TestCase):
     def setUp(self):
-        self.database = LeidenDatabase.LeidenDatabase("ACTA1")
-        self.database2 = LeidenDatabase.LeidenDatabase("DYSF")
+        self.database = Leiden.LeidenDatabase("ACTA1")
+        self.database2 = Leiden.LeidenDatabase("DYSF")
 
     def test_get_transcript_refseqid(self):
         refseqid = self.database.get_transcript_refseqid()
