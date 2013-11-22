@@ -43,6 +43,10 @@ def save_gene_data(leiden_database, gene_id):
             mutalizer.write("".join([rows[hgvs_mutation_column], "\n"]))
         f.write(row_delimiter.join(file_lines))
 
+
+"""
+COMMAND LINE INTERFACE
+"""
 parser = argparse.ArgumentParser(description="Given a geneID, saves two files: <geneID>.txt and \
 <geneID>_MutalizerInput.txt. from the Leiden Database (http://www.dmd.nl/nmdb2/home.php?action=switch_db). \
 1. <geneID>.txt contains the extracted table data containing variants specific to the specified geneID in the Leiden \
@@ -54,9 +58,12 @@ can be directly input to the mutalyzer batch position converter tool by LOVD \
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-d", "--debug", action="store_true",
                    help="When errors are encountered, a full stack traceback is printed.")
-group.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
-group.add_argument("-a", "--all", action="store_true",
+
+group2 = parser.add_mutually_exclusive_group()
+group2.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
+group2.add_argument("-a", "--all", action="store_true",
                    help="Extract data for all available genes in the Leiden Database.")
+
 parser.add_argument("leidenURL", help="base URL of the particular Leiden database to be used. For example, the Leiden \
  muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to the homepage, \
  any .php page at the end of the URL will be ignored.")
