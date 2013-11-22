@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import urllib.request
 import re
+import traceback
 
 
 class LeidenDatabase:
@@ -8,23 +9,31 @@ class LeidenDatabase:
     Class providing functions to extract information about a variants listed under a specified gene on the Leiden
     Database (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db)).
     """
-
-    __refSeqID = ""
+    __leidenHomeURL = ''
+    __refSeqID = ''
     __variantDatabaseURL = ''
     __geneHomepageURL = ''
     __databaseSoup = ''
     __geneHomepageSoup = ''
 
-
-    def __init__(self, gene_id):
+    def __init__(self, leiden_url, gene_id):
         """
-        Initializes a Leiden object for the specified gene_id.
-        Raises an exception if the specified gene_id is not available in the Leiden Database (as listed in the drop-down
-        at U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
+        Initializes a Leiden object for the specified gene_id on the specified Leiden Database URL.
+        @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/home.php. This must be a valid URL to the homepage, which \
+        must contain a drop-down box used to select from each of the available genes in the database. home.php will \
+        be added to the URL if not includes.
         @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
         actin, as specified on the Leiden Database homepage (linked above).
+        @raise: exception if specified URL is invalid or does not contain a gene selection drop-down control or the \
+        requested gene is not a valid entry.
         """
         if gene_id in LeidenDatabase.get_available_genes():
+            if leiden_url.endswith('home.php'):
+                raise Exception('Invalid URL, must be link to home.php for specific database!')
+            else:
+                self.__leidenHomeURL = leiden_url
+
             self.__variantDatabaseURL = LeidenDatabase.__get_variant_database_url(gene_id)
             self.__geneHomepageURL = LeidenDatabase.__get_gene_homepage_url(gene_id)
 
@@ -39,9 +48,7 @@ class LeidenDatabase:
         else:
             raise Exception('Specified gene not available in Leiden Database.')
 
-
-    @staticmethod
-    def __get_variant_database_url(gene_id):
+    def __get_variant_database_url(self, gene_id):
         """
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
         @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
@@ -52,12 +59,10 @@ class LeidenDatabase:
         Leiden Database site. The gene_id is not checked against available genes on the Leiden Database, to the URL \
         is not guaranteed to be valid.
         """
-        return "".join(['http://www.dmd.nl/nmdb2/variants.php?select_db=', gene_id,
+        return "".join([self.__leidenHomeURL, '?select_db=', gene_id,
                         '&action=search_unique&order=Variant%2FDNA%2CASC&limit=1000'])
 
-
-    @staticmethod
-    def __get_gene_homepage_url(gene_id):
+    def __get_gene_homepage_url(self, gene_id):
         """
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
         @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for \
@@ -67,8 +72,7 @@ class LeidenDatabase:
         @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not \
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
-        return "".join(['http://www.dmd.nl/nmdb2/home.php?select_db=', gene_id])
-
+        return "".join([self.__leidenHomeURL, '?select_db=', gene_id])
 
     @staticmethod
     def __get_pmid(link_url):
@@ -84,7 +88,6 @@ class LeidenDatabase:
         results = m.search(link_url)
         return results.group()  # return only the digits (PMID)
 
-
     @staticmethod
     def __remove_times_reported(hgvs_notation):
         """
@@ -99,9 +102,7 @@ class LeidenDatabase:
         else:
             return hgvs_notation
 
-
-    @staticmethod
-    def get_available_genes():
+    def get_available_genes(self):
         """
         Returns a list of all genes available in the Leiden Databases (as shown in the drop-down box at
         http://www.dmd.nl/nmdb2/home.php?action=switch_db. The order and format of elements in the list matches the
@@ -110,7 +111,7 @@ class LeidenDatabase:
         @return: list of all genes available in the Leiden Database
         """
         available_genes = []
-        start_url = 'http://www.dmd.nl/nmdb2/home.php?action=switch_db'
+        start_url = "".join([self.__leidenHomeURL, '?action=switch_db'])
         with urllib.request.urlopen(start_url) as url:
             url_text = url.read()
             url_soup = BeautifulSoup(url_text)
@@ -119,7 +120,6 @@ class LeidenDatabase:
         for genes in options:
             available_genes.append(genes['value'])
         return available_genes
-
 
     @staticmethod
     def find_string_index(string_list, search_string):
@@ -141,7 +141,6 @@ class LeidenDatabase:
             else:
                 i += 1
         return -1
-
 
     @staticmethod
     def save_gene_data(gene_id):
@@ -177,13 +176,12 @@ class LeidenDatabase:
 
             file_lines.append(column_delimiter.join(headers))
 
-            hgvs_mutation_column = find_string_index(headers, u'DNA\xa0change')
+            hgvs_mutation_column = LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
 
             for rows in entries:
                 file_lines.append(column_delimiter.join(rows))
                 mutalizer.write("".join([rows[hgvs_mutation_column], "\n"]))
             f.write(row_delimiter.join(file_lines))
-
 
     @staticmethod
     def print_errors(commandline_args, gene_name):
@@ -230,7 +228,6 @@ class LeidenDatabase:
             else:
                 result.append(links.string)
         return link_delimiter.join(result)
-
 
     def get_transcript_refseqid(self):
         """

@@ -1,8 +1,7 @@
-data/4 - Annotations/FLAGGED_acta1_FINAL.vcf
-data/4 - Annotations/FLAGGED_dysf_FINAL.vcf
-
 *.vcf
 *.txt
 *.docx
+*.pptx
 .idea/
 .metadata/
+
