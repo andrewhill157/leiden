@@ -187,9 +187,13 @@ class LeidenDatabase:
         1. PUBMED links are converted to a PMID string
         2. OMIM links are ignored entirely
         3. Other links are returned as the full URL
+        4. Links with invalid HTML markup are replaced with INVALID_LINK_MARKUP
 
         @param link_html: a list of link tags with links to be included in result test. All tags must be in the \
         following format: <a href = "link_url"> linkText <\a> as a BeautifulSoup result object.
+        @rtype: list of strings
+        @return: list of strings for the each link included in the HTML, string included for each link adheres to the \
+         behavior listed above.
         """
         link_delimiter = ';'
         result = []

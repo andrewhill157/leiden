@@ -66,7 +66,7 @@ group2.add_argument("-a", "--all", action="store_true",
 
 parser.add_argument("leidenURL", help="base URL of the particular Leiden database to be used. For example, the Leiden \
  muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to the homepage, \
- any .php page at the end of the URL will be ignored.")
+ any .php page at the end of the URL will be ignored. URLs may not contain the & character in some command line shells")
 parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from the Leiden Database.", nargs="*")
 
 args = parser.parse_args()
