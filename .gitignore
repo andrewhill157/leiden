@@ -1,3 +1,4 @@
+*.pyc
 *.vcf
 *.txt
 *.docx

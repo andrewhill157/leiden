@@ -6,36 +6,48 @@ import traceback
 
 class LeidenDatabase:
     """
-    Class providing functions to extract information about a variants listed under a specified gene on the Leiden
-    Database (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db)).
+    Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD2
+    Leiden Database installation. For example, U(http://www.dmd.nl/nmdb2/home.php), is a particular installation for
+    variants in genes associated with Muscular Dystrophy. A list of all known installations of LOVD databases can be
+    found at U(http://www.lovd.nl/2.0/index_list.php).
     """
     __leidenHomeURL = ''
+    __geneID = ''
     __refSeqID = ''
     __variantDatabaseURL = ''
     __geneHomepageURL = ''
     __databaseSoup = ''
     __geneHomepageSoup = ''
 
-    def __init__(self, leiden_url, gene_id):
+    def __init__(self, leiden_url):
         """
-        Initializes a Leiden object for the specified gene_id on the specified Leiden Database URL.
+        Initializes a Leiden object for the specified Leiden Database URL.
         @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
-        dystrophy pages homepage is http://www.dmd.nl/nmdb2/home.php. This must be a valid URL to the homepage, which \
-        must contain a drop-down box used to select from each of the available genes in the database. home.php will \
-        be added to the URL if not includes.
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
+        """
+        # Validate and set URL for specified Leiden Database
+        if not leiden_url.lower().endswith('.php'):
+            self.__leidenHomeURL = leiden_url
+
+            if not leiden_url.lower().endswith('/'):
+                self.__leidenHomeURL = leiden_url + "/"
+        else:
+            php_page_index = leiden_url.rfind('/')
+            self.__leidenHomeURL = leiden_url[0:php_page_index+1]
+
+    def __set_gene_id(self, gene_id):
+        """
+        Sets which gene_id the object is associated with.
         @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
         actin, as specified on the Leiden Database homepage (linked above).
-        @raise: exception if specified URL is invalid or does not contain a gene selection drop-down control or the \
-        requested gene is not a valid entry.
+        @raise: exception if gene does not exist in the specified Leiden Database (if the name is not an option in the
+        gene selection drop-down, such as the one included at U(http://www.dmd.nl/nmdb2/home.php?)
         """
-        if gene_id in LeidenDatabase.get_available_genes():
-            if leiden_url.endswith('home.php'):
-                raise Exception('Invalid URL, must be link to home.php for specific database!')
-            else:
-                self.__leidenHomeURL = leiden_url
+        self.__geneID = gene_id
 
-            self.__variantDatabaseURL = LeidenDatabase.__get_variant_database_url(gene_id)
-            self.__geneHomepageURL = LeidenDatabase.__get_gene_homepage_url(gene_id)
+        if gene_id in self.get_available_genes():
+            self.__variantDatabaseURL = self.__get_variant_database_url(gene_id)
+            self.__geneHomepageURL = self.__get_gene_homepage_url(gene_id)
 
             with urllib.request.urlopen(self.__variantDatabaseURL) as url:
                 html = url.read()
@@ -44,7 +56,7 @@ class LeidenDatabase:
                 html = url.read()
                 self.__geneHomepageSoup = BeautifulSoup(html)
 
-            self.__refSeqID = self.get_transcript_refseqid()
+            self.__refSeqID = self.get_transcript_refseqid(gene_id)
         else:
             raise Exception('Specified gene not available in Leiden Database.')
 
@@ -59,8 +71,8 @@ class LeidenDatabase:
         Leiden Database site. The gene_id is not checked against available genes on the Leiden Database, to the URL \
         is not guaranteed to be valid.
         """
-        return "".join([self.__leidenHomeURL, '?select_db=', gene_id,
-                        '&action=search_unique&order=Variant%2FDNA%2CASC&limit=1000'])
+        return "".join([self.__leidenHomeURL, 'variants.php?action=search_unique&select_db=', gene_id,
+                        '&limit=1000'])
 
     def __get_gene_homepage_url(self, gene_id):
         """
@@ -72,7 +84,7 @@ class LeidenDatabase:
         @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not \
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
-        return "".join([self.__leidenHomeURL, '?select_db=', gene_id])
+        return "".join([self.__leidenHomeURL, 'home.php?select_db=', gene_id])
 
     @staticmethod
     def __get_pmid(link_url):
@@ -143,47 +155,6 @@ class LeidenDatabase:
         return -1
 
     @staticmethod
-    def save_gene_data(gene_id):
-        """
-        Given a gene_id, saves two files: <gene_id>.txt and <gene_id>_MutalizerInput.txt. from the Leiden Database
-        (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
-
-        1. <gene_id>.txt contains the extracted table data containing variants specific to the specified gene_id in the
-        Leiden Database. Each variant is on its own line and columns are separated by commas. Header labels are included as
-        the first line of the file.
-
-        2. <gene_id>_MutalizerInput.txt contains only the DNA Change column of <gene_id>.txt (one variant per line). This
-        file can be directly input to the mutalyzer batch position converter tool by LOVD
-        (U(https://mutalyzer.nl/batchPositionConverter))
-
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin,
-        as specified on the Leiden Database homepage (linked above).
-        """
-        # Constants for file delimiters
-        file_extension = '.txt'
-        row_delimiter = '\n'
-        column_delimiter = ','
-
-        database = LeidenDatabase(gene_id)
-        filename = "".join([gene_id, file_extension])
-        mutalizer_input_file = "".join([gene_id, "_MutalizerInput", file_extension])
-
-        # write table data to file in Unicode encoding (some characters are no ASCII encodable)
-        with open(filename, 'w') as f, open(mutalizer_input_file, 'w') as mutalizer:
-            entries = database.get_table_data()
-            file_lines = []
-            headers = database.get_table_headers()
-
-            file_lines.append(column_delimiter.join(headers))
-
-            hgvs_mutation_column = LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
-
-            for rows in entries:
-                file_lines.append(column_delimiter.join(rows))
-                mutalizer.write("".join([rows[hgvs_mutation_column], "\n"]))
-            f.write(row_delimiter.join(file_lines))
-
-    @staticmethod
     def print_errors(commandline_args, gene_name):
         """
         Given the list of command line arguments passed to the script and a geneID, print error messages to the console.
@@ -229,20 +200,24 @@ class LeidenDatabase:
                 result.append(links.string)
         return link_delimiter.join(result)
 
-    def get_transcript_refseqid(self):
+    def get_transcript_refseqid(self, gene_id):
         """
         Returns the transcript refSeq ID (the cDNA transcript used a a coordinate reference denoted by NM_...) for the
         object's geneID.
         @rtype: string
         @return: transcript refSeqID for the object's geneID. Returns an empty string if no refSeq ID is found.
         """
+        # Setup the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.__geneID:
+            self.__set_gene_id(gene_id)
+
         entries = self.__geneHomepageSoup.find_all('a')
         for tags in entries:
             if "NM_" in tags.get_text():
                 return tags.get_text()
         return ""
 
-    def get_table_headers(self):
+    def get_table_headers(self, gene_id):
         """
         Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
         geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
@@ -252,6 +227,11 @@ class LeidenDatabase:
         geneID. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no \
         labels are found.
         """
+
+        # Setup the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.__geneID:
+            self.__set_gene_id(gene_id)
+
         headers = self.__databaseSoup.find_all('th')
         result = []
         for entries in headers:
@@ -261,7 +241,7 @@ class LeidenDatabase:
                 result.append(h)
         return result
 
-    def get_table_data(self):
+    def get_table_data(self, gene_id):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
         its elements are the entries for each column within the respective row. The order of the sub-lists contained in
@@ -273,10 +253,25 @@ class LeidenDatabase:
         the list matches the order of rows within the table from top to bottom and columns from left to right as they \
         appear on the Leiden Database.
         """
-        table = self.__databaseSoup.find_all(onmouseout="this.className = '';")
+
+        # Setup the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.__geneID:
+            self.__set_gene_id(gene_id)
+
+        # id specific to data table in HTML (must be unicode due to underscore)
+        table_id = "".join([u'table', u'\u005F', u'data'])
+
+        # Extract the HTML specific to the table data
+        table = self.__databaseSoup.find_all(id=table_id)[0].find_all('tr')
+
+        # First row may contain a row of images for some reason. Filter out if present.
+        if table[0].find('img') is not None:
+            table = table[1:]
 
         row_entries = []
         for rows in table:
+            # Difficult to exclude column label images, as they are included as a table row with no identifier. They
+            # all contain images, while none of the data rows do. This allows column label row to be filtered out.
             entries = []
             for columns in rows.find_all('td'):
                 # If there are any links in the cell
@@ -288,11 +283,16 @@ class LeidenDatabase:
             row_entries.append(entries)
         return row_entries
 
-    def get_gene_name(self):
+    def get_gene_name(self, gene_id):
         """
         Returns the name of the gene name associated with the database as a string (as defined by the database HTML).
         @rtype: string
         @return: the full gene name of the gene associated as defined by the gene_name id in the Leiden Database HTML \
         (also included in the drop-down menu located: U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
         """
+
+        # Setup the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.__geneID:
+            self.__set_gene_id(gene_id)
+
         return self.__databaseSoup.find(id='gene_name').text.strip()
