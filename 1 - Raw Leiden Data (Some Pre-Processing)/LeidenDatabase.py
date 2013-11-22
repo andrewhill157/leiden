@@ -48,8 +48,10 @@ class LeidenDatabase:
         @raise: exception if gene does not exist in the specified Leiden Database (if the name is not an option in the
         gene selection drop-down, such as the one included at U(http://www.dmd.nl/nmdb2/home.php?)
         """
+
         self.__geneID = gene_id
 
+        # Check that the gene is present in the database
         if gene_id in self.get_available_genes():
             self.__variantDatabaseURL = self.__get_variant_database_url(gene_id)
             self.__geneHomepageURL = self.__get_gene_homepage_url(gene_id)
