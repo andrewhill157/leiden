@@ -204,10 +204,12 @@ class LeidenDatabase:
             elif 'omim' in link_url:
                 pass
             # Process HGVS notation
-            elif 'c.' in links.string:
+            elif links.string and 'c.' in links.string:
                 result.append("".join([self.__refSeqID, ':', LeidenDatabase.__remove_times_reported(links.string)]))
-            else:
+            elif links.string:
                 result.append(links.string)
+            else:
+                result.append("INVALID_LINK_MARKUP")
         return link_delimiter.join(result)
 
     def get_transcript_refseqid(self, gene_id):
