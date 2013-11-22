@@ -101,9 +101,12 @@ class LeidenDatabase:
         @param link_url: URL to the publication on PUBMED. Assumed to be a valid link to a paper on PUBMED with a PMID \
         in the URL.
         @rtype: string
-        @return: PUBMED ID associated with link_url (as specified by the 8 digit ID included in PUBMED URLs).
+        @return: PUBMED ID associated with link_url (as specified by the 8 digit ID included in PUBMED URLs). Assumes \
+        that PMIDs are at least 4 digits long.
         """
-        m = re.compile('\d{8}')
+
+        # Assume PMIDs are at least four digits long
+        m = re.compile('\d{4,}')
         results = m.search(link_url)
         return results.group()  # return only the digits (PMID)
 
