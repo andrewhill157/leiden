@@ -23,17 +23,22 @@ class LeidenDatabase:
         """
         Initializes a Leiden object for the specified Leiden Database URL.
         @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
-        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links \
+        to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored.
         """
         # Validate and set URL for specified Leiden Database
-        if not leiden_url.lower().endswith('.php'):
+        if not '.php' in leiden_url.lower():
             self.__leidenHomeURL = leiden_url
 
             if not leiden_url.lower().endswith('/'):
                 self.__leidenHomeURL = leiden_url + "/"
         else:
-            php_page_index = leiden_url.rfind('/')
-            self.__leidenHomeURL = leiden_url[0:php_page_index+1]
+            # Remove everything from <page>.php on from the URL to create valid base URL
+            m = re.compile('[a-z]+\.php')
+            result = m.search(leiden_url.lower())
+
+            if m is not None:
+                self.__leidenHomeURL = leiden_url[0:result.start(0)]
 
     def __set_gene_id(self, gene_id):
         """
