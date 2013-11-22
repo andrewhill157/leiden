@@ -73,7 +73,9 @@ if args.availableGenes:
 
 # User has specified the all option, so extract data from all genes available on the Leiden Database
 elif args.all:
+    print("---> LISTING AVAILABLE GENES: IN PROGRESS...")
     for gene in database.get_available_genes():
+        print("---> LISTING AVAILABLE GENES: COMPLETE")
         try:
             print("---> " + gene + ": IN PROGRESS...")
             save_gene_data(database, gene)
