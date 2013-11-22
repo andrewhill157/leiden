@@ -75,7 +75,6 @@ if args.availableGenes:
 elif args.all:
     print("---> LISTING AVAILABLE GENES: IN PROGRESS...")
     for gene in database.get_available_genes():
-        print("---> LISTING AVAILABLE GENES: COMPLETE")
         try:
             print("---> " + gene + ": IN PROGRESS...")
             save_gene_data(database, gene)
