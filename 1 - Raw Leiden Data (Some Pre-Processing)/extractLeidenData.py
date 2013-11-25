@@ -87,9 +87,9 @@ elif args.all:
             save_gene_data(database, gene)
             print("---> " + gene + ": COMPLETE")
         except:
-            LeidenDatabase.print_errors(args, gene)
+            print(database.get_errors(args))
 
-# The user has not specified all option, process their arguments
+# The user has not specified all option, process their list of arguments
 else:
     # No arguments passed
     if len(args.geneID) == 0:
@@ -103,4 +103,4 @@ else:
                 save_gene_data(database, gene)
                 print("---> " + gene + ": COMPLETE")
             except:
-                database.print_errors(args, gene)
+                print(database.get_errors(args))
