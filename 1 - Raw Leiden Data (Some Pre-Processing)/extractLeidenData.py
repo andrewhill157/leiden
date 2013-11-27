@@ -4,14 +4,14 @@ from LeidenDatabase import *
 
 def save_gene_data(leiden_database, gene_id):
     """
-    Given a gene_id and a valid Leiden Database URL, saves two files: <gene_id>.txt and <gene_id>_MutalizerInput.txt.
+    Given a gene_id and a valid Leiden Database URL, saves two files: <gene_id>.txt and <gene_id>_MutalyzerInput.txt.
     from the specified Leiden Database (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
 
     1. <gene_id>.txt contains the extracted table data containing variants specific to the specified gene_id in the
     Leiden Database. Each variant is on its own line and columns are separated by commas. Header labels are included as
     the first line of the file.
 
-    2. <gene_id>_MutalizerInput.txt contains only the DNA Change column of <gene_id>.txt (one variant per line). This
+    2. <gene_id>_MutalyzerInput.txt contains only the DNA Change column of <gene_id>.txt (one variant per line). This
     file can be directly input to the mutalyzer batch position converter tool by LOVD
     (U(https://mutalyzer.nl/batchPositionConverter))
 
@@ -26,10 +26,10 @@ def save_gene_data(leiden_database, gene_id):
     column_delimiter = '\t'
 
     filename = "".join([gene_id, file_extension])
-    mutalizer_input_file = "".join([gene_id, "_MutalizerInput", file_extension])
+    mutalyzer_input_file = "".join([gene_id, "_MutalyzerInput", file_extension])
 
     # write table data to file in Unicode encoding (some characters are no ASCII encodable)
-    with open(filename, 'w') as f, open(mutalizer_input_file, 'w') as mutalizer:
+    with open(filename, 'w') as f, open(mutalyzer_input_file, 'w') as mutalyzer:
         entries = leiden_database.get_table_data(gene_id)
         file_lines = []
         headers = leiden_database.get_table_headers(gene_id)
@@ -40,7 +40,7 @@ def save_gene_data(leiden_database, gene_id):
 
         for rows in entries:
             file_lines.append(column_delimiter.join(rows))
-            mutalizer.write("".join([rows[hgvs_mutation_column], "\n"]))
+            mutalyzer.write("".join([rows[hgvs_mutation_column], "\n"]))
         f.write(row_delimiter.join(file_lines))
 
 
@@ -48,11 +48,11 @@ def save_gene_data(leiden_database, gene_id):
 COMMAND LINE INTERFACE
 """
 parser = argparse.ArgumentParser(description="Given a geneID, saves two files: <geneID>.txt and \
-<geneID>_MutalizerInput.txt. from the Leiden Database (http://www.dmd.nl/nmdb2/home.php?action=switch_db). \
+<geneID>_MutalyzerInput.txt. from the Leiden Database (http://www.dmd.nl/nmdb2/home.php?action=switch_db). \
 1. <geneID>.txt contains the extracted table data containing variants specific to the specified geneID in the Leiden \
 Database. Each variant is on its own line and columns are separated by commas. Header labels are included as the first \
 line of the file.\
-2. <geneID>_MutalizerInput.txt contains only the DNA Change column of <geneID>.txt (one variant per line). This file \
+2. <geneID>_MutalyzerInput.txt contains only the DNA Change column of <geneID>.txt (one variant per line). This file \
 can be directly input to the mutalyzer batch position converter tool by LOVD \
 (https://mutalyzer.nl/batchPositionConverter)")
 group = parser.add_mutually_exclusive_group()

@@ -5,7 +5,7 @@ from MutalyzerProcessing import *
 parser = argparse.ArgumentParser(description="Combines output from the Mutalyzer Batch Position Converter Tool and the \
 original extracted data from the Leiden Database entry for a given gene. This produces a file in the called \
 <geneID>_MAPPED, which contains the combined information of <geneID>.txt (original extracted Leiden Database data) and \
-<geneID>_MutalizerOutput (contains the mutalizer output from all variants from the original Leiden Database. These two \
+<geneID>_MutalyzerOutput (contains the mutalyzer output from all variants from the original Leiden Database. These two \
 files are required and must be present in the same directory to run the script and must be named in this manner. \
 It is assumed that there there are no other .txt files in the directory. All non .txt files are ignored and .txt files\
 with an '_' in the name (such as the file output by this script) are ignored. \
@@ -15,14 +15,14 @@ group = parser.add_mutually_exclusive_group()
 group.add_argument("-d", "--debug", action="store_true", help="When errors are encountered, a full stack traceback is \
 printed.")
 group.add_argument("-a", "--all", action="store_true", help="All files with a .txt extension that do not contain \
-MutalizerOutput or _MAPPED in the filename are processed.")
+MutalyzerOutput or _MAPPED in the filename are processed.")
 parser.add_argument("fileNames", help="File name or multiple file names to compile. This should be a text file with \
 the original extracted Leiden Database data (the file ACTA1.txt when calling python extractLeidenData.py ACTA1, \
 for example)", nargs="*")
 
 args = parser.parse_args()
 
-# User has specified the aal option, process all files in the directory
+# User has specified the all option, process all files in the directory
 if args.all:
     for files in list_file_in_directory():
         try:
@@ -42,7 +42,7 @@ else:
         for files in args.fileNames:
             if ".txt" in files and not "_" in files:
                 try:
-                    annotation_input = get_annotation_input(files, remove_file_extension(files) + "_MutalizerOutput.txt")
+                    annotation_input = get_annotation_input(files, remove_file_extension(files) + "_MutalyzerOutput.txt")
                     write_table_to_file(annotation_input, remove_file_extension(files) + "_MAPPED.txt")
                     print("---> " + files + ": COMPLETE")
                 except:

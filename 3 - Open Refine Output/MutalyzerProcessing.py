@@ -11,7 +11,7 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     extractLeidenData.py script. For example, ACTA1.txt as output by python extractLeidenData.py ACTA1.
     @param mutalyzer_output_file: Mutalyzer batch position converter output text file from variant remapping \
     (as obtained when submitting variants to Mutalyzer). For example, the resulting output file when submitting \
-    ACTA1_MutalizerInput.txt produced by python extractLeidenData.py ACTA1.
+    ACTA1_MutalyzerInput.txt produced by python extractLeidenData.py ACTA1.
     @rtype: list of lists of strings
     @return: list of lists where each inner list is a row of the data combined from the raw_leiden_file and \
     mutalyzer_output_file. The order of the columns matches the order of columns in raw_leiden_file from left to right.\
@@ -21,10 +21,12 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     respective columns of data.
     """
     with open(raw_leiden_file) as leidenData, open(mutalyzer_output_file) as mutalyzerOutput:
+        # Files are tab delimited
         column_delimiter = "\t"
 
         # Identify the Errors and Chromosomal Variant columns in the Mutalyzer Output file
         column_labels = mutalyzerOutput.readline().split(column_delimiter)
+
         error_column = find_string_index(column_labels, "Errors")
         variant_column = find_string_index(column_labels, "Chromosomal Variant")
 
@@ -42,7 +44,6 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
         i = 0
         for line in leidenData:
             temp = line.split(column_delimiter)
-
             temp.insert(2, errors[i])
             temp.insert(3, mappings[i])
             combined_data.append(temp)
@@ -213,16 +214,16 @@ def get_annotation_input(raw_leiden_data_file, mutalyzer_output_file):
     @param raw_leiden_data_file: path to .txt file with the raw leiden data output file (ACTA1.txt as output by python \
     extractLeidenData.py ACTA1, for example).
     @param mutalyzer_output_file: path to .txt file with the output from the mutalyzer remapping tool (output from \
-    Mutalyzer when submitting ACTA1_MutalizerInput.txt as produced by python extractLeidenData.py ACTA1, for example).
+    Mutalyzer when submitting ACTA1_MutalyzerInput.txt as produced by python extractLeidenData.py ACTA1, for example).
     @rtype: list of lists of strings
-    @return: combined data from the two files with the remapped variants from mutalizer output files inserted under \
+    @return: combined data from the two files with the remapped variants from Mutalyzer output files inserted under \
     the column label Chromosomal Variant in addition to the 4 VCF format columns for given variants (ERRORS, \
     CHROMOSOME NUMBER, REF, and ALT). All information from the raw_leiden_data_file is preserved. Inner lists of \
     returned value are rows of the data and indices in the inner lists are column entries from left to right (in order \
     of increasing index number).
     """
 
-    # Do not want to process files with an _ in name (avoids trying to process _MAPPED and _MutalizerOutputFiles
+    # Do not want to process files with an _ in name (avoids trying to process _MAPPED and _MutalyzerOutputFiles
     combined_data = get_combined_data(raw_leiden_data_file, mutalyzer_output_file)
     return convert_to_vcf(combined_data)
 
