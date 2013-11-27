@@ -34,7 +34,10 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
         mappings = [column_labels[variant_column]]
 
         # Store all entries in from the mutalyzer output
+        mutalyzer_line_count = 0
         for line in mutalyzerOutput:
+            mutalyzer_line_count += 1  # track number of lines in file
+
             columns = line.split(column_delimiter)
             errors.append(columns[error_column])
             mappings.append(columns[variant_column])
@@ -43,11 +46,18 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
         combined_data = []
         i = 0
         for line in leidenData:
+            # Error checking for equal number of variants
+            if i > mutalyzer_line_count:
+                raise ValueError("Mutalyzer output file and Leiden Data file contain a different number of variants!")
             temp = line.split(column_delimiter)
             temp.insert(2, errors[i])
             temp.insert(3, mappings[i])
             combined_data.append(temp)
             i += 1
+            
+        # Error checking for equal number of variants
+        if i <= mutalyzer_line_count:
+            raise ValueError("Mutalyzer output file and Leiden Data file contain a different number of variants!")
 
         return combined_data
 
