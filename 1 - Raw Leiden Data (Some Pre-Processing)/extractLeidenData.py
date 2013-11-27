@@ -23,7 +23,7 @@ def save_gene_data(leiden_database, gene_id):
     # Constants for file delimiters
     file_extension = '.txt'
     row_delimiter = '\n'
-    column_delimiter = ','
+    column_delimiter = '\t'
 
     filename = "".join([gene_id, file_extension])
     mutalizer_input_file = "".join([gene_id, "_MutalizerInput", file_extension])

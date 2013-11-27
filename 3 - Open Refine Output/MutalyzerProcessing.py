@@ -21,9 +21,10 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     respective columns of data.
     """
     with open(raw_leiden_file) as leidenData, open(mutalyzer_output_file) as mutalyzerOutput:
+        column_delimiter = "\t"
 
         # Identify the Errors and Chromosomal Variant columns in the Mutalyzer Output file
-        column_labels = mutalyzerOutput.readline().split("\t")
+        column_labels = mutalyzerOutput.readline().split(column_delimiter)
         error_column = find_string_index(column_labels, "Errors")
         variant_column = find_string_index(column_labels, "Chromosomal Variant")
 
@@ -32,7 +33,7 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
 
         # Store all entries in from the mutalyzer output
         for line in mutalyzerOutput:
-            columns = line.split("\t")
+            columns = line.split(column_delimiter)
             errors.append(columns[error_column])
             mappings.append(columns[variant_column])
 
@@ -40,7 +41,7 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
         combined_data = []
         i = 0
         for line in leidenData:
-            temp = line.split(",")
+            temp = line.split(column_delimiter)
 
             temp.insert(2, errors[i])
             temp.insert(3, mappings[i])
@@ -187,8 +188,10 @@ def write_table_to_file(table, file_name):
     @param file_name: File name of the file to write table to. Must be a valid file name with extension.
     """
     with open(file_name, 'w') as f:
+        column_delimiter = "\t"
+
         for lists in table:
-            f.write("\t".join(lists))
+            f.write(column_delimiter.join(lists))
 
 
 def remove_file_extension(file_name):
