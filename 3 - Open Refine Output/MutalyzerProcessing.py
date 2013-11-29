@@ -19,6 +19,9 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
     second and third columns of the combined data respectively. The first inner list contains column labels for all \
     columns in the combined data. The column labels from mutalyzer output are inserted in the same positions as their \
     respective columns of data.
+    @raise: ValueError if Mutalyzer Output file and extracted Leiden Data file have a different number of lines \
+    (likely indicates that there are a different number of variants in each file - data files may have been from data \
+    extracted at different times when different numbers of variants were present in the database.
     """
     with open(raw_leiden_file) as leidenData, open(mutalyzer_output_file) as mutalyzerOutput:
         # Files are tab delimited
@@ -54,7 +57,7 @@ def get_combined_data(raw_leiden_file, mutalyzer_output_file):
             temp.insert(3, mappings[i])
             combined_data.append(temp)
             i += 1
-            
+
         # Error checking for equal number of variants
         if i <= mutalyzer_line_count:
             raise ValueError("Mutalyzer output file and Leiden Data file contain a different number of variants!")
