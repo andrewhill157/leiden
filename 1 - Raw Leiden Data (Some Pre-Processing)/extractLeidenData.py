@@ -62,7 +62,7 @@ group.add_argument("-d", "--debug", action="store_true",
 group2 = parser.add_mutually_exclusive_group()
 group2.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
 group2.add_argument("-a", "--all", action="store_true",
-                   help="Extract data for all available genes in the Leiden Database.")
+                    help="Extract data for all available genes in the Leiden Database.")
 
 parser.add_argument("leidenURL", help="base URL of the particular Leiden database to be used. For example, the Leiden \
  muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to the homepage, \

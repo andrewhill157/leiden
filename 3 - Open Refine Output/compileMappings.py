@@ -14,7 +14,9 @@ data are present in the both files.")
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-d", "--debug", action="store_true", help="When errors are encountered, a full stack traceback is \
 printed.")
-group.add_argument("-a", "--all", action="store_true", help="All files with a .txt extension that do not contain \
+
+group2 = parser.add_mutually_exclusive_group()
+group2.add_argument("-a", "--all", action="store_true", help="All files with a .txt extension that do not contain \
 MutalyzerOutput or _MAPPED in the filename are processed.")
 parser.add_argument("fileNames", help="File name or multiple file names to compile. This should be a text file with \
 the original extracted Leiden Database data (the file ACTA1.txt when calling python extractLeidenData.py ACTA1, \
