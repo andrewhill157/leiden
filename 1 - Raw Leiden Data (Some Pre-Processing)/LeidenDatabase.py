@@ -125,6 +125,24 @@ class LeidenDatabase:
         return results.group()  # return only the matched sequence of digits (PMID)
 
     @staticmethod
+    def __get_omimid(link_url):
+        """
+        Given a URL to an entry on OMIM, return a string containing the OMIM IDs for the entry.
+
+        @param link_url: URL to the entry on OMIM. Assumed to be a valid link to an entry on PUBMED. \
+        For example, U(http://www.omim.org/entry/102610#0003) is a valid link to an OMIM entry on the ACTA1 gene. \
+        The url must contain the gene ID and entry number in the URL separated by a hash mark (such as, 102610#0003 in \
+        the example URL.
+        @rtype: string
+        @return: OMIM entry associated with the URL. This consists of the gene ID (such as 102610 for ACTA1 and a \
+        specific entry number (0003) separated by a hash mark (102610#0003 in the example above).
+        """
+        # Search for sequences of digits that are four digits or longer in length.
+        m = re.compile('\d+#\d+')
+        results = m.search(link_url)
+        return results.group()  # return only the matched sequence of digits (PMID)
+
+    @staticmethod
     def __remove_times_reported(hgvs_notation):
         """
         If the variant entry contains (Reported N times) text alongside the HGVS variant description, returns a new \
@@ -221,8 +239,10 @@ class LeidenDatabase:
         Given a BeautifulSoup ResultSet object containing only link tags, return relevant information for the \
         given link type:
         1. PUBMED links are converted to a PMID string
-        2. OMIM links are ignored entirely
-        3. Other links are returned as the full URL
+        2. OMIM URLs are converted to string containing the gene ID and entry number (102610#0003 for entry 0003 in \
+        ACTA1 (102610), for example).
+        3. Other links are returned in the format [link_string]=link_url, such as [myurl]=http://www.myurl.com for a \
+        link to http://www.myurl.com with the link text myurl.
         4. Links with invalid HTML markup are replaced with INVALID_LINK_MARKUP
 
         @param link_html: a list of link tags with links to be included in return list. All tags must be in the \
@@ -242,16 +262,16 @@ class LeidenDatabase:
 
             # Only get the PUBMED ID for PUBMED links
             if 'pubmed' in link_url:
-                result.append(LeidenDatabase.__get_pmid(link_url))
+                result.append("PMID=" + LeidenDatabase.__get_pmid(link_url))
 
-            # Ignore OMIM links completely
+            # Get OMIM ID for OMIM Links
             elif 'omim' in link_url:
-                pass
+                result.append("OMIM=" + LeidenDatabase.__get_omimid(link_url))
             # Process HGVS notation
             elif links.string and 'c.' in links.string:
                 result.append("".join([self.__refSeqID, ':', LeidenDatabase.__remove_times_reported(links.string)]))
             elif links.string:
-                result.append(links.string)
+                result.append("[" + links.string + "]=" + link_url)
             else:
                 result.append("INVALID_LINK_MARKUP")
         return link_delimiter.join(result)
