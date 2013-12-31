@@ -71,7 +71,7 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
-database = LeidenDatabase(args.leidenURL)
+database = LOVD2Database(args.leidenURL)
 
 # User has specified the available genes option, print a list of all available genes.
 if args.availableGenes:

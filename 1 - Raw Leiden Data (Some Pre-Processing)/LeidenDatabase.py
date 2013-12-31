@@ -12,14 +12,6 @@ class LeidenDatabase:
     found at U(http://www.lovd.nl/2.0/index_list.php).
     """
 
-    __leidenHomeURL = ''
-    __geneID = ''
-    __refSeqID = ''
-    __variantDatabaseURL = ''
-    __geneHomepageURL = ''
-    __databaseSoup = ''
-    __geneHomepageSoup = ''
-
     def __init__(self, leiden_url):
         """
         Initializes a LeidenDatabase object for the specified Leiden Database URL.
@@ -29,22 +21,15 @@ class LeidenDatabase:
         dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links \
         to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored. \
         """
+        self.leiden_home_url = ''
+        self.gene_id = ''
+        self.ref_seq_id = ''
+        self.variant_database_url = ''
+        self.gene_homepage_url = ''
+        self.database_soup = ''
+        self.gene_homepage_soup = ''
 
-        # Validate and set URL for specified Leiden Database
-        if not '.php' in leiden_url.lower():
-            self.__leidenHomeURL = leiden_url
-
-            if not leiden_url.lower().endswith('/'):
-                self.__leidenHomeURL = leiden_url + "/"
-        else:
-            # Remove everything from <page>.php on from the URL to create valid base URL
-            m = re.compile('[a-z]+\.php')
-            result = m.search(leiden_url.lower())
-
-            if m is not None:
-                self.__leidenHomeURL = leiden_url[0:result.start(0)]
-
-    def __set_gene_id(self, gene_id):
+    def set_gene_id(self, gene_id):
         """
         Sets which gene_id for the object. Sets all HTML and BeautifulSoup HTML parsing objects for specified gene.
 
@@ -54,28 +39,28 @@ class LeidenDatabase:
         gene selection drop-down, such as the one included at U(http://www.dmd.nl/nmdb2/home.php?)
         """
 
-        self.__geneID = gene_id
+        self.gene_id = gene_id
 
         # Check that the gene is present in the database, raise exception if not
         if gene_id in self.get_available_genes():
             # Set relevant URLs for specified gene_id
-            self.__variantDatabaseURL = self.__get_variant_database_url(gene_id)
-            self.__geneHomepageURL = self.__get_gene_homepage_url(gene_id)
+            self.variant_database_url = self.get_variant_database_url(gene_id)
+            self.gene_homepage_url = self.get_gene_homepage_url(gene_id)
 
             # Extract HTML and create BeautifulSoup objects for gene_id pages
-            with urllib.request.urlopen(self.__variantDatabaseURL) as url:
+            with urllib.request.urlopen(self.variant_database_url) as url:
                 html = url.read()
-                self.__databaseSoup = BeautifulSoup(html)
-            with urllib.request.urlopen(self.__geneHomepageURL) as url:
+                self.database_soup = BeautifulSoup(html)
+            with urllib.request.urlopen(self.gene_homepage_url) as url:
                 html = url.read()
-                self.__geneHomepageSoup = BeautifulSoup(html)
+                self.gene_homepage_soup = BeautifulSoup(html)
 
             # Extract RefSeq ID for gene_id's reference transcript
-            self.__refSeqID = self.get_transcript_refseqid(gene_id)
+            self.ref_seq_id = self.get_transcript_refseqid(gene_id)
         else:
             raise Exception('Specified gene not available in Leiden Database.')
 
-    def __get_variant_database_url(self, gene_id):
+    def get_variant_database_url(self, gene_id):
         """
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
         Note that this only constructs a valid URL for LOVD2 installations at this time.
@@ -88,11 +73,9 @@ class LeidenDatabase:
         Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden \
         Database site exactly.
         """
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
-        return "".join([self.__leidenHomeURL, 'variants.php?action=search_unique&select_db=', gene_id,
-                        '&limit=1000'])
-
-    def __get_gene_homepage_url(self, gene_id):
+    def get_gene_homepage_url(self, gene_id):
         """
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
         @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for \
@@ -102,11 +85,10 @@ class LeidenDatabase:
         @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not \
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
-
-        return "".join([self.__leidenHomeURL, 'home.php?select_db=', gene_id])
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
     @staticmethod
-    def __get_pmid(link_url):
+    def get_pmid(link_url):
         """
         Given a URL to a publication listed on PUBMED, return a string containing the PUBMED ID of the publication.
         
@@ -125,7 +107,7 @@ class LeidenDatabase:
         return results.group()  # return only the matched sequence of digits (PMID)
 
     @staticmethod
-    def __get_omimid(link_url):
+    def get_omimid(link_url):
         """
         Given a URL to an entry on OMIM, return a string containing the OMIM IDs for the entry.
 
@@ -143,7 +125,7 @@ class LeidenDatabase:
         return results.group()  # return only the matched sequence of digits (PMID)
 
     @staticmethod
-    def __remove_times_reported(hgvs_notation):
+    def remove_times_reported(hgvs_notation):
         """
         If the variant entry contains (Reported N times) text alongside the HGVS variant description, returns a new \
         string with (Reported N times) removed. String is unchanged if no such substring is found.
@@ -174,23 +156,7 @@ class LeidenDatabase:
         drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box, \
         ACTA1 will be the respective entry in the returned list.
         """
-
-        # Construct URL of page containing the drop-down to select various genes
-        start_url = "".join([self.__leidenHomeURL, '?action=switch_db'])
-
-        # Download and parse HTML from base URL
-        with urllib.request.urlopen(start_url) as url:
-            url_text = url.read()
-            url_soup = BeautifulSoup(url_text)
-
-            # Extract all options from the SelectGeneDB drop-down control
-            options = url_soup.find(id='SelectGeneDB').find_all('option')
-
-        # Return all options in the drop-down
-        available_genes = []
-        for genes in options:
-            available_genes.append(genes['value'])
-        return available_genes
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
     @staticmethod
     def find_string_index(string_list, search_string):
@@ -230,11 +196,11 @@ class LeidenDatabase:
         # Check whether the debug option has been specified in command line arguments
         if commandline_args.debug:
             tb = traceback.format_exc()
-            return "".join(["---> " , self.__geneID , ": ERROR - NOT PROCESSED. STACK TRACE: \n", tb])
+            return "".join(["---> ", self.gene_id, ": ERROR - NOT PROCESSED. STACK TRACE: \n", tb])
         else:
-            return "".join(["---> ", self.__geneID, ": ERROR - NOT PROCESSED. Use --debug option for more details."])
+            return "".join(["---> ", self.gene_id, ": ERROR - NOT PROCESSED. Use --debug option for more details."])
 
-    def __get_link_info(self, link_html):
+    def get_link_info(self, link_html):
         """
         Given a BeautifulSoup ResultSet object containing only link tags, return relevant information for the \
         given link type:
@@ -262,14 +228,14 @@ class LeidenDatabase:
 
             # Only get the PUBMED ID for PUBMED links
             if 'pubmed' in link_url:
-                result.append("PMID=" + LeidenDatabase.__get_pmid(link_url))
+                result.append("PMID=" + LeidenDatabase.get_pmid(link_url))
 
             # Get OMIM ID for OMIM Links
             elif 'omim' in link_url:
-                result.append("OMIM=" + LeidenDatabase.__get_omimid(link_url))
+                result.append("OMIM=" + LeidenDatabase.get_omimid(link_url))
             # Process HGVS notation
             elif links.string and 'c.' in links.string:
-                result.append("".join([self.__refSeqID, ':', LeidenDatabase.__remove_times_reported(links.string)]))
+                result.append("".join([self.ref_seq_id, ':', LeidenDatabase.remove_times_reported(links.string)]))
             elif links.string:
                 result.append("[" + links.string + "]=" + link_url)
             else:
@@ -286,18 +252,7 @@ class LeidenDatabase:
         @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID \
         is found for the specified gene.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.__geneID:
-            self.__set_gene_id(gene_id)
-
-        # Find all links on the gene homepage
-        entries = self.__geneHomepageSoup.find_all('a')
-        for tags in entries:
-            # NM_ is unique substring to RefSeq ID. If found, return text.
-            if "NM_" in tags.get_text():
-                return tags.get_text()
-        return ""
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
     def get_table_headers(self, gene_id):
         """
@@ -312,11 +267,11 @@ class LeidenDatabase:
         """
 
         # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.__geneID:
-            self.__set_gene_id(gene_id)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
 
         # Find all th tags on the table of variants (column labels)
-        headers = self.__databaseSoup.find_all('th')
+        headers = self.database_soup.find_all('th')
         result = []
         for entries in headers:
             # Column label text
@@ -338,35 +293,7 @@ class LeidenDatabase:
         the list matches the order of rows within the table from top to bottom and individual entries are ordered \
         from left to right as they appear on the Leiden Database.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.__geneID:
-            self.__set_gene_id(gene_id)
-
-        # id specific to data table in HTML (must be unicode due to underscore)
-        table_id = "".join([u'table', u'\u005F', u'data'])
-
-        # Extract the HTML specific to the table data
-        table = self.__databaseSoup.find_all(id=table_id)[0].find_all('tr')
-
-        # First row may contain a row of images for some reason. Filter out if present.
-        if table[0].find('img') is not None:
-            table = table[1:]
-
-        row_entries = []
-        for rows in table:
-            # Difficult to exclude column label images, as they are included as a table row with no identifier. They
-            # all contain images, while none of the data rows do. This allows column label row to be filtered out.
-            entries = []
-            for columns in rows.find_all('td'):
-                # If there are any links in the cell, process them with __get_link_info
-                if columns.find('a') is not None:
-                    link_string = self.__get_link_info(columns.find_all('a'))
-                    entries.append(link_string)
-                else:
-                    entries.append(columns.string)
-            row_entries.append(entries)
-        return row_entries
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
     def get_gene_name(self, gene_id):
         """
@@ -380,8 +307,204 @@ class LeidenDatabase:
         """
 
         # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.__geneID:
-            self.__set_gene_id(gene_id)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
 
         # gene_name id is unique to this entry
-        return self.__databaseSoup.find(id='gene_name').text.strip()
+        return self.database_soup.find(id='gene_name').text.strip()
+
+
+class LOVD2Database(LeidenDatabase):
+    """
+
+    """
+
+    def __init__(self, leiden_url):
+
+        """
+        Initializes a LeidenDatabase object for the specified Leiden Database URL.
+        Note that only LOVD2 installations are supported at this time.
+
+        @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links \
+        to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored. \
+        """
+        # Call to the super class constructor
+        LeidenDatabase.__init__(self, leiden_url)
+
+        # Validate and set URL for specified Leiden Database
+        if not '.php' in leiden_url.lower():
+            self.leiden_home_url = leiden_url
+
+            if not leiden_url.lower().endswith('/'):
+                self.leiden_home_url = leiden_url + "/"
+        else:
+            # Remove everything from <page>.php on from the URL to create valid base URL
+            m = re.compile('[a-z]+\.php')
+            result = m.search(leiden_url.lower())
+
+            if m is not None:
+                self.leiden_home_url = leiden_url[0:result.start(0)]
+
+    def set_gene_id(self, gene_id):
+        """
+        Sets which gene_id for the object. Sets all HTML and BeautifulSoup HTML parsing objects for specified gene.
+
+        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
+        actin, as specified on the Leiden Database homepage (linked above).
+        @raise: exception if gene does not exist in the specified Leiden Database (if the name is not an option in the
+        gene selection drop-down, such as the one included at U(http://www.dmd.nl/nmdb2/home.php?)
+        """
+
+        self.gene_id = gene_id
+
+        # Check that the gene is present in the database, raise exception if not
+        if gene_id in self.get_available_genes():
+            # Set relevant URLs for specified gene_id
+            self.variant_database_url = self.get_variant_database_url(gene_id)
+            self.gene_homepage_url = self.get_gene_homepage_url(gene_id)
+
+            # Extract HTML and create BeautifulSoup objects for gene_id pages
+            with urllib.request.urlopen(self.variant_database_url) as url:
+                html = url.read()
+                self.database_soup = BeautifulSoup(html)
+            with urllib.request.urlopen(self.gene_homepage_url) as url:
+                html = url.read()
+                self.gene_homepage_soup = BeautifulSoup(html)
+
+            # Extract RefSeq ID for gene_id's reference transcript
+            self.ref_seq_id = self.get_transcript_refseqid(gene_id)
+        else:
+            raise Exception('Specified gene not available in Leiden Database.')
+
+    def get_variant_database_url(self, gene_id):
+        """
+        Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
+        Note that this only constructs a valid URL for LOVD2 installations at this time.
+
+        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
+        actin, as specified on the Leiden Muscular Dystrophy pages. The gene_id gene_id is required to match the \
+        gene_id on the website exactly to generate a valid URL.
+        @rtype: string
+        @return: URL (contains http://) linking to the table of variant entries for the specified gene_id on the \
+        Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden \
+        Database site exactly.
+        """
+
+        return "".join([self.leiden_home_url, 'variants.php?action=search_unique&select_db=', gene_id,
+                        '&limit=1000'])
+
+    def get_gene_homepage_url(self, gene_id):
+        """
+        Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
+        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for \
+        actin, as specified on the Leiden Database homepage (linked above). The gene_id is not checked against \
+        available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
+        @rtype: string
+        @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not \
+        checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
+        """
+
+        return "".join([self.leiden_home_url, 'home.php?select_db=', gene_id])
+
+    def get_available_genes(self):
+        """
+        Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
+        U(http://www.dmd.nl/nmdb2/home.php?action=switch_db) on the Leiden Muscular Dystrophy pages, for example). \
+        The order and format of elements in the list matches the gene_ids provided in the drop-down box. See return \
+        specification for more details on return format.
+
+        @rtype: list of strings
+        @return: list of all genes available in the Leiden Database associated with the object. Note that the returned \
+        list only contains the gene_id values for each gene and not the full gene description provided in the \
+        drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box, \
+        ACTA1 will be the respective entry in the returned list.
+        """
+
+        # Construct URL of page containing the drop-down to select various genes
+        start_url = "".join([self.leiden_home_url, '?action=switch_db'])
+
+        # Download and parse HTML from base URL
+        with urllib.request.urlopen(start_url) as url:
+            url_text = url.read()
+            url_soup = BeautifulSoup(url_text)
+
+            # Extract all options from the SelectGeneDB drop-down control
+            options = url_soup.find(id='SelectGeneDB').find_all('option')
+
+        # Return all options in the drop-down
+        available_genes = []
+        for genes in options:
+            available_genes.append(genes['value'])
+        return available_genes
+
+    def get_transcript_refseqid(self, gene_id):
+        """
+        Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on\
+        the gene homepage on the given gene_id). For example, the ACTA1 homepage is U(http://www.dmd.nl/nmdb2/home.php)\
+        and the RefSeq ID for the reference transcript is "NM_001100.3".
+
+        @rtype: string
+        @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID \
+        is found for the specified gene.
+        """
+
+        # Set the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
+
+        # Find all links on the gene homepage
+        entries = self.gene_homepage_soup.find_all('a')
+        for tags in entries:
+            # NM_ is unique substring to RefSeq ID. If found, return text.
+            if "NM_" in tags.get_text():
+                return tags.get_text()
+        return ""
+
+    def get_table_data(self, gene_id):
+        """
+        Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
+        its elements are the entries for each column within the respective row.
+
+        @rtype: lists of lists of strings
+        @return: table data from the Leiden Database. Each sub-list represents a row of the table data, where its \
+        elements are the entries for each column within the respective row. The order of the sub-lists contained in
+        the list matches the order of rows within the table from top to bottom and individual entries are ordered \
+        from left to right as they appear on the Leiden Database.
+        """
+
+        # Set the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
+
+        # id specific to data table in HTML (must be unicode due to underscore)
+        table_id = "".join([u'table', u'\u005F', u'data'])
+
+        # Extract the HTML specific to the table data
+        table = self.database_soup.find_all(id=table_id)[0].find_all('tr')
+
+        # First row may contain a row of images for some reason. Filter out if present.
+        if table[0].find('img') is not None:
+            table = table[1:]
+
+        row_entries = []
+        for rows in table:
+            # Difficult to exclude column label images, as they are included as a table row with no identifier. They
+            # all contain images, while none of the data rows do. This allows column label row to be filtered out.
+            entries = []
+            for columns in rows.find_all('td'):
+                # If there are any links in the cell, process them with get_link_info
+                if columns.find('a') is not None:
+                    link_string = self.get_link_info(columns.find_all('a'))
+                    entries.append(link_string)
+                else:
+                    entries.append(columns.string)
+            row_entries.append(entries)
+        return row_entries
+
+
+class LOVD3Database(LeidenDatabase):
+    """
+
+    """
+    pass
