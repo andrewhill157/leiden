@@ -276,22 +276,7 @@ class LeidenDatabase:
         gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no \
         labels are found.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
-
-        # Find all th tags on the table of variants (column labels)
-        headers = self.database_soup.find_all('th')
-        result = []
-        for entries in headers:
-            # Column label text
-            h = entries.string
-
-            # For all entries with a string value, add them to the results (filters out extraneous th tags)
-            if h is not None:
-                result.append(h)
-        return result
+        raise "ABSTRACT METHOD NOT IMPLEMENTED"
 
     def get_table_data(self, gene_id):
         """
@@ -417,6 +402,34 @@ class LOVD2Database(LeidenDatabase):
         for genes in options:
             available_genes.append(genes['value'])
         return available_genes
+
+    def get_table_headers(self, gene_id):
+        """
+        Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
+        geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
+        of the table such as DNA change, RNA change, etc.
+
+        @rtype: list of strings
+        @return: column labels from the table of variants in the Leiden Database variant listing for the object's \
+        gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no \
+        labels are found.
+        """
+
+        # Set the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
+
+        # Find all th tags on the table of variants (column labels)
+        headers = self.database_soup.find_all('th')
+        result = []
+        for entries in headers:
+            # Column label text
+            h = entries.string
+
+            # For all entries with a string value, add them to the results (filters out extraneous th tags)
+            if h is not None:
+                result.append(h.strip())
+        return result
 
     def get_table_data(self, gene_id):
         """
@@ -551,6 +564,33 @@ class LOVD3Database(LeidenDatabase):
             available_genes.append(gene_string)
         return available_genes
 
+    def get_table_headers(self, gene_id):
+        """
+        Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
+        geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
+        of the table such as DNA change, RNA change, etc.
+
+        @rtype: list of strings
+        @return: column labels from the table of variants in the Leiden Database variant listing for the object's \
+        gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no \
+        labels are found.
+        """
+
+        # Set the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
+
+        # Find all th tags on the table of variants (column labels)
+        headers = self.database_soup.find_all('th')
+        result = []
+        for entries in headers:
+            # Column label text
+            h = entries.text
+
+            # For all entries with a string value, add them to the results (filters out extraneous th tags)
+            if h is not None:
+                result.append(h.strip())
+        return result
     # TODO test and document
     def get_table_data(self, gene_id):
         """
