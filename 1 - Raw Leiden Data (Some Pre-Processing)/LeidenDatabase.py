@@ -252,7 +252,18 @@ class LeidenDatabase:
         @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID \
         is found for the specified gene.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+
+        # Set the specified gene if it has not already been done (saves reloading pages every function call)
+        if gene_id is not self.gene_id:
+            self.set_gene_id(gene_id)
+
+        # Find all links on the gene homepage
+        entries = self.gene_homepage_soup.find_all('a')
+        for tags in entries:
+            # NM_ is unique substring to RefSeq ID. If found, return text.
+            if "NM_" in tags.get_text():
+                return tags.get_text()
+        return ""
 
     def get_table_headers(self, gene_id):
         """
@@ -407,29 +418,6 @@ class LOVD2Database(LeidenDatabase):
             available_genes.append(genes['value'])
         return available_genes
 
-    def get_transcript_refseqid(self, gene_id):
-        """
-        Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on\
-        the gene homepage on the given gene_id). For example, the ACTA1 homepage is U(http://www.dmd.nl/nmdb2/home.php)\
-        and the RefSeq ID for the reference transcript is "NM_001100.3".
-
-        @rtype: string
-        @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID \
-        is found for the specified gene.
-        """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
-
-        # Find all links on the gene homepage
-        entries = self.gene_homepage_soup.find_all('a')
-        for tags in entries:
-            # NM_ is unique substring to RefSeq ID. If found, return text.
-            if "NM_" in tags.get_text():
-                return tags.get_text()
-        return ""
-
     def get_table_data(self, gene_id):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
@@ -476,6 +464,7 @@ class LOVD3Database(LeidenDatabase):
     """
 
     """
+    # TODO document
     def __init__(self, leiden_url):
 
         """
@@ -489,17 +478,16 @@ class LOVD3Database(LeidenDatabase):
         LeidenDatabase.__init__(self, leiden_url)
 
         if not leiden_url.lower().endswith('/'):
-            self.leiden_home_url = leiden_url + '/'
+            leiden_url += '/'
 
-        if leiden_url.lower.endswith('genes/'):
+        if leiden_url.lower().endswith('genes/'):
             # Remove trailing text from URL to get the common base URL for database
-            m = re.compile('[a-z]+genes+/?')  # TODO ensure that regex works
-            result = m.search(leiden_url.lower())
+            base_url_end = leiden_url.find('genes/')
+            leiden_url = leiden_url[0:base_url_end]
 
-            if m is not None:
-                self.leiden_home_url = leiden_url[0:result.start(0)]
+        self.leiden_home_url = leiden_url
 
-    # TODO modify for LOVD3
+    # TODO document
     def get_variant_database_url(self, gene_id):
         """
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
@@ -514,10 +502,9 @@ class LOVD3Database(LeidenDatabase):
         Database site exactly.
         """
 
-        return "".join([self.leiden_home_url, 'variants.php?action=search_unique&select_db=', gene_id,
-                        '&limit=1000'])
+        return "".join([self.leiden_home_url, 'variants/', gene_id, '#page_size=1000&page=1'])
 
-    # TODO modify for LOVD3
+    # TODO document
     def get_gene_homepage_url(self, gene_id):
         """
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
@@ -529,9 +516,9 @@ class LOVD3Database(LeidenDatabase):
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
 
-        return "".join([self.leiden_home_url, 'home.php?select_db=', gene_id])
+        return "".join([self.leiden_home_url, 'genes/', gene_id, '#page_size=1000&page=1'])
 
-    # TODO modify for LOVD3
+    # TODO only returns 100 entries (need to fix) and document
     def get_available_genes(self):
         """
         Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
@@ -547,47 +534,24 @@ class LOVD3Database(LeidenDatabase):
         """
 
         # Construct URL of page containing the drop-down to select various genes
-        start_url = "".join([self.leiden_home_url, '?action=switch_db'])
+        start_url = "".join([self.leiden_home_url, 'genes/', '#page_size=1000&page=1'])
 
         # Download and parse HTML from base URL
         with urllib.request.urlopen(start_url) as url:
             url_text = url.read()
             url_soup = BeautifulSoup(url_text)
 
-            # Extract all options from the SelectGeneDB drop-down control
-            options = url_soup.find(id='SelectGeneDB').find_all('option')
+            # Extract all gene entries from the database homepage
+            table_class = 'data'
+            options = url_soup.find_all('tr', class_=table_class)
 
-        # Return all options in the drop-down
         available_genes = []
         for genes in options:
-            available_genes.append(genes['value'])
+            gene_string = genes.find_all('td')[0].find('a').string
+            available_genes.append(gene_string)
         return available_genes
 
-    # TODO modify for LOVD3
-    def get_transcript_refseqid(self, gene_id):
-        """
-        Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on\
-        the gene homepage on the given gene_id). For example, the ACTA1 homepage is U(http://www.dmd.nl/nmdb2/home.php)\
-        and the RefSeq ID for the reference transcript is "NM_001100.3".
-
-        @rtype: string
-        @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID \
-        is found for the specified gene.
-        """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
-
-        # Find all links on the gene homepage
-        entries = self.gene_homepage_soup.find_all('a')
-        for tags in entries:
-            # NM_ is unique substring to RefSeq ID. If found, return text.
-            if "NM_" in tags.get_text():
-                return tags.get_text()
-        return ""
-
-    # TODO modify for LOVD3
+    # TODO test and document
     def get_table_data(self, gene_id):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
@@ -605,10 +569,10 @@ class LOVD3Database(LeidenDatabase):
             self.set_gene_id(gene_id)
 
         # id specific to data table in HTML (must be unicode due to underscore)
-        table_id = "".join([u'table', u'\u005F', u'data'])
+        table_class = u'data'
 
         # Extract the HTML specific to the table data
-        table = self.database_soup.find_all(id=table_id)[0].find_all('tr')
+        table = self.database_soup.find_all('tr', class_=table_class)
 
         # First row may contain a row of images for some reason. Filter out if present.
         if table[0].find('img') is not None:
