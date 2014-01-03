@@ -4,6 +4,39 @@ import re
 import traceback
 
 
+def get_leiden_database(leiden_url):
+    """
+    TODO document
+    @param leiden_url:
+    @return:
+    """
+    version = get_lovd_version(leiden_url)
+
+    if version == 2:
+        database = LOVD2Database(leiden_url)
+    elif version == 3:
+        database = LOVD3Database(leiden_url)
+    else:
+        raise Exception("Unrecognized version number: " + str(version) + "!")
+
+    return database
+
+
+def get_lovd_version(leiden_url):
+    """
+    TODO Document
+    @param leiden_url:
+    @return:
+    """
+    with urllib.request.urlopen(leiden_url) as url:
+        html = url.read().decode('utf-8')
+
+    m = re.compile('LOVD v\.([23])\.\d')
+    results = m.search(html)
+    version = results.group(1)
+    return float(version)
+
+
 class LeidenDatabase:
     """
     Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD2
@@ -21,6 +54,7 @@ class LeidenDatabase:
         dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links \
         to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored. \
         """
+        self.version_number = ''
         self.leiden_home_url = ''
         self.gene_id = ''
         self.ref_seq_id = ''
@@ -28,6 +62,13 @@ class LeidenDatabase:
         self.gene_homepage_url = ''
         self.database_soup = ''
         self.gene_homepage_soup = ''
+
+    def get_version_number(self):
+        """
+        TODO document
+        @return:
+        """
+        return self.version_number
 
     def set_gene_id(self, gene_id):
         """
@@ -73,7 +114,7 @@ class LeidenDatabase:
         Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden \
         Database site exactly.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
     def get_gene_homepage_url(self, gene_id):
         """
@@ -85,7 +126,7 @@ class LeidenDatabase:
         @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not \
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
     @staticmethod
     def get_pmid(link_url):
@@ -156,7 +197,7 @@ class LeidenDatabase:
         drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box, \
         ACTA1 will be the respective entry in the returned list.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
     @staticmethod
     def find_string_index(string_list, search_string):
@@ -276,7 +317,7 @@ class LeidenDatabase:
         gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no \
         labels are found.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
     def get_table_data(self, gene_id):
         """
@@ -289,7 +330,7 @@ class LeidenDatabase:
         the list matches the order of rows within the table from top to bottom and individual entries are ordered \
         from left to right as they appear on the Leiden Database.
         """
-        raise "ABSTRACT METHOD NOT IMPLEMENTED"
+        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
     def get_gene_name(self, gene_id):
         """
@@ -327,6 +368,7 @@ class LOVD2Database(LeidenDatabase):
         """
         # Call to the super class constructor
         LeidenDatabase.__init__(self, leiden_url)
+        self.version_number = 2
 
         # Validate and set URL for specified Leiden Database
         if not '.php' in leiden_url.lower():
@@ -474,9 +516,11 @@ class LOVD2Database(LeidenDatabase):
 
 
 class LOVD3Database(LeidenDatabase):
+    # TODO document
     """
 
     """
+
     # TODO document
     def __init__(self, leiden_url):
 
@@ -489,6 +533,7 @@ class LOVD3Database(LeidenDatabase):
         """
         # Call to the super class constructor
         LeidenDatabase.__init__(self, leiden_url)
+        self.version_number = 3
 
         if not leiden_url.lower().endswith('/'):
             leiden_url += '/'
@@ -531,7 +576,7 @@ class LOVD3Database(LeidenDatabase):
 
         return "".join([self.leiden_home_url, 'genes/', gene_id, '?page_size=1000&page=1'])
 
-    # TODO only returns 100 entries (need to fix) and document
+    # TODO document
     def get_available_genes(self):
         """
         Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
@@ -564,6 +609,7 @@ class LOVD3Database(LeidenDatabase):
             available_genes.append(gene_string)
         return available_genes
 
+    # TODO document
     def get_table_headers(self, gene_id):
         """
         Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
@@ -591,7 +637,8 @@ class LOVD3Database(LeidenDatabase):
             if h is not None:
                 result.append(h.strip())
         return result
-    # TODO test and document
+
+    # TODO document
     def get_table_data(self, gene_id):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where

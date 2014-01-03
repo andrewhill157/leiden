@@ -1,5 +1,5 @@
 import argparse
-from LeidenDatabase import *
+import LeidenDatabase
 
 
 def save_gene_data(leiden_database, gene_id):
@@ -36,7 +36,7 @@ def save_gene_data(leiden_database, gene_id):
 
         file_lines.append(column_delimiter.join(headers))
 
-        hgvs_mutation_column = LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
+        hgvs_mutation_column = LeidenDatabase.LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
 
         for rows in entries:
             file_lines.append(column_delimiter.join(rows))
@@ -71,16 +71,20 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
-database = LOVD3Database(args.leidenURL)
+print("---> DETECTING LOVD VERSION: IN PROGRESS...")
+database = LeidenDatabase.get_leiden_database(args.leidenURL)
+version_number = database.get_version_number()
+print("---> DETECTING LOVD VERSION: COMPLETE")
+print("    ---> VERSION " + str(version_number) + " DETECTED")
 
 # User has specified the available genes option, print a list of all available genes.
 if args.availableGenes:
-    print("---> IN PROGRESS...")
+    print("---> CHECKING  AVAILABLE GENES...")
     print("\n".join(database.get_available_genes()))
 
 # User has specified the all option, so extract data from all genes available on the Leiden Database
 elif args.all:
-    print("---> LISTING AVAILABLE GENES: IN PROGRESS...")
+    print("---> CHECKING AVAILABLE GENES...")
     for gene in database.get_available_genes():
         try:
             print("---> " + gene + ": IN PROGRESS...")
