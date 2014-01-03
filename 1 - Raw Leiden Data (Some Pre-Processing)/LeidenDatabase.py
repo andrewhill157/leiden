@@ -515,7 +515,7 @@ class LOVD3Database(LeidenDatabase):
         Database site exactly.
         """
 
-        return "".join([self.leiden_home_url, 'variants/', gene_id, '#page_size=1000&page=1'])
+        return "".join([self.leiden_home_url, 'variants/', gene_id, '?page_size=1000&page=1'])
 
     # TODO document
     def get_gene_homepage_url(self, gene_id):
@@ -529,7 +529,7 @@ class LOVD3Database(LeidenDatabase):
         checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
 
-        return "".join([self.leiden_home_url, 'genes/', gene_id, '#page_size=1000&page=1'])
+        return "".join([self.leiden_home_url, 'genes/', gene_id, '?page_size=1000&page=1'])
 
     # TODO only returns 100 entries (need to fix) and document
     def get_available_genes(self):
@@ -547,7 +547,7 @@ class LOVD3Database(LeidenDatabase):
         """
 
         # Construct URL of page containing the drop-down to select various genes
-        start_url = "".join([self.leiden_home_url, 'genes/', '#page_size=1000&page=1'])
+        start_url = "".join([self.leiden_home_url, 'genes/', '?page_size=1000&page=1'])
 
         # Download and parse HTML from base URL
         with urllib.request.urlopen(start_url) as url:
