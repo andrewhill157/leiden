@@ -71,6 +71,7 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
+# Get database object and print the LOVD version number
 print("---> DETECTING LOVD VERSION: IN PROGRESS...")
 database = LeidenDatabase.get_leiden_database(args.leidenURL)
 version_number = database.get_version_number()

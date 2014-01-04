@@ -3,12 +3,15 @@ import urllib.request
 import re
 import traceback
 
-
+# TODO describe leiden_url better
 def get_leiden_database(leiden_url):
     """
-    TODO document
-    @param leiden_url:
-    @return:
+    Factory method to generate the appropriate LeidenDatabase object depending on detected version number at specified
+    URL. Only LOVD2 and LOVD3 installations are supported.
+    @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
+    dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
+    @return: Instance of LeidenDatabase class (see definition for available methods)
+    @raise: Exception if the LOVD version number is something other than 2 or 3 (unsupported)
     """
     version = get_lovd_version(leiden_url)
 
@@ -39,7 +42,7 @@ def get_lovd_version(leiden_url):
 
 class LeidenDatabase:
     """
-    Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD2
+    Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD
     Leiden Database installation. For example, U(http://www.dmd.nl/nmdb2/home.php), is a particular installation for
     variants in genes associated with Muscular Dystrophy. A list of all known installations of LOVD databases can be
     found at U(http://www.lovd.nl/2.0/index_list.php).
@@ -48,7 +51,6 @@ class LeidenDatabase:
     def __init__(self, leiden_url):
         """
         Initializes a LeidenDatabase object for the specified Leiden Database URL.
-        Note that only LOVD2 installations are supported at this time.
 
         @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular \
         dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links \
