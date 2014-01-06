@@ -29,17 +29,27 @@ def save_gene_data(leiden_database, gene_id):
 
     # write table data to file in Unicode encoding (some characters are not ASCII encodable)
     with open(filename, 'w') as f, open(mutalyzer_input_file, 'w') as mutalyzer:
-        entries = leiden_database.get_table_data(gene_id)
+
         file_lines = []
         headers = leiden_database.get_table_headers(gene_id)
-
+        hgvs_mutation_column = LeidenDatabase.LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
+        headers.insert(hgvs_mutation_column + 1, u'Genomic Variant')
         file_lines.append(column_delimiter.join(headers))
 
-        hgvs_mutation_column = LeidenDatabase.LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
+        # Get table data for variants on given gene
+        entries = leiden_database.get_table_data(gene_id)
 
-        for rows in entries:
-            file_lines.append(column_delimiter.join(rows))
-            mutalyzer.write("".join([rows[hgvs_mutation_column], "\n"]))
+        # Remap all variants to genomic coordinates
+        remapper = LeidenDatabase.Remapping()
+
+        for i in range(len(entries)):
+            row = entries[i]
+            print('    ---> Remapping ' + str(i + 1) + ' of ' + str(len(entries)) + '\r', end='')
+            variant = row[hgvs_mutation_column]
+            row.insert(hgvs_mutation_column + 1, remapper.remap_variant(variant))
+            file_lines.append(column_delimiter.join(row))
+
+        print('')
         f.write(row_delimiter.join(file_lines))
 
 

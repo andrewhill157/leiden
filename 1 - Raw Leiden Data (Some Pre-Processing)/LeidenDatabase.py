@@ -56,24 +56,25 @@ class Remapping:
         client = Client(url, cache=None)
         self.mutalyzer = client.service
 
-    def remap_variant(self, transcript, variant):
+    def remap_variant(self, variant):
         """
         TODO document and complete
-        @param transcript:
         @param variant:
         @return:
         """
 
-        input = ":".join([transcript, variant])
-
         # Remap variant to most recent genome build
         genome_build = 'hg19'
-        result = self.mutalyzer.numberConversion(genome_build, input)
-        result = result[0][0]  # converts return value to a string
+        try:
+            if 'c.=' not in variant:
+                result = self.mutalyzer.numberConversion(genome_build, variant)
+                result = result[0][0]  # converts return value to a string
+            else:
+                result = 'REMAPPING_ERROR'
+        except:
+            result = 'REMAPPING_ERROR'
 
-        # Remove transcript
-        variant_start_index = result.find(':') + 1
-        return result[variant_start_index:]
+        return result
 
 
 class LeidenDatabase:
