@@ -1,7 +1,6 @@
 import argparse
 import LeidenDatabase
 
-
 def save_gene_data(leiden_database, gene_id):
     """
     Given a gene_id and a valid Leiden Database URL, saves two files: <gene_id>.txt and <gene_id>_MutalyzerInput.txt.
@@ -28,7 +27,7 @@ def save_gene_data(leiden_database, gene_id):
     filename = "".join([gene_id, file_extension])
     mutalyzer_input_file = "".join([gene_id, "_MutalyzerInput", file_extension])
 
-    # write table data to file in Unicode encoding (some characters are no ASCII encodable)
+    # write table data to file in Unicode encoding (some characters are not ASCII encodable)
     with open(filename, 'w') as f, open(mutalyzer_input_file, 'w') as mutalyzer:
         entries = leiden_database.get_table_data(gene_id)
         file_lines = []

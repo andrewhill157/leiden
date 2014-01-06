@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import re
 import traceback
+from suds.client import Client
 
 # TODO describe leiden_url better
 def get_leiden_database(leiden_url):
@@ -38,6 +39,41 @@ def get_lovd_version(leiden_url):
     results = m.search(html)
     version = results.group(1)
     return float(version)
+
+
+class Remapping:
+    """
+    TODO document
+    """
+
+    def __init__(self):
+        """
+        TODO document
+        @return:
+        """
+        # Mutalyzer webservices API URL
+        url = 'https://mutalyzer.nl/services/?wsdl'
+        client = Client(url, cache=None)
+        self.mutalyzer = client.service
+
+    def remap_variant(self, transcript, variant):
+        """
+        TODO document and complete
+        @param transcript:
+        @param variant:
+        @return:
+        """
+
+        input = ":".join([transcript, variant])
+
+        # Remap variant to most recent genome build
+        genome_build = 'hg19'
+        result = self.mutalyzer.numberConversion(genome_build, input)
+        result = result[0][0]  # converts return value to a string
+
+        # Remove transcript
+        variant_start_index = result.find(':') + 1
+        return result[variant_start_index:]
 
 
 class LeidenDatabase:
