@@ -216,8 +216,12 @@ class VariantRemapper:
         mutalyzer_input = base64.b64encode(mutalyzer_input)
         mutalyzer_input = mutalyzer_input.decode()
 
-        # Submit batch job for remapping and return id_number returned by mutalyzer for later future use
-        id_number = self.mutalyzer.submitBatchJob(mutalyzer_input, 'PositionConverter', 'hg19')
+        try:
+            # Submit batch job for remapping and return id_number returned by mutalyzer for later future use
+            id_number = self.mutalyzer.submitBatchJob(mutalyzer_input, 'PositionConverter', 'hg19')
+        except:
+            # Variants cannot be processed in batch due to formatting errors
+            id_number = -1
         return id_number
 
     # TODO update documentation
@@ -242,19 +246,18 @@ class VariantRemapper:
         """
         result = self.mutalyzer.getBatchJob(id_number)
         result = base64.b64decode(result).decode()
+        result = result.rstrip('\n')
 
-        data = []
-        rows = result.split('\n')
+        # Split result string into list of lists (list of data from each row)
+        row_delimiter = '\n'
+        column_delimiter = '\t'
+        rows = result.split(row_delimiter)
+        data = [column.split(column_delimiter) for column in rows]
 
-        for row in rows:
-            data.append(row.split('\t'))
-
-        return data
-
-
-
-
-
+        # Entries with no error (most) will have no entries in that column
+        variant_column = TextProcessing.find_string_index(data[0], 'Chromosomal Variant')
+        chromosomal_variants = [x[variant_column] for x in data[1:]]
+        return chromosomal_variants
 
 
 # TODO update documentation
