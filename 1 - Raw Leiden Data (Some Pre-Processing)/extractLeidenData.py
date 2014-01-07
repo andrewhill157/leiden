@@ -1,5 +1,8 @@
 import argparse
-import LeidenDatabase
+from LeidenDatabase import *
+import traceback
+import time
+
 
 def save_gene_data(leiden_database, gene_id):
     """
@@ -28,30 +31,56 @@ def save_gene_data(leiden_database, gene_id):
     mutalyzer_input_file = "".join([gene_id, "_MutalyzerInput", file_extension])
 
     # write table data to file in Unicode encoding (some characters are not ASCII encodable)
-    with open(filename, 'w') as f, open(mutalyzer_input_file, 'w') as mutalyzer:
+    with open(filename, 'w', encoding='utf-8') as f, open(mutalyzer_input_file, 'w') as mutalyzer:
 
         file_lines = []
         headers = leiden_database.get_table_headers(gene_id)
-        hgvs_mutation_column = LeidenDatabase.LeidenDatabase.find_string_index(headers, u'DNA\xa0change')
+        hgvs_mutation_column = TextProcessing.find_string_index(headers, u'DNA\xa0change')
         headers.insert(hgvs_mutation_column + 1, u'Genomic Variant')
         file_lines.append(column_delimiter.join(headers))
 
+        print('    ---> Extracting Data...')
+
         # Get table data for variants on given gene
         entries = leiden_database.get_table_data(gene_id)
+        variants = [x[hgvs_mutation_column] for x in entries]
 
+        print('    ---> Remapping Variants...')
         # Remap all variants to genomic coordinates
-        remapper = LeidenDatabase.Remapping()
+        remapper = VariantRemapper()
 
-        for i in range(len(entries)):
-            row = entries[i]
-            print('    ---> Remapping ' + str(i + 1) + ' of ' + str(len(entries)) + '\r', end='')
-            variant = row[hgvs_mutation_column]
-            row.insert(hgvs_mutation_column + 1, remapper.remap_variant(variant))
-            file_lines.append(column_delimiter.join(row))
+        id_number = remapper.submit_variant_batch(variants)
+        
 
-        print('')
+        while remapper.entries_remaining_in_batch(id_number) > 0:
+            time.sleep(0.5)
+
+        result = remapper.get_batch_results(id_number)
+
         f.write(row_delimiter.join(file_lines))
 
+
+def get_errors(gene_id, commandline_args):
+    """
+    Given the list of command line arguments passed to the script, return error messages with optional stack trace.
+
+    @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin,
+    as specified on the Leiden Database homepage (linked above).
+    @param commandline_args: a parser.parse_args() object from the argparse library. Assumed to contain an \
+    argument called debug to indicate verbosity of error messages. args.debug is true, full stack traces are \
+    printed for errors. A simple error message is printed otherwise. See return for details.
+    @rtype: string
+    @return: Error message in the format "<gene_id>: ERROR - NOT PROCESSED. Use --debug option for more details." \
+    if the debug option is not specified and in the format \
+    "<gene_id>: ERROR - NOT PROCESSED. STACK TRACE: \n <stack trace>" if the --debug option is specified.
+    """
+
+    # Check whether the debug option has been specified in command line arguments
+    if commandline_args.debug:
+        tb = traceback.format_exc()
+        return "".join(["---> ", gene_id, ": ERROR - NOT PROCESSED. STACK TRACE: \n", tb])
+    else:
+        return "".join(["---> ", gene_id, ": ERROR - NOT PROCESSED. Use --debug option for more details."])
 
 """
 COMMAND LINE INTERFACE
@@ -82,7 +111,7 @@ args = parser.parse_args()
 
 # Get database object and print the LOVD version number
 print("---> DETECTING LOVD VERSION: IN PROGRESS...")
-database = LeidenDatabase.get_leiden_database(args.leidenURL)
+database = get_leiden_database(args.leidenURL)
 version_number = database.get_version_number()
 print("---> DETECTING LOVD VERSION: COMPLETE")
 print("    ---> VERSION " + str(version_number) + " DETECTED")
@@ -117,4 +146,4 @@ else:
                 save_gene_data(database, gene)
                 print("---> " + gene + ": COMPLETE")
             except:
-                print(database.get_errors(args))
+                print(get_errors(gene, args))
