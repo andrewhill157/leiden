@@ -7,21 +7,13 @@ import time
 # TODO update documentation
 def get_remapping_results(gene_ids, id_numbers):
     """
-    Given a gene_id and a valid Leiden Database URL, saves two files: <gene_id>.txt and <gene_id>_MutalyzerInput.txt.
-    from the specified Leiden Database (U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
 
-    1. <gene_id>.txt contains the extracted table data containing variants specific to the specified gene_id in the
-    Leiden Database. Each variant is on its own line and columns are separated by commas. Header labels are included as
-    the first line of the file.
-
-    2. <gene_id>_MutalyzerInput.txt contains only the DNA Change column of <gene_id>.txt (one variant per line). This
-    file can be directly input to the mutalyzer batch position converter tool by LOVD
-    (U(https://mutalyzer.nl/batchPositionConverter))
-
-    @param leiden_database: a LeidenDatabase object constructed using the base URL of the particular Leiden database \
-    to be used.
-    @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin,
-    as specified on the Leiden Database homepage (linked above).
+    @param gene_ids:
+    @type gene_ids:
+    @param id_numbers:
+    @type id_numbers:
+    @return:
+    @rtype:
     """
 
     remapper = VariantRemapper()
@@ -35,16 +27,27 @@ def get_remapping_results(gene_ids, id_numbers):
                 time.sleep(0.5)
 
             results.append(remapper.get_batch_results(id_numbers[i]))
-            print('        ---> Complete -> ' + gene_ids[i] + '.txt')
+            print('        ---> Complete')
 
         else:
             results.append([''])
-            print('        ---> Batch remapping failed!')
+            print('        ---> ERROR')
 
     return results
 
 # TODO update documentation
 def format_output_text(header, table_data, remapping):
+    """
+
+    @param header:
+    @type header:
+    @param table_data:
+    @type table_data:
+    @param remapping:
+    @type remapping:
+    @return:
+    @rtype:
+    """
     if len(remapping) > 0:
         hgvs_mutation_column = TextProcessing.find_string_index(header, u'DNA\xa0change')
         header.insert(hgvs_mutation_column + 1, u'Genomic Variant')
@@ -61,26 +64,44 @@ def format_output_text(header, table_data, remapping):
 
 # TODO update documentation
 def write_output_file(gene_id, output_data):
+    """
 
-        # Constants for file delimiters
-        file_extension = '.txt'
-        row_delimiter = '\n'
-        column_delimiter = '\t'
+    @param gene_id:
+    @type gene_id:
+    @param output_data:
+    @type output_data:
+    @return:
+    @rtype:
+    """
 
-        filename = "".join([gene_id, file_extension])
+    # Constants for file delimiters
+    file_extension = '.txt'
+    row_delimiter = '\n'
+    column_delimiter = '\t'
 
-        # write table data to file in Unicode encoding (some characters are not ASCII encodable)
-        with open(filename, 'w', encoding='utf-8') as f:
-            file_lines = []
+    filename = "".join([gene_id, file_extension])
 
-            for row in output_data:
-                file_lines.append(column_delimiter.join(row))
+    # write table data to file in Unicode encoding (some characters are not ASCII encodable)
+    with open(filename, 'w', encoding='utf-8') as f:
+        file_lines = []
 
-            f.write(row_delimiter.join(file_lines))
+        for row in output_data:
+            file_lines.append(column_delimiter.join(row))
+
+        f.write(row_delimiter.join(file_lines))
 
 
 # TODO update documentation
 def process_gene(leiden_database, gene_id):
+    """
+
+    @param leiden_database:
+    @type leiden_database:
+    @param gene_id:
+    @type gene_id:
+    @return:
+    @rtype:
+    """
     try:
         # Get header data
         print('    ---> Downloading Variant Data...')
@@ -100,7 +121,7 @@ def process_gene(leiden_database, gene_id):
         if id_number > 0:
             print('    ---> Remapping Submitted.')
         else:
-            print('    ---> Batch Remapping Failed.')
+            print('    ---> ERROR: Batch Remapping Failed.')
     except:
         id_number = -1
         entries = []
@@ -112,20 +133,13 @@ def process_gene(leiden_database, gene_id):
 # TODO update documentation
 def get_errors(gene_id):
     """
-    Given the list of command line arguments passed to the script, return error messages with optional stack trace.
 
-    @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for actin,
-    as specified on the Leiden Database homepage (linked above).
-    @param commandline_args: a parser.parse_args() object from the argparse library. Assumed to contain an \
-    argument called debug to indicate verbosity of error messages. args.debug is true, full stack traces are \
-    printed for errors. A simple error message is printed otherwise. See return for details.
-    @rtype: string
-    @return: Error message in the format "<gene_id>: ERROR - NOT PROCESSED. Use --debug option for more details." \
-    if the debug option is not specified and in the format \
-    "<gene_id>: ERROR - NOT PROCESSED. STACK TRACE: \n <stack trace>" if the --debug option is specified.
+    @param gene_id:
+    @return:
+    @rtype:
     """
 
-    return "".join(["    ---> ", gene_id, ": ERROR - No entries found for gene. Please verify."])
+    return ''.join(['    ---> ' + 'ERROR: No Entries Found. Please Verify.'])
 
 
 # TODO update documentation
@@ -166,6 +180,7 @@ print("    ---> VERSION " + str(version_number) + " DETECTED")
 id_numbers = []
 table_data = []
 headers = []
+
 
 # User has specified the available genes option, print a list of all available genes.
 if args.availableGenes:

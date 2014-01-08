@@ -53,8 +53,9 @@ class TextProcessing:
         @type link_url: string
         @return: PUBMED ID associated with link_url (as specified by the N digit ID included in PUBMED URLs). Assumes \
         that PMIDs are at least 4 digits long and that no other 4 digit or longer numeric sequences are contained in \
-        link_url.
+        link_url. Returns empty string if no 4 digit or longer sequence is present in URL.
         @rtype: string
+        @raise: ValueError if there is no 4+ digit number in link_url
         """
 
         # Search for sequences of digits that are four digits or longer in length.
@@ -62,7 +63,10 @@ class TextProcessing:
         results = m.search(link_url)
 
         # Return entire matched sequence (PMID)
-        return results.group()
+        if results is not None:
+            return results.group()
+        else:
+            raise ValueError('Input URL did not contain 4+ digit number.')
 
     @staticmethod
     def get_omimid(link_url):
@@ -72,11 +76,12 @@ class TextProcessing:
         @param link_url: URL to the entry on OMIM. Assumed to be a valid link to an entry on PUBMED. \
         For example, U(http://www.omim.org/entry/102610#0003) is a valid link to an OMIM entry on the ACTA1 gene. \
         The url must contain the gene ID followed by the entry number in the URL separated by a hash mark \
-        (such as, 102610#0003 in the example URL).
+        (such as, 102610#0003 in the example URL). URL may not contain other instances of this pattern.
         @type link_url: string
         @return: OMIM entry associated with the URL. This consists of the gene ID (such as 102610 for ACTA1 and a \
         specific entry number (0003) separated by a hash mark (102610#0003 in the example above).
         @rtype: string
+        @raise: Value Error if link does not contain a valid OMIM ID.
         """
 
         # Search for sequences of digits separated only by a hash mark
@@ -84,14 +89,19 @@ class TextProcessing:
         results = m.search(link_url)
 
         # Return entire matched sequence (OMIM ID)
-        return results.group()
+        if results is not None:
+            return results.group()
+        else:
+            raise ValueError('Input URL did not contain valid OMIM ID.')
 
+    # TODO use regex to improve robustness
     @staticmethod
     def remove_times_reported(hgvs_notation):
         """
-        If the hgvs_notation string contains '(Reported N times)' text alongside the HGVS variant description, returns \
+        If the hgvs_notation string contains '(Reported N times)' text proceeding the HGVS variant description, returns \
         a new string with (Reported N times) removed. Note that N can take on any integer value in hgvs_notation. \
-        Return string is unchanged from original if '(Reported N times)' substring is not found.
+        Return string is unchanged from original if '(Reported N times)' substring is not found. (Reported N Times) \
+        substring must come after the variant description.
 
         @param hgvs_notation: String, typically an entry in the DNA Change column in table_data for a given variant on \
         an LOVD installation.
@@ -105,11 +115,11 @@ class TextProcessing:
         hgvs_notation_lower = hgvs_notation.lower()
 
         if '(reported' in hgvs_notation_lower:
-            # Find where '(reported' begins in hgvs_notation
+            # Find where ' (reported' begins in hgvs_notation
             reported_substring_index = hgvs_notation_lower.find('(reported ') - 1
 
             # Return string with (Reported N times) removed, original case
-            return hgvs_notation[0::reported_substring_index]
+            return hgvs_notation[0:reported_substring_index]
         else:
             # Return original string unchanged
             return hgvs_notation
