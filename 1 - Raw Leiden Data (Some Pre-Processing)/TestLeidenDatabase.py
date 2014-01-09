@@ -122,60 +122,109 @@ class TestVariantRemapper(unittest.TestCase):
 
 class TestLeidenDatabase(unittest.TestCase):
     def setUp(self):
-        pass
+        self.database = LeidenDatabase('http://www.dmd.nl/nmdb2/')
 
     def test_get_lovd_version(self):
-        self.fail('Not implemented yet.')
+        # LOVD2 Installation
+        input = 'http://www.dmd.nl/nmdb2/'
+        result = 2
+        self.assertEqual(LeidenDatabase.get_lovd_version(input), result)
+
+        # LOVD3 Installation
+        input = 'http://mseqdr.lumc.edu/GEDI/'
+        result = 3
+        self.assertEqual(LeidenDatabase.get_lovd_version(input), result)
 
     def test_get_version_number(self):
-        self.fail('Not implemented yet.')
+        # Parent class, does not have a version number
+        self.assertEqual(self.database.get_version_number(), '')
 
     def test_set_gene_id(self):
         self.fail('Not implemented yet.')
 
     def test_get_variant_database_url(self):
-        self.fail('Not implemented yet.')
+        # Abstract, not implemented for parent class
+        pass
 
     def test_gene_homepage_url(self):
-        self.fail('Not implemented yet.')
+        # Abstract, not implemented for parent class
+        pass
 
     def test_get_available_genes(self):
-        self.fail('Not implemented yet.')
+        # Abstract, not implemented for parent class
+        pass
 
     def test_get_link_info(self):
         self.fail('Not implemented yet.')
 
     def test_get_transcript_refseqid(self):
-        self.fail('Not implemented yet.')
+        # Will be tested separately for each subclass
+        pass
 
     def test_get_table_headers(self):
-        self.fail('Not implemented yet.')
+        # Abstract, not implemented for parent class
+        pass
 
     def test_get_table_data(self):
-        self.fail('Not implemented yet.')
-
-    def test_get_gene_name(self):
-        self.fail('Not implemented yet.')
+        # Abstract, not implemented for parent class
+        pass
 
 
 class TestLOVD2Database(unittest.TestCase):
     def setUp(self):
-        pass
+        # Two LOVD2 installations
+        self.database1 = LOVD2Database('http://www.dmd.nl/nmdb2/')
+        self.database2 = LOVD2Database('http://grenada.lumc.nl/LOVD2/eye/')
 
     def test_get_lovd_version(self):
-        self.fail('Not implemented yet.')
+        # Static method, not overridden in subclasses
+        pass
 
     def test_get_version_number(self):
-        self.fail('Not implemented yet.')
+        # LOVD2 is version 2
+        result = 2
+        self.assertEqual(self.database1.get_version_number(), result)
 
     def test_set_gene_id(self):
         self.fail('Not implemented yet.')
 
     def test_get_variant_database_url(self):
-        self.fail('Not implemented yet.')
+        # Two genes from database1
+        input = 'ACTA1'
+        result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=ACTA1&limit=1000'
+        self.assertEqual(self.database1.get_variant_database_url(input), result)
 
-    def test_gene_homepage_url(self):
-        self.fail('Not implemented yet.')
+        input = 'CAPN3'
+        result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=CAPN3&limit=1000'
+        self.assertEqual(self.database1.get_variant_database_url(input), result)
+
+        # Two genes from database2
+        input = 'BBS2'
+        result = 'http://grenada.lumc.nl/LOVD2/eye/variants.php?action=search_unique&select_db=BBS2&limit=1000'
+        self.assertEqual(self.database2.get_variant_database_url(input), result)
+
+        input = 'CRYAA'
+        result = 'http://grenada.lumc.nl/LOVD2/eye/variants.php?action=search_unique&select_db=CRYAA&limit=1000'
+        self.assertEqual(self.database2.get_variant_database_url(input), result)
+
+    def test_get_gene_homepage_url(self):
+        # Two genes from database1
+        input = 'ACTA1'
+        result = 'http://www.dmd.nl/nmdb2/home.php?select_db=ACTA1'
+        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+
+        input = 'CAPN3'
+        result = 'http://www.dmd.nl/nmdb2/home.php?select_db=CAPN3'
+        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+
+        # Two genes from database2
+        input = 'BBS2'
+        result = 'http://grenada.lumc.nl/LOVD2/eye/home.php?select_db=BBS2'
+        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+
+        input = 'CRYAA'
+        result = 'http://grenada.lumc.nl/LOVD2/eye/home.php?select_db=CRYAA'
+        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
 
     def test_get_available_genes(self):
         self.fail('Not implemented yet.')
@@ -184,45 +233,111 @@ class TestLOVD2Database(unittest.TestCase):
         self.fail('Not implemented yet.')
 
     def test_get_transcript_refseqid(self):
-        self.fail('Not implemented yet.')
+        # Two genes from database1
+        input = 'ACTA1'
+        result = 'NM_001100.3'
+        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+
+        input = 'CAPN3'
+        result = 'NM_000070.2'
+        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+
+        # Two genes from database2
+        input = 'BBS2'
+        result = 'NM_031885.3'
+        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+
+        input = 'CRYAA'
+        result = 'NM_000394.2'
+        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
 
     def test_get_table_headers(self):
         self.fail('Not implemented yet.')
 
     def test_get_table_data(self):
-        self.fail('Not implemented yet.')
-
-    def test_get_gene_name(self):
         self.fail('Not implemented yet.')
 
 
 class TestLOVD3Database(unittest.TestCase):
     def setUp(self):
-        pass
+        self.database1 = LOVD3Database('http://mseqdr.lumc.edu/GEDI/')
+        self.database2 = LOVD3Database('http://mseqdr.lumc.edu/MITO/')
 
     def test_get_lovd_version(self):
-        self.fail('Not implemented yet.')
+        # Static method, not overridden in subclasses
+        pass
 
     def test_get_version_number(self):
-        self.fail('Not implemented yet.')
+        # LOVD3 is version 3
+        result = 3
+        self.assertEqual(self.database1.get_version_number(), result)
 
     def test_set_gene_id(self):
         self.fail('Not implemented yet.')
 
     def test_get_variant_database_url(self):
-        self.fail('Not implemented yet.')
+        # Two genes from database1
+        input = 'BBS1'
+        result = 'http://mseqdr.lumc.edu/GEDI/variants/BBS1?page_size=1000&page=1'
+        self.assertEqual(self.database1.get_variant_database_url(input), result)
 
-    def test_gene_homepage_url(self):
-        self.fail('Not implemented yet.')
+        input = 'CTC1'
+        result = 'http://mseqdr.lumc.edu/GEDI/variants/CTC1?page_size=1000&page=1'
+        self.assertEqual(self.database1.get_variant_database_url(input), result)
+
+        # Two genes from database2
+        input = 'AMACR'
+        result = 'http://mseqdr.lumc.edu/MITO/variants/AMACR?page_size=1000&page=1'
+        self.assertEqual(self.database2.get_variant_database_url(input), result)
+
+        input = 'ALDH3A2'
+        result = 'http://mseqdr.lumc.edu/MITO/variants/ALDH3A2?page_size=1000&page=1'
+        self.assertEqual(self.database2.get_variant_database_url(input), result)
+
+    def test_get_gene_homepage_url(self):
+        # Two genes from database1
+        input = 'BBS1'
+        result = 'http://mseqdr.lumc.edu/GEDI/genes/BBS1?page_size=1000&page=1'
+        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+
+        input = 'CTC1'
+        result = 'http://mseqdr.lumc.edu/GEDI/genes/CTC1?page_size=1000&page=1'
+        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+
+        # Two genes from database2
+        input = 'AMACR'
+        result = 'http://mseqdr.lumc.edu/MITO/genes/AMACR?page_size=1000&page=1'
+        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+
+        input = 'ALDH3A2'
+        result = 'http://mseqdr.lumc.edu/MITO/genes/ALDH3A2?page_size=1000&page=1'
+        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
 
     def test_get_available_genes(self):
         self.fail('Not implemented yet.')
 
     def test_get_link_info(self):
-        self.fail('Not implemented yet.')
+        # Static method, not overridden in subclasses
+        pass
 
     def test_get_transcript_refseqid(self):
-        self.fail('Not implemented yet.')
+        # Two genes from database1
+        input = 'BBS1'
+        result = 'NM_024649.4'
+        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+
+        input = 'CTC1'
+        result = 'NM_025099.5'
+        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+
+        # Two genes from database2
+        input = 'AMACR'
+        result = 'NM_001167595.1'
+        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+
+        input = 'ALDH3A2'
+        result = 'NM_000382.2'
+        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
 
     def test_get_table_headers(self):
         self.fail('Not implemented yet.')
@@ -230,8 +345,7 @@ class TestLOVD3Database(unittest.TestCase):
     def test_get_table_data(self):
         self.fail('Not implemented yet.')
 
-    def test_get_gene_name(self):
-        self.fail('Not implemented yet.')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -19,18 +19,18 @@ def get_leiden_database(leiden_url):
     @type leiden_url: string
     @return: Instance of _LeidenDatabase class (see definition for available methods). This object facilitates data \
     extraction from the database.
-    @rtype: _LeidenDatabase
+    @rtype: LeidenDatabase
     @raise: Exception if the LOVD version installed at specified URL is unsupported (anything other than version 2 or 3)
     """
 
     # Get the LOVD version installed at the specified URL
-    version = _LeidenDatabase.get_lovd_version(leiden_url)
+    version = LeidenDatabase.get_lovd_version(leiden_url)
 
     # Generate instance of appropriate _LeidenDatabase subclass for installed version
     if version == 2:
-        database = _LOVD2Database(leiden_url)
+        database = LOVD2Database(leiden_url)
     elif version == 3:
-        database = _LOVD3Database(leiden_url)
+        database = LOVD3Database(leiden_url)
     else:
         raise Exception("Unrecognized version number: " + str(version) + "!")
 
@@ -264,7 +264,7 @@ class VariantRemapper:
 
 
 # TODO update documentation
-class _LeidenDatabase:
+class LeidenDatabase:
     """
     Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD
     Leiden Database installation. For example, U(http://www.dmd.nl/nmdb2/), is a particular installation for
@@ -440,7 +440,9 @@ class _LeidenDatabase:
                 result.append("INVALID_LINK_MARKUP")
         return link_delimiter.join(result)
 
-    # TODO update documentation
+    # TODO update documentation - some LOVD3 databases list multiple transcripts... Looks like db can display relative
+    # to any of them and that the first one is always used. Want to make sure that this function always returns the
+    # first transcript from the list. Add to docs.
     def get_transcript_refseqid(self, gene_id):
         """
         Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on\
@@ -494,28 +496,9 @@ class _LeidenDatabase:
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
-    # TODO update documentation
-    def get_gene_name(self, gene_id):
-        """
-        Returns the full name of the gene name associated with the database as a string. This is the full drop-down
-        entry for the given gene on the Leiden Database base URL. For example, the gene name for ACTA1 on
-        U(http://www.dmd.nl/nmdb2/) is "ACTA1 (ACTin, Alpha 1 (skeletal muscle))".
-
-        @rtype: string
-        @return: the full gene name of the gene associated as defined by the gene_name id in the Leiden Database HTML \
-        (also included in the drop-down menu located: U(http://www.dmd.nl/nmdb2/home.php?action=switch_db))
-        """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
-
-        # gene_name id is unique to this entry
-        return self.database_soup.find(id='gene_name').text.strip()
-
 
 # TODO update documentation
-class _LOVD2Database(_LeidenDatabase):
+class LOVD2Database(LeidenDatabase):
     """
 
     """
@@ -533,7 +516,7 @@ class _LOVD2Database(_LeidenDatabase):
         """
 
         # Call to the super class constructor
-        _LeidenDatabase.__init__(self, leiden_url)
+        LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 2
 
         # Validate and set URL for specified Leiden Database
@@ -687,7 +670,7 @@ class _LOVD2Database(_LeidenDatabase):
 
 
 # TODO update documentation
-class _LOVD3Database(_LeidenDatabase):
+class LOVD3Database(LeidenDatabase):
     """
 
     """
@@ -704,7 +687,7 @@ class _LOVD3Database(_LeidenDatabase):
         """
 
         # Call to the super class constructor
-        _LeidenDatabase.__init__(self, leiden_url)
+        LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 3
 
         if not leiden_url.lower().endswith('/'):
