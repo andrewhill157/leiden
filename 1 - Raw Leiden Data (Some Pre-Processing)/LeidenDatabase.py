@@ -94,35 +94,26 @@ class TextProcessing:
         else:
             raise ValueError('Input URL did not contain valid OMIM ID.')
 
-    # TODO use regex to improve robustness
     @staticmethod
     def remove_times_reported(hgvs_notation):
         """
-        If the hgvs_notation string contains '(Reported N times)' text proceeding the HGVS variant description, returns \
+        If the hgvs_notation string contains '(Reported N times)' embedded in the HGVS variant description, returns \
         a new string with (Reported N times) removed. Note that N can take on any integer value in hgvs_notation. \
-        Return string is unchanged from original if '(Reported N times)' substring is not found. (Reported N Times) \
-        substring must come after the variant description.
+        Return string is unchanged from original if '(Reported N times)' substring is not found. Comparison is not \
+        case sensitive.
 
         @param hgvs_notation: String, typically an entry in the DNA Change column in table_data for a given variant on \
         an LOVD installation.
         @type hgvs_notation: string
-        @return: hgvs_notation with instances of (Reported N times) removed. Assumes that this substring appears after \
-        the HGVS notation in the entry.
+        @return: hgvs_notation with instances of (Reported N times) removed. Whitespace surrounding this substring is
+        removed in returned string.
         @rtype: string
         """
+        # Compile case-insensitive regex to match pattern
+        m = re.compile('\s*\(Reported \d+ Times\)\s*', re.IGNORECASE)
 
-        # Convert to lowercase before comparisons
-        hgvs_notation_lower = hgvs_notation.lower()
-
-        if '(reported' in hgvs_notation_lower:
-            # Find where ' (reported' begins in hgvs_notation
-            reported_substring_index = hgvs_notation_lower.find('(reported ') - 1
-
-            # Return string with (Reported N times) removed, original case
-            return hgvs_notation[0:reported_substring_index]
-        else:
-            # Return original string unchanged
-            return hgvs_notation
+        # Replace pattern in original string with empty string
+        return m.sub('', hgvs_notation)
 
     @staticmethod
     def find_string_index(string_list, search_string):
