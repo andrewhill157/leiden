@@ -262,6 +262,86 @@ class VariantRemapper:
         chromosomal_variants = [x[variant_column] for x in data[1:]]
         return chromosomal_variants
 
+    @staticmethod
+    def get_chromosome_number(mapping):
+        """
+        Given a mapping of the form NC_######.#:g.<HGVS notation>, where NC_###### is the chromosome reference ID,
+        returns tha chromosome number from the mutation mapping. For example, calling on NC_000001.2:g.524264A>C
+        would return 1. The mapping is assumed to be in valid HGVS notation.
+
+        @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
+        @type mapping: string
+        @return: chromosome number of the mutation as a string
+        @rtype: string
+        @raise: ValueError if HGVS mapping is in invalid format
+        """
+
+        m = re.search(r'([0]+)([1-9][0-9]?)([.])', mapping)
+        if m is not None:
+            return m.group(2)
+        else:
+            raise ValueError('Invalid mapping notation')
+
+    @staticmethod
+    def get_coordinates(mapping):
+        """
+        Given a mapping of the form NC_######.#:g.<HGVS notation>, where NC_###### is the chromosome reference ID,
+        returns tha coordinate from the mutation mapping. For example, calling on NC_0000001.2:g.524264A>C
+        would return 524264. The mapping is assumed to be in valid HGVS notation.
+
+        @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
+        @type mapping: string
+        @return: coordinates of the mutation as a string
+        @rtype: string
+        @raise: ValueError if HGVS mapping is in invalid format
+        """
+
+        m = re.search(r'([g][.])([0-9]*[_]?[0-9]*)', mapping)
+        if m is not None:
+            return m.group(2)
+        else:
+            raise ValueError('Invalid mapping notation')
+
+    @staticmethod
+    def get_ref(mapping):
+        """
+        Given a mapping of the form NC_######.#:g.<HGVS notation>, where NC_###### is the chromosome reference ID,
+        returns tha REF (reference) base from the mutation mapping. For example, calling on NC_0000001:g.524264A>C
+        would return A. The mapping is assumed to be in valid HGVS notation.
+
+        @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
+        @type mapping: string
+        @return: reference base of the mutation (base before the mutation) as a string
+        @rtype: string
+        @raise: ValueError if HGVS mapping is in invalid format
+        """
+
+        m = re.search(r'([A-Z])([>])([A-Z])', mapping)
+        if m is not None:
+            return m.group(1)
+        else:
+            raise ValueError('Invalid mapping notation')
+
+    @staticmethod
+    def get_alt(mapping):
+        """
+        Given a mapping of the form NC_######.#:g.<HGVS notation>, where NC_###### is the chromosome reference ID,
+        returns tha ALT (reference) base from the mutation mapping. For example, calling on NC_0000001:g.524264A>C
+        would return C. The mapping is assumed to be in valid HGVS notation.
+
+        @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
+        @type mapping: string
+        @return: alternate base of the mutation (base after the mutation) as a string
+        @rtype: string
+        @raise: ValueError if HGVS mapping is in invalid format
+        """
+
+        m = re.search(r'([A-Z])([>])([A-Z])', mapping)
+        if m is not None:
+            return m.group(3)
+        else:
+            raise ValueError('Invalid mapping notation')
+
 
 # TODO update documentation
 class LeidenDatabase:

@@ -119,6 +119,50 @@ class TestVariantRemapper(unittest.TestCase):
     def test_get_batch_results(self):
         self.fail('Not implemented yet.')
 
+    def test_get_chromosome_number(self):
+        # One digit chromosome number
+        input = 'NC_0000001.2:g.524264A>C'
+        result = '1'
+        self.assertEqual(VariantRemapper.get_chromosome_number(input), result)
+
+        # Two digit chromosome number
+        input = 'NC_0000012.1:g.524264A>C'
+        result = '12'
+        self.assertEqual(VariantRemapper.get_chromosome_number(input), result)
+
+    def test_get_coordinates(self):
+        # Long coordinate number
+        input = 'NC_0000001.2:g.524264A>C'
+        result = '524264'
+        self.assertEqual(VariantRemapper.get_coordinates(input), result)
+
+        # Single-digit coordinate number
+        input = 'NC_0000012.1:g.1G>T'
+        result = '1'
+        self.assertEqual(VariantRemapper.get_coordinates(input), result)
+
+    def test_get_ref(self):
+        # Example 1
+        input = 'NC_0000001.2:g.524264A>C'
+        result = 'A'
+        self.assertEqual(VariantRemapper.get_ref(input), result)
+
+        # Example 2
+        input = 'NC_0000012.1:g.1G>T'
+        result = 'G'
+        self.assertEqual(VariantRemapper.get_ref(input), result)
+
+    def test_get_alt(self):
+        # Example 1
+        input = 'NC_0000001.2:g.524264A>C'
+        result = 'C'
+        self.assertEqual(VariantRemapper.get_alt(input), result)
+
+        # Example 2
+        input = 'NC_0000012.1:g.1G>T'
+        result = 'T'
+        self.assertEqual(VariantRemapper.get_alt(input), result)
+
 
 class TestLeidenDatabase(unittest.TestCase):
     def setUp(self):
