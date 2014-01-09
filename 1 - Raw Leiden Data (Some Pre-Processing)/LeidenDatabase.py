@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup  # HTML parsing
 import urllib.request   # HTTP interaction
 import re  # regex support
 from suds.client import Client  # webservice API client
+import suds
 import base64
 
 
@@ -180,7 +181,8 @@ class VariantRemapper:
         @type variant: string
         @return: Variant in HG19 coordinate notation, such as NC_000001.10:g.229568620A>G, where the portion prior \
         to the colon describes the chromosome number (1 in the example) and the portion after the colon is an HGVS-\
-        style description of the genomic variant (a SNP from A to G at location 229568620 in the example above).
+        style description of the genomic variant (a SNP from A to G at location 229568620 in the example above). Empty \
+        string returned if the variant could not be remapped.
         @rtype: string
         """
 
@@ -190,9 +192,9 @@ class VariantRemapper:
         try:
             result = self.mutalyzer.numberConversion(genome_version, variant)
             result = result[0][0]  # converts return value to string
-        except:
+        except suds.WebFault:
             # Variants with syntax errors are replaced with REMAPPING_ERROR
-            result = 'REMAPPING_ERROR'
+            result = ''
 
         return result
 
