@@ -296,7 +296,7 @@ class VariantRemapper:
         @raise: ValueError if HGVS mapping is in invalid format
         """
 
-        m = re.search(r'([g][.])([0-9]*[_]?[0-9]*)', mapping)
+        m = re.search(r'([g][.])([0-9]+[_]?[0-9]*)', mapping)
         if m is not None:
             return m.group(2)
         else:
