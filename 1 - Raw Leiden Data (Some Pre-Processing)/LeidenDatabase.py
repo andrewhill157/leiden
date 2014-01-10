@@ -4,6 +4,7 @@ import re  # regex support
 from suds.client import Client  # webservice API client
 import suds
 import base64
+from collections import namedtuple
 
 
 def get_leiden_database(leiden_url):
@@ -243,9 +244,9 @@ class VariantRemapper:
         """
 
         @param id_number:
-        @type id_number:
+        @type id_number: string
         @return:
-        @rtype:
+        @rtype: namedtuple
         """
         result = self.mutalyzer.getBatchJob(id_number)
         result = base64.b64decode(result).decode()
@@ -260,7 +261,15 @@ class VariantRemapper:
         # Entries with no error (most) will have no entries in that column
         variant_column = TextProcessing.find_string_index(data[0], 'Chromosomal Variant')
         chromosomal_variants = [x[variant_column] for x in data[1:]]
-        return chromosomal_variants
+
+        # Extract information of interest from remapping notation
+        chromosome_number = [VariantRemapper.get_chromosome_number(x) for x in chromosomal_variants]
+        coordinate = [VariantRemapper.get_coordinates(x) for x in chromosomal_variants]
+        ref = [VariantRemapper.get_ref(x) for x in chromosomal_variants]
+        alt = [VariantRemapper.get_alt(x) for x in chromosomal_variants]
+
+        remapping_results = namedtuple('remapping_results', 'chromosome_number coordinate ref alt')
+        return remapping_results(chromosome_number, coordinate, ref, alt)
 
     @staticmethod
     def get_chromosome_number(mapping):
@@ -271,16 +280,15 @@ class VariantRemapper:
 
         @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
         @type mapping: string
-        @return: chromosome number of the mutation as a string
+        @return: chromosome number of the mutation. Empty string if none found.
         @rtype: string
-        @raise: ValueError if HGVS mapping is in invalid format
         """
 
         m = re.search(r'([0]+)([1-9][0-9]?)([.])', mapping)
         if m is not None:
             return m.group(2)
         else:
-            raise ValueError('Invalid mapping notation')
+            return ''
 
     @staticmethod
     def get_coordinates(mapping):
@@ -291,16 +299,15 @@ class VariantRemapper:
 
         @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
         @type mapping: string
-        @return: coordinates of the mutation as a string
+        @return: coordinates of the mutation. Empty string if none found.
         @rtype: string
-        @raise: ValueError if HGVS mapping is in invalid format
         """
 
         m = re.search(r'([g][.])([0-9]+[_]?[0-9]*)', mapping)
         if m is not None:
             return m.group(2)
         else:
-            raise ValueError('Invalid mapping notation')
+            return ''
 
     @staticmethod
     def get_ref(mapping):
@@ -311,16 +318,15 @@ class VariantRemapper:
 
         @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
         @type mapping: string
-        @return: reference base of the mutation (base before the mutation) as a string
+        @return: reference base of the mutation (base before the mutation).  Empty string if none found.
         @rtype: string
-        @raise: ValueError if HGVS mapping is in invalid format
         """
 
         m = re.search(r'([A-Z])([>])([A-Z])', mapping)
         if m is not None:
             return m.group(1)
         else:
-            raise ValueError('Invalid mapping notation')
+            return ''
 
     @staticmethod
     def get_alt(mapping):
@@ -331,16 +337,15 @@ class VariantRemapper:
 
         @param mapping: string with the mapping of a mutation in HGVS notation as shown above.
         @type mapping: string
-        @return: alternate base of the mutation (base after the mutation) as a string
+        @return: alternate base of the mutation (base after the mutation).  Empty string if none found.
         @rtype: string
-        @raise: ValueError if HGVS mapping is in invalid format
         """
 
         m = re.search(r'([A-Z])([>])([A-Z])', mapping)
         if m is not None:
             return m.group(3)
         else:
-            raise ValueError('Invalid mapping notation')
+            return ''
 
 
 # TODO update documentation

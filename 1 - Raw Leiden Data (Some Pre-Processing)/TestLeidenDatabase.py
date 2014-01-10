@@ -148,7 +148,8 @@ class TestVariantRemapper(unittest.TestCase):
 
         # No chromosome number provided
         input = 'g.524264A>C'
-        self.assertRaises(ValueError, VariantRemapper.get_chromosome_number, input)
+        result = ''
+        self.assertEqual(VariantRemapper.get_chromosome_number(input), result)
 
     def test_get_coordinates(self):
         # Long coordinate number
@@ -162,8 +163,9 @@ class TestVariantRemapper(unittest.TestCase):
         self.assertEqual(VariantRemapper.get_coordinates(input), result)
 
         # No coordinate provided
-        input = 'NC_0000012.1:g.A>C'
-        self.assertRaises(ValueError, VariantRemapper.get_coordinates, input)
+        result = ''
+        input = 'NC_0000012.1:g.G>T'
+        self.assertEqual(VariantRemapper.get_coordinates(input), result)
 
     def test_get_ref(self):
         # Example 1
@@ -178,7 +180,8 @@ class TestVariantRemapper(unittest.TestCase):
 
         # No ref provided
         input = 'NC_0000012.1:g.1>C'
-        self.assertRaises(ValueError, VariantRemapper.get_ref, input)
+        result = ''
+        self.assertEqual(VariantRemapper.get_ref(input), result)
 
     def test_get_alt(self):
         # Example 1
@@ -193,7 +196,8 @@ class TestVariantRemapper(unittest.TestCase):
 
         # No alt provided
         input = 'NC_0000012.1:g.1A>'
-        self.assertRaises(ValueError, VariantRemapper.get_alt, input)
+        result = ''
+        self.assertEqual(VariantRemapper.get_alt(input), result)
 
 
 class TestLeidenDatabase(unittest.TestCase):
