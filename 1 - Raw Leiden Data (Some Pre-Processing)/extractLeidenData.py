@@ -30,7 +30,7 @@ def get_remapping_results(gene_ids, id_numbers):
             print('        ---> Complete')
 
         else:
-            results.append([''])
+            results.append([])
             print('        ---> ERROR')
 
     return results
@@ -46,18 +46,19 @@ def format_output_text(header, table_data, remapping):
     @param remapping:
     @type remapping:
     @return:
-    @rtype:
+    @rtype: list of lists
     """
     if len(remapping) > 0:
-        hgvs_mutation_column = TextProcessing.find_string_index(header, u'DNA\xa0change')
-        header.insert(hgvs_mutation_column + 1, u'Genomic Variant')
+        # Insert new column headers for remapping results
+        remapping_start_index = TextProcessing.find_string_index(header, u'DNA\xa0change') + 1
+        header[remapping_start_index:remapping_start_index] = ['Chromosome Number', 'Coordinate', 'Ref', 'Alt']
 
-        for i in range(0, len(remapping)):
-            if remapping[i] is '':
-                remapping[i] = 'REMAPPING_ERROR'
+        # Insert remapping result columns
+        for i in range(0, len(remapping.chromosome_number)):
+            table_data[i][remapping_start_index:remapping_start_index] = \
+                [remapping.chromosome_number[i], remapping.coordinate[i], remapping.ref[i], remapping.alt[i]]
 
-            table_data[i].insert(hgvs_mutation_column + 1, remapping[i])
-
+    # Combine all data into one list of lists
     table_data.insert(0, header)
     return table_data
 
@@ -139,7 +140,7 @@ def get_errors(gene_id):
     @rtype:
     """
 
-    return ''.join(['    ---> ' + 'ERROR: No Entries Found. Please Verify.'])
+    return '    ---> ERROR: No Entries Found. Please Verify.'
 
 
 # TODO update documentation
