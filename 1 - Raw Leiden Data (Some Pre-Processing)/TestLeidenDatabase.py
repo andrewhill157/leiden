@@ -2,109 +2,119 @@ import unittest  # Testing framework
 from LeidenDatabase import *  # Module under test
 
 
-class TestTextProcessing(unittest.TestCase):
+class TestUtilities(unittest.TestCase):
 
     def test_get_pmid(self):
         # Typical PubMed URL
         input = 'http://www.ncbi.nlm.nih.gov/pubmed/19562689'
         result = '19562689'
-        self.assertEqual(TextProcessing.get_pmid(input), result)
+        self.assertEqual(Utilities.get_pmid(input), result)
 
         # Early PubMed URL with shorter ID
         input = 'http://www.ncbi.nlm.nih.gov/pubmed/1592'
         result = '1592'
-        self.assertEqual(TextProcessing.get_pmid(input), result)
+        self.assertEqual(Utilities.get_pmid(input), result)
 
         # PMID is below the 4-digit minimum, should raise exception
         input = 'http://www.ncbi.nlm.nih.gov/pubmed/34'
-        self.assertRaises(ValueError, TextProcessing.get_pmid, input)
+        self.assertRaises(ValueError, Utilities.get_pmid, input)
 
         # No PMID present, should raise exception
         input = 'http://www.ncbi.nlm.nih.gov/pubmed/'
-        self.assertRaises(ValueError, TextProcessing.get_pmid, input)
+        self.assertRaises(ValueError, Utilities.get_pmid, input)
 
     def test_get_omimid(self):
         # Typical OMIM URL
         input = 'http://www.omim.org/entry/102610#0001'
         result = '102610#0001'
-        self.assertEqual(TextProcessing.get_omimid(input), result)
+        self.assertEqual(Utilities.get_omimid(input), result)
 
         # Shortened, but valid, OMIM URL
         input = 'http://www.omim.org/entry/0#0'
         result = '0#0'
-        self.assertEqual(TextProcessing.get_omimid(input), result)
+        self.assertEqual(Utilities.get_omimid(input), result)
 
         # Invalid OMIM URL - no digits after #
         input = 'http://www.omim.org/entry/102610#'
-        self.assertRaises(ValueError, TextProcessing.get_omimid, input)
+        self.assertRaises(ValueError, Utilities.get_omimid, input)
 
         # Invalid OMIM URL - no digits before #
         input = 'http://www.omim.org/entry/#102610'
-        self.assertRaises(ValueError, TextProcessing.get_omimid, input)
+        self.assertRaises(ValueError, Utilities.get_omimid, input)
 
         # Invalid OMIM URL - no #
         input = 'http://www.omim.org/entry/102610'
-        self.assertRaises(ValueError, TextProcessing.get_omimid, input)
+        self.assertRaises(ValueError, Utilities.get_omimid, input)
 
         # Invalid OMIM URL - no digits
         input = 'http://www.omim.org/entry/'
-        self.assertRaises(ValueError, TextProcessing.get_omimid, input)
+        self.assertRaises(ValueError, Utilities.get_omimid, input)
 
     def test_remove_times_reported(self):
         # Basic test case
         input = 'c.5235A>G (Reported 3 Times)'
         result = 'c.5235A>G'
-        self.assertEqual(TextProcessing.remove_times_reported(input), result)
+        self.assertEqual(Utilities.remove_times_reported(input), result)
 
         # Basic test case with more digits in times reported
         input = 'c.5235A>G (Reported 403 Times)'
         result = 'c.5235A>G'
-        self.assertEqual(TextProcessing.remove_times_reported(input), result)
+        self.assertEqual(Utilities.remove_times_reported(input), result)
 
         # Alternate position for target text
         input = '(Reported 403 Times) c.5235A>G'
         result = 'c.5235A>G'
-        self.assertEqual(TextProcessing.remove_times_reported(input), result)
+        self.assertEqual(Utilities.remove_times_reported(input), result)
 
         # Comparison is not case sensitive
         input = 'c.5235A>G (rePoRted 403 times)'
         result = 'c.5235A>G'
-        self.assertEqual(TextProcessing.remove_times_reported(input), result)
+        self.assertEqual(Utilities.remove_times_reported(input), result)
 
         # Should return unchanged without altering white-space
         input = ' c.5235A>G '
         result = ' c.5235A>G '
-        self.assertEqual(TextProcessing.remove_times_reported(input), result)
+        self.assertEqual(Utilities.remove_times_reported(input), result)
 
     def test_find_string_index(self):
         # Basic test, should return first instance of strings appearing twice
         input = ['test', 'other', 'next', 'unit', 'other']
         result = 1
-        self.assertEqual(TextProcessing.find_string_index(input, 'other'), result)
+        self.assertEqual(Utilities.find_string_index(input, 'other'), result)
 
         # Comparisons should not be case or white-space sensitive
         input = ['Test ', 'OtHeR ', ' nExt ', 'unit']
         result = 1
-        self.assertEqual(TextProcessing.find_string_index(input, 'other'), result)
+        self.assertEqual(Utilities.find_string_index(input, 'other'), result)
 
         result = 2
-        self.assertEqual(TextProcessing.find_string_index(input, 'next '), result)
+        self.assertEqual(Utilities.find_string_index(input, 'next '), result)
 
         # Comparisons should find substrings
         input = ['Word now', 'Word next', 'next', 'unit']
         result = 0
-        self.assertEqual(TextProcessing.find_string_index(input, 'Word'), result)
+        self.assertEqual(Utilities.find_string_index(input, 'Word'), result)
 
         # Return -1 if search string is not found
         input = ['test', 'other', 'next', 'unit', 'other']
         result = -1
-        self.assertEqual(TextProcessing.find_string_index(input, 'not in list'), result)
+        self.assertEqual(Utilities.find_string_index(input, 'not in list'), result)
 
         # Return -1 if list is empty
         input = []
         result = -1
-        self.assertEqual(TextProcessing.find_string_index(input, 'target'), result)
+        self.assertEqual(Utilities.find_string_index(input, 'target'), result)
 
+    def test_swap(self):
+        # Basic example
+        input = [1, 2, 3, 4, 5]
+        result = [5, 2, 3, 4, 1]
+        self.assertEqual(Utilities.swap(input, 0, 4), result)
+
+        # Swap element with itself
+        input = [1, 2, 3, 4, 5]
+        result = [1, 2, 3, 4, 5]
+        self.assertEqual(Utilities.swap(input, 3, 3), result)
 
 class TestVariantRemapper(unittest.TestCase):
     def setUp(self):
