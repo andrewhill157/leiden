@@ -1,149 +1,7 @@
 import argparse
 from LeidenDatabase import *
-import traceback
-import time
+from ExtractLeidenDataFunctions import *
 
-
-# TODO update documentation
-def get_remapping_results(gene_ids, id_numbers):
-    """
-
-    @param gene_ids:
-    @type gene_ids:
-    @param id_numbers:
-    @type id_numbers:
-    @return:
-    @rtype:
-    """
-
-    remapper = VariantRemapper()
-    results = []
-
-    for i in range(0, len(gene_ids)):
-        print('    ---> ' + gene_ids[i])
-
-        if id_numbers[i] > 0:
-            while remapper.entries_remaining_in_batch(id_numbers[i]) > 0:
-                time.sleep(0.5)
-
-            results.append(remapper.get_batch_results(id_numbers[i]))
-            print('        ---> Complete')
-
-        else:
-            results.append([])
-            print('        ---> ERROR')
-
-    return results
-
-# TODO update documentation
-def format_output_text(header, table_data, remapping):
-    """
-
-    @param header:
-    @type header:
-    @param table_data:
-    @type table_data:
-    @param remapping:
-    @type remapping:
-    @return:
-    @rtype: list of lists
-    """
-    if len(remapping) > 0:
-        # Insert new column headers for remapping results
-        remapping_start_index = TextProcessing.find_string_index(header, u'DNA\xa0change') + 1
-        header[remapping_start_index:remapping_start_index] = ['Chromosome Number', 'Coordinate', 'Ref', 'Alt']
-
-        # Insert remapping result columns
-        for i in range(0, len(remapping.chromosome_number)):
-            table_data[i][remapping_start_index:remapping_start_index] = \
-                [remapping.chromosome_number[i], remapping.coordinate[i], remapping.ref[i], remapping.alt[i]]
-
-    # Combine all data into one list of lists
-    table_data.insert(0, header)
-    return table_data
-
-
-# TODO update documentation
-def write_output_file(gene_id, output_data):
-    """
-
-    @param gene_id:
-    @type gene_id:
-    @param output_data:
-    @type output_data:
-    @return:
-    @rtype:
-    """
-
-    # Constants for file delimiters
-    file_extension = '.txt'
-    row_delimiter = '\n'
-    column_delimiter = '\t'
-
-    filename = "".join([gene_id, file_extension])
-
-    # write table data to file in Unicode encoding (some characters are not ASCII encodable)
-    with open(filename, 'w', encoding='utf-8') as f:
-        file_lines = []
-
-        for row in output_data:
-            file_lines.append(column_delimiter.join(row))
-
-        f.write(row_delimiter.join(file_lines))
-
-
-# TODO update documentation
-def process_gene(leiden_database, gene_id):
-    """
-
-    @param leiden_database:
-    @type leiden_database:
-    @param gene_id:
-    @type gene_id:
-    @return:
-    @rtype:
-    """
-    try:
-        # Get header data
-        print('    ---> Downloading Variant Data...')
-        headers = leiden_database.get_table_headers(gene_id)
-        hgvs_mutation_column = TextProcessing.find_string_index(headers, u'DNA\xa0change')
-
-        print('    ---> Processing Variant Data...')
-        # Get table data for variants on given gene
-        entries = leiden_database.get_table_data(gene_id)
-        variants = [x[hgvs_mutation_column] for x in entries]
-
-        print('    ---> Submitting Remapping...')
-        # Remap all variants to genomic coordinates
-        remapper = VariantRemapper()
-        id_number = remapper.submit_variant_batch(variants)
-
-        if id_number > 0:
-            print('    ---> Remapping Submitted.')
-        else:
-            print('    ---> ERROR: Batch Remapping Failed.')
-    except:
-        id_number = -1
-        entries = []
-        headers = []
-
-    return {'id_number':id_number, 'table_data':entries, 'header_data':headers}
-
-
-# TODO update documentation
-def get_errors(gene_id):
-    """
-
-    @param gene_id:
-    @return:
-    @rtype:
-    """
-
-    return '    ---> ERROR: No Entries Found. Please Verify.'
-
-
-# TODO update documentation
 """
 COMMAND LINE INTERFACE
 """
@@ -181,7 +39,7 @@ print("    ---> VERSION " + str(version_number) + " DETECTED")
 id_numbers = []
 table_data = []
 headers = []
-
+genes = None
 
 # User has specified the available genes option, print a list of all available genes.
 if args.availableGenes:
@@ -191,59 +49,50 @@ if args.availableGenes:
 # User has specified the all option, so extract data from all genes available on the Leiden Database
 elif args.all:
     print("---> CHECKING AVAILABLE GENES...")
-    available_genes = database.get_available_genes()
-    for gene in available_genes:
+    genes = database.get_available_genes()
+
+else:
+    if len(args.geneID) > 0:
+        genes = args.geneID
+    else:
+        print('Must specify at least one geneID.')
+
+# Process any available genes
+if genes is not None:
+    for gene in genes:
         print("---> " + gene + ": IN PROGRESS...")
 
         # Extract data and submit variants for remapping
         result = process_gene(database, gene)
-        id_numbers.append(result['id_number'])
-        table_data.append(result['table_data'])
-        headers.append(result['header_data'])
+        id_numbers.append(result.id_number)
+        table_data.append(result.table_data)
+        headers.append(result.header_data)
 
-        if len(result['table_data']) == 0:
+        if len(result.table_data) == 0:
             print(get_errors(gene))
 
 
     print('---> Retrieving Remapping Results...')
-    remapping_results = get_remapping_results(available_genes, id_numbers)
+    remapping_results = get_remapping_results(genes, id_numbers)
 
     print('---> Saving Output Files...')
-    for i in range(0, len(available_genes)):
-        if len(table_data[i]) > 0:
-            output_data = format_output_text(headers[i], table_data[i], remapping_results[i])
-            write_output_file(available_genes[i], output_data)
+
+    first_header = None
+
+    for i in range(0, len(genes)):
+
+            # Remember first gene with valid header row
+            if first_header is None:
+                first_header = i
+
+            # Ensure consistent column order between genes
+            try:
+                table_data[i] = match_column_order(headers[first_header], headers[i], table_data[i])
+            except ValueError:
+                print('    ---> ' + genes[i] + ': Header entries do not contain expected columns.')
+
+            # Output data to file
+            output_data = format_output_text(headers[first_header], table_data[i], remapping_results[i])
+            write_output_file(genes[i], output_data)
 
     print('---> Job Complete.')
-
-# The user has not specified all option, process their list of arguments
-else:
-    # No arguments passed
-    if len(args.geneID) == 0:
-        print("---> NO GENES PROCESSED: Must pass at least one geneID or use the --all option")
-
-    # Process each gene ID the user has passed
-    else:
-        for gene in args.geneID:
-            print("---> " + gene + ": IN PROGRESS...")
-
-            # Extract data and submit variants for remapping
-            result = process_gene(database, gene)
-            id_numbers.append(result['id_number'])
-            table_data.append(result['table_data'])
-            headers.append(result['header_data'])
-
-            if len(result['table_data']) == 0:
-                print(get_errors(gene))
-
-        print('---> Retrieving Remapping Results...')
-        remapping_results = get_remapping_results(args.geneID, id_numbers)
-
-        print('---> Saving Output Files...')
-
-        for i in range(0, len(args.geneID)):
-            if len(table_data[i]) > 0:
-                output_data = format_output_text(headers[i], table_data[i], remapping_results[i])
-                write_output_file(args.geneID[i], output_data)
-
-        print('---> Job Complete.')

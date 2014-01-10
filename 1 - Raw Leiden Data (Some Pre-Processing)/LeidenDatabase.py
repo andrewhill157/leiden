@@ -38,9 +38,9 @@ def get_leiden_database(leiden_url):
     return database
 
 
-class TextProcessing:
+class Utilities:
     """
-    Class containing functions useful for processing of text data contained in LOVD installations.\
+    Class containing functions useful for processing of data contained in LOVD installations.\
     All functions are static, class used for organizational purposes only.
     """
 
@@ -146,6 +146,24 @@ class TextProcessing:
 
         # search_string not found, return -1
         return -1
+
+    # TODO update documentation
+    @staticmethod
+    def swap(list, i, j):
+        """
+        Swaps elements i and j in list. Index must be within bounds of array. Index swapped with itself leaves the
+        list unchanged.
+
+        @param list: list of elements
+        @type list: list
+        @param i: index of element to be swapped with element at index j. Must be within bounds of array.
+        @param j: index of element to be swapped with element at index i. Must be within bounds of array.
+        @return: list with elements at indices i and j swapped. If i and j are equal, list is unchanged.
+        @rtype: list
+        """
+
+        list[i], list[j] = list[j], list[i]
+        return list
 
 
 class VariantRemapper:
@@ -259,7 +277,7 @@ class VariantRemapper:
         data = [column.split(column_delimiter) for column in rows]
 
         # Entries with no error (most) will have no entries in that column
-        variant_column = TextProcessing.find_string_index(data[0], 'Chromosomal Variant')
+        variant_column = Utilities.find_string_index(data[0], 'Chromosomal Variant')
         chromosomal_variants = [x[variant_column] for x in data[1:]]
 
         # Extract information of interest from remapping notation
@@ -511,14 +529,14 @@ class LeidenDatabase:
 
             # Only get the PUBMED ID for PUBMED links
             if 'pubmed' in link_url:
-                result.append("PMID=" + TextProcessing.get_pmid(link_url))
+                result.append("PMID=" + Utilities.get_pmid(link_url))
 
             # Get OMIM ID for OMIM Links
             elif 'omim' in link_url:
-                result.append("OMIM=" + TextProcessing.get_omimid(link_url))
+                result.append("OMIM=" + Utilities.get_omimid(link_url))
             # Process HGVS notation
             elif links.string and 'c.' in links.string:
-                result.append("".join([self.ref_seq_id, ':', TextProcessing.remove_times_reported(links.string)]))
+                result.append("".join([self.ref_seq_id, ':', Utilities.remove_times_reported(links.string)]))
             elif links.string:
                 result.append("[" + links.string + "]=" + link_url)
             else:
