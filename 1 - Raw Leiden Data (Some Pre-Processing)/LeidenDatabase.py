@@ -1,31 +1,29 @@
-from bs4 import BeautifulSoup  # HTML parsing
-import urllib.request   # HTTP interaction
-import re  # regex support
-from suds.client import Client  # webservice API client
+from bs4 import BeautifulSoup
+import urllib.request
+import re
+from suds.client import Client
 import suds
 import base64
 from collections import namedtuple
 
 
-def get_leiden_database(leiden_url):
+def make_leiden_database(leiden_url):
     """
     Factory method that returns appropriate LeidenDatabase object for LOVD version installed at specified URL.
     Only LOVD2 and LOVD3 installations are supported.
+
     @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular
     dystrophy pages LOVD2 homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
     For LOVD3 installations, such as the Genetic Eye Disorder (GEI) Variation Database, the base url will be
     similar to U(http://mseqdr.lumc.edu/GEDI/). Extensions of this URL, such as U(http://mseqdr.lumc.edu/GEDI/genes)
-    or U(http://mseqdr.lumc.edu/GEDI/variants) should not be used as they are not the base page from which all URLs
-    on the site are derived from.
+    or U(http://mseqdr.lumc.edu/GEDI/variants) should not be used.
     @type leiden_url: string
-    @return: Instance of _LeidenDatabase class (see definition for available methods). This object facilitates data
-    extraction from the database.
+    @return: LeidenDatabase object for specified URL.
     @rtype: LeidenDatabase
     @raise: Exception if the LOVD version installed at specified URL is unsupported (anything other than version 2 or 3)
     """
 
-    # Get the LOVD version installed at the specified URL
-    version = LeidenDatabase.get_lovd_version(leiden_url)
+    version = LeidenDatabase.extract_LOVD_version_number(leiden_url)
 
     # Generate instance of appropriate _LeidenDatabase subclass for installed version
     if version == 2:
@@ -100,15 +98,13 @@ class Utilities:
     def remove_times_reported(hgvs_notation):
         """
         If the hgvs_notation string contains '(Reported N times)' embedded in the HGVS variant description, returns
-        a new string with (Reported N times) removed. Note that N can take on any integer value in hgvs_notation.
-        Return string is unchanged from original if '(Reported N times)' substring is not found. Comparison is not
-        case sensitive.
+        a new string with (Reported N times) removed. Comparison is not case sensitive.
 
         @param hgvs_notation: String, typically an entry in the DNA Change column in table_data for a given variant on
         an LOVD installation.
         @type hgvs_notation: string
         @return: hgvs_notation with instances of (Reported N times) removed. Whitespace surrounding this substring is
-        removed in returned string.
+        removed in returned string. Return value is equal to input parameter if '(Reported N times)' substring not found.
         @rtype: string
         """
         # Compile case-insensitive regex to match pattern
@@ -120,7 +116,7 @@ class Utilities:
     @staticmethod
     def find_string_index(string_list, search_string):
         """
-        Given a list of strings and a string to search for, returns the first index of the first element in the list
+        Given a list of strings and a string to search for, returns the index of the first element in the list
         that contains the search string. Note that the comparison is not sensitive to case or leading or trailing
         whitespace characters.
 
@@ -138,21 +134,19 @@ class Utilities:
         search_string = search_string.lower().strip()
 
         for i in range(0, len(string_list)):
-            entry = string_list[i]  # current entry
+            entry = string_list[i]
 
             if search_string in entry:
-                # search_string found, return index
                 return i
 
         # search_string not found, return -1
         return -1
 
-    # TODO update documentation
     @staticmethod
     def swap(list, i, j):
         """
-        Swaps elements i and j in list. Index must be within bounds of array. Index swapped with itself leaves the
-        list unchanged.
+        Swaps elements at indices i and j in list. Indices must be within bounds of array. Index swapped with itself
+        leaves the list unchanged.
 
         @param list: list of elements
         @type list: list
@@ -180,26 +174,21 @@ class VariantRemapper:
         # documentation of all available functions.
         url = 'https://mutalyzer.nl/services/?wsdl'
         client = Client(url, cache=None)
-        self.mutalyzer = client.service  # fully initialized interface for API
+        self.mutalyzer_interface = client.service
 
     def remap_variant(self, variant):
         """
-        Converts a single variant provided in HGVS notation to genomic coordinate notation. Note that this is meant
-        primarily for single variants, not large numbers of individual variants except in rare cases (see
-        submit_variant_batch for more details). Please see submit_variant_batch for remapping of large numbers of
-        variants, as it is substantially more efficient.
+        Converts a single variant provided in HGVS notation to genomic coordinate notation. Not meant for large numbers
+        of variants, see submit_variant_batch for this purpose.
         See U(https://humgenprojects.lumc.nl/trac/mutalyzer/wiki/PositionConverter) for more information on acceptable
         inputs and outputs, and remapping functionality.
 
         @param variant: HGVS description of variant, such as NM_001100.3:c.137T>C. The portion prior to the colon is
-        the refseqID used as the reference for the variant (generally, each gene on a LOVD installation will use a
-        single reference sequence to describe all variants and is indicated on the gene homepage in the form
-        NM_######.#, such as the Transcript refseq ID listed in the table at
-        U(http://www.dmd.nl/nmdb2/home.php?select_db=ACTA1. The portion after the colon is an HGVS-style description
-        of the mutation (a SNP from T to C at location 137 on reference transcript (generally cDNA) in the example above.
+        the refseqID used as the reference for the variant The portion after the colon is an HGVS-style description
+        of the mutation (a SNP from T to C at location 137 in the example above.
         @type variant: string
         @return: Variant in HG19 coordinate notation, such as NC_000001.10:g.229568620A>G, where the portion prior
-        to the colon describes the chromosome number (1 in the example) and the portion after the colon is an HGVS-\
+        to the colon describes the chromosome number (1 in the example) and the portion after the colon is an HGVS-
         style description of the genomic variant (a SNP from A to G at location 229568620 in the example above). Empty
         string returned if the variant could not be remapped.
         @rtype: string
@@ -209,7 +198,7 @@ class VariantRemapper:
         genome_version = 'hg19'
 
         try:
-            result = self.mutalyzer.numberConversion(genome_version, variant)
+            result = self.mutalyzer_interface.numberConversion(genome_version, variant)
             result = result[0][0]  # converts return value to string
         except suds.WebFault:
             # Variants with syntax errors are replaced with REMAPPING_ERROR
@@ -217,16 +206,38 @@ class VariantRemapper:
 
         return result
 
-    # TODO update documentation
     def submit_variant_batch(self, variant_list):
         """
-        Some mistakes in HGVS notation have been known to cause batch processing to fail. In these cases, the best
+        Submit a list of variants for batch_remapping.
+        Some mistakes in HGVS notation can cause batch processing to fail. In these cases, the best
         alternative is to use remap_variant on each individual variant.
 
-        @param variant_list:
-        @type variant_list:
-        @return:
+        @param variant_list: list of HGVS descriptions of variant, such as NM_001100.3:c.137T>C. The portion prior to the colon is
+        the refseqID used as the reference for the variant The portion after the colon is an HGVS-style description
+        of the mutation (a SNP from T to C at location 137 in the example above.
+        @type variant_list: list of strings
+        @return: id number for batch. Can be used to monitor job progress and retrieve results.
         @rtype: integer
+        """
+
+        mutalyzer_input = VariantRemapper.get_mutalyzer_input(variant_list)
+
+        try:
+            id_number = self.mutalyzer_interface.submitBatchJob(mutalyzer_input, 'PositionConverter', 'hg19')
+        except:
+            # Variants cannot be processed in batch due to formatting errors
+            id_number = -1
+        return id_number
+
+    @staticmethod
+    def get_mutalyzer_input(variant_list):
+        """
+        Creates input required for mutalyzer webAPI from list of variants.
+
+        @param variant_list: list of variants
+        @type variant_list: list of strings
+        @return: string in format required for mutalyzer webAPI
+        @rtype: base64 encoded string
         """
         # Encode all strings in list as binary (required for base64 encoding)
         variant_list = [x.encode() for x in variant_list]
@@ -236,37 +247,33 @@ class VariantRemapper:
 
         # Encode as base64 and decode so input is not binary (required for mutalyzer)
         mutalyzer_input = base64.b64encode(mutalyzer_input)
-        mutalyzer_input = mutalyzer_input.decode()
+        return mutalyzer_input.decode()
 
-        try:
-            # Submit batch job for remapping and return id_number returned by mutalyzer for later future use
-            id_number = self.mutalyzer.submitBatchJob(mutalyzer_input, 'PositionConverter', 'hg19')
-        except:
-            # Variants cannot be processed in batch due to formatting errors
-            id_number = -1
-        return id_number
 
-    # TODO update documentation
     def entries_remaining_in_batch(self, id_number):
         """
+        Returns the number of remaining entries to be processed in batch remapping job.
 
-        @param id_number:
-        @type id_number:
-        @return:
-        @rtype:
+        @param id_number: id number of the batch remapping job
+        @type id_number: integer
+        @return: number of remaining entries to be processed in batch remapping job.
+        @rtype: integer
         """
-        return self.mutalyzer.monitorBatchJob(id_number)
 
-    # TODO update documentation
+        return self.mutalyzer_interface.monitorBatchJob(id_number)
+
+
     def get_batch_results(self, id_number):
         """
+        Return the results from a batch remapping job.
 
-        @param id_number:
-        @type id_number: string
-        @return:
-        @rtype: namedtuple
+        @param id_number: id number of the batch remapping job
+        @type id_number: integer
+        @return: named tuple if lists containing chromosome_number, coordinate, ref, and alt entries for each variant
+        submitted in the batch job. Coordinates are remapped to HG19 coordinates.
+        @rtype: namedtuple of lists
         """
-        result = self.mutalyzer.getBatchJob(id_number)
+        result = self.mutalyzer_interface.getBatchJob(id_number)
         result = base64.b64decode(result).decode()
         result = result.rstrip('\n')
 
@@ -302,9 +309,9 @@ class VariantRemapper:
         @rtype: string
         """
 
-        m = re.search(r'([0]+)([1-9][0-9]?)([.])', mapping)
-        if m is not None:
-            return m.group(2)
+        match = re.search(r'([0]+)([1-9][0-9]?)([.])', mapping)
+        if match is not None:
+            return match.group(2)
         else:
             return ''
 
@@ -321,9 +328,9 @@ class VariantRemapper:
         @rtype: string
         """
 
-        m = re.search(r'([g][.])([0-9]+[_]?[0-9]*)', mapping)
-        if m is not None:
-            return m.group(2)
+        match = re.search(r'([g][.])([0-9]+[_]?[0-9]*)', mapping)
+        if match is not None:
+            return match.group(2)
         else:
             return ''
 
@@ -340,9 +347,9 @@ class VariantRemapper:
         @rtype: string
         """
 
-        m = re.search(r'([A-Z])([>])([A-Z])', mapping)
-        if m is not None:
-            return m.group(1)
+        match = re.search(r'([A-Z])([>])([A-Z])', mapping)
+        if match is not None:
+            return match.group(1)
         else:
             return ''
 
@@ -359,30 +366,29 @@ class VariantRemapper:
         @rtype: string
         """
 
-        m = re.search(r'([A-Z])([>])([A-Z])', mapping)
-        if m is not None:
-            return m.group(3)
+        match = re.search(r'([A-Z])([>])([A-Z])', mapping)
+        if match is not None:
+            return match.group(3)
         else:
             return ''
 
 
-# TODO update documentation
 class LeidenDatabase:
     """
+    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
+
     Class providing functions to extract information about a variants listed under a specified gene on a specified LOVD
     Leiden Database installation. For example, U(http://www.dmd.nl/nmdb2/), is a particular installation for
     variants in genes associated with Muscular Dystrophy. A list of all known installations of LOVD databases can be
     found at U(http://www.lovd.nl/2.0/index_list.php).
     """
 
-    # TODO update documentation
     def __init__(self, leiden_url):
         """
         Initializes a LeidenDatabase object for the specified Leiden Database URL.
 
         @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular
-        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links
-        to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored.
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
         """
 
         self.version_number = ''
@@ -394,50 +400,53 @@ class LeidenDatabase:
         self.database_soup = ''
         self.gene_homepage_soup = ''
 
-    # TODO update documentation
     @staticmethod
-    def get_lovd_version(leiden_url):
+    def extract_LOVD_version_number(leiden_url):
         """
-        TODO Document
-        @param leiden_url:
-        @return:
+        Extract the version number of the LOVD installation at the specified URL.
+
+        @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular
+        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database.
+        @return: LOVD version number.
+        @rtype: float
         """
 
+        # Get HTML from specified URL
         with urllib.request.urlopen(leiden_url) as url:
             html = url.read().decode('utf-8')
 
-        m = re.compile('LOVD v\.([23])\.\d')
-        results = m.search(html)
-        version = results.group(1)
-        return float(version)
+        # Extract the version number from HTML
+        regex = re.compile('LOVD v\.([23])\.\d')
+        results = regex.search(html)
+        version_number = results.group(1)
+        return float(version_number)
 
-    # TODO update documentation
     def get_version_number(self):
         """
-        TODO document
-        @return:
+        Return version number of LOVD in use for database.
+
+        @return: version number of LOVD in use for database
+        @rtype: float
         """
 
         return self.version_number
 
-    # TODO update documentation
     def set_gene_id(self, gene_id):
         """
-        Sets which gene_id for the object. Sets all HTML and BeautifulSoup HTML parsing objects for specified gene.
+        Must be called before using any non-static functions. Initializes all necessary data sources for data extraction,
+        resulting in long wait times for data to download over network.
 
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Database homepage (linked above).
-        @raise: exception if gene does not exist in the specified Leiden Database (if the name is not an option in the
-        gene selection drop-down, such as the one included at U(http://www.dmd.nl/nmdb2/home.php?)
+        @param gene_id: a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for
+        actin, as specified on the Leiden Muscular Dystrophy Pages at U(http://www.dmd.nl/nmdb2/home.php?)
+        @raise: ValueError if gene does not exist in the specified Leiden Database
         """
 
         self.gene_id = gene_id
 
-        # Check that the gene is present in the database, raise exception if not
         if gene_id in self.get_available_genes():
             # Set relevant URLs for specified gene_id
-            self.variant_database_url = self.get_variant_database_url(gene_id)
-            self.gene_homepage_url = self.get_gene_homepage_url(gene_id)
+            self.variant_database_url = self.get_variant_database_url()
+            self.gene_homepage_url = self.get_gene_homepage_url()
 
             # Extract HTML and create BeautifulSoup objects for gene_id pages
             with urllib.request.urlopen(self.variant_database_url) as url:
@@ -448,60 +457,43 @@ class LeidenDatabase:
                 self.gene_homepage_soup = BeautifulSoup(html)
 
             # Extract RefSeq ID for gene_id's reference transcript
-            self.ref_seq_id = self.get_transcript_refseqid(gene_id)
+            self.ref_seq_id = self.get_transcript_refseqid()
         else:
-            raise Exception('Specified gene not available in Leiden Database.')
+            raise ValueError('Specified gene not available in Leiden Database.')
 
-    # TODO update documentation
-    def get_variant_database_url(self, gene_id):
+    def get_variant_database_url(self):
         """
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
-        Note that this only constructs a valid URL for LOVD2 installations at this time.
 
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Muscular Dystrophy pages. The gene_id gene_id is required to match the
-        gene_id on the website exactly to generate a valid URL.
+        @return: URL linking to the table of variant entries for the specified gene_id on the
+        Leiden Database site.
         @rtype: string
-        @return: URL (contains http://) linking to the table of variant entries for the specified gene_id on the
-        Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden
-        Database site exactly.
         """
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
-    # TODO update documentation
-    def get_gene_homepage_url(self, gene_id):
+    def get_gene_homepage_url(self):
         """
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Database homepage (linked above). The gene_id is not checked against
-        available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
+
+        @return: URL linking to the homepage for the specified gene on the Leiden Database site.
         @rtype: string
-        @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not
-        checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
         """
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
-    # TODO update documentation
     def get_available_genes(self):
         """
-        Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
-        U(http://www.dmd.nl/nmdb2/home.php?action=switch_db) on the Leiden Muscular Dystrophy pages, for example).
-        The order and format of elements in the list matches the gene_ids provided in the drop-down box. See return
-        specification for more details on return format.
+        Returns a list of all genes available in the Leiden Database.
 
         @rtype: list of strings
-        @return: list of all genes available in the Leiden Database associated with the object. Note that the returned
-        list only contains the gene_id values for each gene and not the full gene description provided in the
-        drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box,
-        ACTA1 will be the respective entry in the returned list.
+        @return: list of all genes available in the LeidenDatabase.
+        @rtype: string
         """
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
-    # TODO update documentation
-    def get_link_info(self, link_html):
+    def get_link(self, link_result_set):
         """
         Given a BeautifulSoup ResultSet object containing only link tags, return relevant information for the
         given link type:
@@ -512,19 +504,20 @@ class LeidenDatabase:
         link to http://www.myurl.com with the link text myurl.
         4. Links with invalid HTML markup are replaced with INVALID_LINK_MARKUP
 
-        @param link_html: a list of link tags with links to be included in return list. All tags must be in the
-        following format: <a href = "link_url"> linkText <\a> as a BeautifulSoup ResultSet object. This is the type
-        of object returned by methods such as find_all, which is a list of matches to the specified query. See
+        @param link_result_set: a collection of links. All tags must be in the following format:
+        <a href = "link_url"> linkText <\a> as a BeautifulSoup ResultSet object. This is the type of object returned
+        by methods such as find_all in BeautifulSoup, which is a list of matches to the specified query. See
         U(http://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all) for more information on beautiful soup 4 and
         the find_all method.
+        @type link_result_set: BeautifulSoup ResultSet
+        @return: list of strings with one entry for each link in link_result_set
         @rtype: list of strings
-        @return: list of strings with one entry for each link included in the HTML, string included for each link
-        adheres to the behavior listed above.
+
         """
 
         link_delimiter = ';'
         result = []
-        for links in link_html:
+        for links in link_result_set:
             link_url = links.get('href')
 
             # Only get the PUBMED ID for PUBMED links
@@ -543,23 +536,17 @@ class LeidenDatabase:
                 result.append("INVALID_LINK_MARKUP")
         return link_delimiter.join(result)
 
-    # TODO update documentation - some LOVD3 databases list multiple transcripts... Looks like db can display relative
-    # to any of them and that the first one is always used. Want to make sure that this function always returns the
-    # first transcript from the list. Add to docs.
-    def get_transcript_refseqid(self, gene_id):
+    def get_transcript_refseqid(self):
         """
-        Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on\
-        the gene homepage on the given gene_id). For example, the ACTA1 homepage is U(http://www.dmd.nl/nmdb2/home.php)\
+        Must call set_gene_id prior to use.
+        Returns the transcript refSeq ID (the cDNA transcript used as a coordinate reference denoted by NM_... entry on
+        the gene homepage on the given gene_id). For example, the ACTA1 homepage is U(http://www.dmd.nl/nmdb2/home.php)
         and the RefSeq ID for the reference transcript is "NM_001100.3".
 
         @rtype: string
         @return: transcript refSeqID for the object's specified gene_id. Returns an empty string if no refSeq ID
         is found for the specified gene.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
 
         # Find all links on the gene homepage
         entries = self.gene_homepage_soup.find_all('a')
@@ -569,12 +556,11 @@ class LeidenDatabase:
                 return tags.get_text()
         return ""
 
-    # TODO update documentation
-    def get_table_headers(self, gene_id):
+    def get_table_headers(self):
         """
+        Must call set_gene_id prior to use.
         Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
-        geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
-        of the table such as DNA change, RNA change, etc.
+        geneID from left to right. This is the first row in the table that contains the labels for columns in the table.
 
         @rtype: list of strings
         @return: column labels from the table of variants in the Leiden Database variant listing for the object's
@@ -584,9 +570,9 @@ class LeidenDatabase:
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
-    # TODO update documentation
-    def get_table_data(self, gene_id):
+    def get_table_data(self):
         """
+        Must call set_gene_id prior to use.
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
         its elements are the entries for each column within the respective row.
 
@@ -600,23 +586,14 @@ class LeidenDatabase:
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
 
 
-# TODO update documentation
 class LOVD2Database(LeidenDatabase):
     """
+    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
+    Provides LeidenDatabse interface specific to LOVD version 2. See LeidenDatabase super class for function documentation.
     """
 
-    # TODO update documentation
     def __init__(self, leiden_url):
-
-        """
-        Initializes a LeidenDatabase object for the specified Leiden Database URL.
-        Note that only LOVD2 installations are supported at this time.
-
-        @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular
-        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. Links
-        to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored.
-        """
 
         # Call to the super class constructor
         LeidenDatabase.__init__(self, leiden_url)
@@ -636,52 +613,16 @@ class LOVD2Database(LeidenDatabase):
             if m is not None:
                 self.leiden_home_url = leiden_url[0:result.start(0)]
 
-    # TODO update documentation
-    def get_variant_database_url(self, gene_id):
-        """
-        Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
-        Note that this only constructs a valid URL for LOVD2 installations at this time.
+    def get_variant_database_url(self):
 
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Muscular Dystrophy pages. The gene_id gene_id is required to match the
-        gene_id on the website exactly to generate a valid URL.
-        @rtype: string
-        @return: URL (contains http://) linking to the table of variant entries for the specified gene_id on the
-        Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden
-        Database site exactly.
-        """
-
-        return "".join([self.leiden_home_url, 'variants.php?action=search_unique&select_db=', gene_id,
+        return "".join([self.leiden_home_url, 'variants.php?action=search_unique&select_db=', self.gene_id,
                         '&limit=1000'])
 
-    # TODO update documentation
-    def get_gene_homepage_url(self, gene_id):
-        """
-        Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Database homepage (linked above). The gene_id is not checked against
-        available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
-        @rtype: string
-        @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not
-        checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
-        """
+    def get_gene_homepage_url(self):
 
-        return "".join([self.leiden_home_url, 'home.php?select_db=', gene_id])
+        return "".join([self.leiden_home_url, 'home.php?select_db=', self.gene_id])
 
-    # TODO update documentation
     def get_available_genes(self):
-        """
-        Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
-        U(http://www.dmd.nl/nmdb2/home.php?action=switch_db) on the Leiden Muscular Dystrophy pages, for example).
-        The order and format of elements in the list matches the gene_ids provided in the drop-down box. See return
-        specification for more details on return format.
-
-        @rtype: list of strings
-        @return: list of all genes available in the Leiden Database associated with the object. Note that the returned
-        list only contains the gene_id values for each gene and not the full gene description provided in the
-        drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box,
-        ACTA1 will be the respective entry in the returned list.
-        """
 
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_home_url, '?action=switch_db'])
@@ -700,22 +641,7 @@ class LOVD2Database(LeidenDatabase):
             available_genes.append(genes['value'])
         return available_genes
 
-    # TODO update documentation
-    def get_table_headers(self, gene_id):
-        """
-        Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
-        geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
-        of the table such as DNA change, RNA change, etc.
-
-        @rtype: list of strings
-        @return: column labels from the table of variants in the Leiden Database variant listing for the object's
-        gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no
-        labels are found.
-        """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
+    def get_table_headers(self):
 
         # Find all th tags on the table of variants (column labels)
         headers = self.database_soup.find_all('th')
@@ -729,22 +655,7 @@ class LOVD2Database(LeidenDatabase):
                 result.append(h.strip())
         return result
 
-    # TODO update documentation
-    def get_table_data(self, gene_id):
-        """
-        Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
-        its elements are the entries for each column within the respective row.
-
-        @rtype: lists of lists of strings
-        @return: table data from the Leiden Database. Each sub-list represents a row of the table data, where its
-        elements are the entries for each column within the respective row. The order of the sub-lists contained in
-        the list matches the order of rows within the table from top to bottom and individual entries are ordered
-        from left to right as they appear on the Leiden Database.
-        """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
+    def get_table_data(self):
 
         # id specific to data table in HTML (must be unicode due to underscore)
         table_id = "".join([u'table', u'\u005F', u'data'])
@@ -764,7 +675,7 @@ class LOVD2Database(LeidenDatabase):
             for columns in rows.find_all('td'):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
-                    link_string = self.get_link_info(columns.find_all('a'))
+                    link_string = self.get_link(columns.find_all('a'))
                     entries.append(link_string)
                 else:
                     entries.append(columns.string)
@@ -772,22 +683,14 @@ class LOVD2Database(LeidenDatabase):
         return row_entries
 
 
-# TODO update documentation
 class LOVD3Database(LeidenDatabase):
     """
+    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
+    Provides LeidenDatabse interface specific to LOVD version 3. See LeidenDatabase super class for function documentation.
     """
 
-    # TODO update documentation
     def __init__(self, leiden_url):
-
-        """
-        Initializes an object for the specified LOVD3 URL.
-
-        @param leiden_url: the base URL of the particular Leiden database to be used. For example, the Leiden muscular
-        dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of LOVD3 database.
-        Links to specific php pages can also be passed, everything from <page>.php on in the URL will be ignored.
-        """
 
         # Call to the super class constructor
         LeidenDatabase.__init__(self, leiden_url)
@@ -803,51 +706,15 @@ class LOVD3Database(LeidenDatabase):
 
         self.leiden_home_url = leiden_url
 
-    # TODO update documentation
-    def get_variant_database_url(self, gene_id):
-        """
-        Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
-        Note that this only constructs a valid URL for LOVD2 installations at this time.
+    def get_variant_database_url(self):
 
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Muscular Dystrophy pages. The gene_id gene_id is required to match the
-        gene_id on the website exactly to generate a valid URL.
-        @rtype: string
-        @return: URL (contains http://) linking to the table of variant entries for the specified gene_id on the
-        Leiden Database site. Not guaranteed to be valid if the gene_id does not match the gene_id on the Leiden
-        Database site exactly.
-        """
+        return "".join([self.leiden_home_url, 'variants/', self.gene_id, '?page_size=1000&page=1'])
 
-        return "".join([self.leiden_home_url, 'variants/', gene_id, '?page_size=1000&page=1'])
+    def get_gene_homepage_url(self):
 
-    # TODO update documentation
-    def get_gene_homepage_url(self, gene_id):
-        """
-        Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
-        @param gene_id: a string with the Gene ID of the gene to be extracted. For example, ACTA1 is the gene ID for
-        actin, as specified on the Leiden Database homepage (linked above). The gene_id is not checked against
-        available genes on the Leiden Database, so generated URLs are not guaranteed to be valid.
-        @rtype: string
-        @return: URL linking to the homepage for the specified gene on the Leiden Database site. The gene_id is not
-        checked against available genes on the Leiden Database, to the URL is not guaranteed to be valid.
-        """
+        return "".join([self.leiden_home_url, 'genes/', self.gene_id, '?page_size=1000&page=1'])
 
-        return "".join([self.leiden_home_url, 'genes/', gene_id, '?page_size=1000&page=1'])
-
-    # TODO update documentation
     def get_available_genes(self):
-        """
-        Returns a list of all genes available in the Leiden Databases (as illustrated in the drop-down box at
-        U(http://www.dmd.nl/nmdb2/home.php?action=switch_db) on the Leiden Muscular Dystrophy pages, for example).
-        The order and format of elements in the list matches the gene_ids provided in the drop-down box. See return
-        specification for more details on return format.
-
-        @rtype: list of strings
-        @return: list of all genes available in the Leiden Database associated with the object. Note that the returned
-        list only contains the gene_id values for each gene and not the full gene description provided in the
-        drop-down. For example, if the entry ACTA1 (Actin, Alpha 1 (skeletal muscle)) is listed in the drop-down box,
-        ACTA1 will be the respective entry in the returned list.
-        """
 
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_home_url, 'genes/', '?page_size=1000&page=1'])
@@ -867,8 +734,7 @@ class LOVD3Database(LeidenDatabase):
             available_genes.append(gene_string)
         return available_genes
 
-    # TODO update documentation
-    def get_table_headers(self, gene_id):
+    def get_table_headers(self):
         """
         Returns the column labels from the table of variants in the Leiden Database variant listing for the object's
         geneID from left to right. This is the first row in the table that contains the labels for entries in the rest
@@ -879,10 +745,6 @@ class LOVD3Database(LeidenDatabase):
         gene_id. Returned in left to right order as they appear on the Leiden Database. Empty list returned if no
         labels are found.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
 
         # Find all th tags on the table of variants (column labels)
         headers = self.database_soup.find_all('th')
@@ -896,8 +758,7 @@ class LOVD3Database(LeidenDatabase):
                 result.append(h.strip())
         return result
 
-    # TODO update documentation
-    def get_table_data(self, gene_id):
+    def get_table_data(self):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
         its elements are the entries for each column within the respective row.
@@ -908,10 +769,6 @@ class LOVD3Database(LeidenDatabase):
         the list matches the order of rows within the table from top to bottom and individual entries are ordered
         from left to right as they appear on the Leiden Database.
         """
-
-        # Set the specified gene if it has not already been done (saves reloading pages every function call)
-        if gene_id is not self.gene_id:
-            self.set_gene_id(gene_id)
 
         # id specific to data table in HTML (must be unicode due to underscore)
         table_class = u'data'
@@ -931,7 +788,7 @@ class LOVD3Database(LeidenDatabase):
             for columns in rows.find_all('td'):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
-                    link_string = self.get_link_info(columns.find_all('a'))
+                    link_string = self.get_link(columns.find_all('a'))
                     entries.append(link_string)
                 else:
                     entries.append(columns.string)

@@ -1,5 +1,5 @@
-import unittest  # Testing framework
-from LeidenDatabase import *  # Module under test
+import unittest
+from LeidenDatabase import *
 
 
 class TestUtilities(unittest.TestCase):
@@ -214,16 +214,16 @@ class TestLeidenDatabase(unittest.TestCase):
     def setUp(self):
         self.database = LeidenDatabase('http://www.dmd.nl/nmdb2/')
 
-    def test_get_lovd_version(self):
+    def test_extract_LOVD_version_number(self):
         # LOVD2 Installation
         input = 'http://www.dmd.nl/nmdb2/'
         result = 2
-        self.assertEqual(LeidenDatabase.get_lovd_version(input), result)
+        self.assertEqual(LeidenDatabase.extract_LOVD_version_number(input), result)
 
         # LOVD3 Installation
         input = 'http://mseqdr.lumc.edu/GEDI/'
         result = 3
-        self.assertEqual(LeidenDatabase.get_lovd_version(input), result)
+        self.assertEqual(LeidenDatabase.extract_LOVD_version_number(input), result)
 
     def test_get_version_number(self):
         # Parent class, does not have a version number
@@ -282,39 +282,47 @@ class TestLOVD2Database(unittest.TestCase):
         # Two genes from database1
         input = 'ACTA1'
         result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=ACTA1&limit=1000'
-        self.assertEqual(self.database1.get_variant_database_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_variant_database_url(), result)
 
         input = 'CAPN3'
         result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=CAPN3&limit=1000'
-        self.assertEqual(self.database1.get_variant_database_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_variant_database_url(), result)
 
         # Two genes from database2
         input = 'BBS2'
         result = 'http://grenada.lumc.nl/LOVD2/eye/variants.php?action=search_unique&select_db=BBS2&limit=1000'
-        self.assertEqual(self.database2.get_variant_database_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_variant_database_url(), result)
 
         input = 'CRYAA'
         result = 'http://grenada.lumc.nl/LOVD2/eye/variants.php?action=search_unique&select_db=CRYAA&limit=1000'
-        self.assertEqual(self.database2.get_variant_database_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_variant_database_url(), result)
 
     def test_get_gene_homepage_url(self):
         # Two genes from database1
         input = 'ACTA1'
         result = 'http://www.dmd.nl/nmdb2/home.php?select_db=ACTA1'
-        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_gene_homepage_url(), result)
 
         input = 'CAPN3'
         result = 'http://www.dmd.nl/nmdb2/home.php?select_db=CAPN3'
-        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_gene_homepage_url(), result)
 
         # Two genes from database2
         input = 'BBS2'
         result = 'http://grenada.lumc.nl/LOVD2/eye/home.php?select_db=BBS2'
-        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_gene_homepage_url(), result)
 
         input = 'CRYAA'
         result = 'http://grenada.lumc.nl/LOVD2/eye/home.php?select_db=CRYAA'
-        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_gene_homepage_url(), result)
 
     def test_get_available_genes(self):
         self.fail('Not implemented yet.')
@@ -326,20 +334,24 @@ class TestLOVD2Database(unittest.TestCase):
         # Two genes from database1
         input = 'ACTA1'
         result = 'NM_001100.3'
-        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_transcript_refseqid(), result)
 
         input = 'CAPN3'
         result = 'NM_000070.2'
-        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_transcript_refseqid(), result)
 
         # Two genes from database2
         input = 'BBS2'
         result = 'NM_031885.3'
-        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
         input = 'CRYAA'
         result = 'NM_000394.2'
-        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
     def test_get_table_headers(self):
         self.fail('Not implemented yet.')
@@ -369,39 +381,47 @@ class TestLOVD3Database(unittest.TestCase):
         # Two genes from database1
         input = 'BBS1'
         result = 'http://mseqdr.lumc.edu/GEDI/variants/BBS1?page_size=1000&page=1'
-        self.assertEqual(self.database1.get_variant_database_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_variant_database_url(), result)
 
         input = 'CTC1'
         result = 'http://mseqdr.lumc.edu/GEDI/variants/CTC1?page_size=1000&page=1'
-        self.assertEqual(self.database1.get_variant_database_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_variant_database_url(), result)
 
         # Two genes from database2
         input = 'AMACR'
         result = 'http://mseqdr.lumc.edu/MITO/variants/AMACR?page_size=1000&page=1'
-        self.assertEqual(self.database2.get_variant_database_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_variant_database_url(), result)
 
         input = 'ALDH3A2'
         result = 'http://mseqdr.lumc.edu/MITO/variants/ALDH3A2?page_size=1000&page=1'
-        self.assertEqual(self.database2.get_variant_database_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_variant_database_url(), result)
 
     def test_get_gene_homepage_url(self):
         # Two genes from database1
         input = 'BBS1'
         result = 'http://mseqdr.lumc.edu/GEDI/genes/BBS1?page_size=1000&page=1'
-        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_gene_homepage_url(), result)
 
         input = 'CTC1'
         result = 'http://mseqdr.lumc.edu/GEDI/genes/CTC1?page_size=1000&page=1'
-        self.assertEqual(self.database1.get_gene_homepage_url(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_gene_homepage_url(), result)
 
         # Two genes from database2
         input = 'AMACR'
         result = 'http://mseqdr.lumc.edu/MITO/genes/AMACR?page_size=1000&page=1'
-        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_gene_homepage_url(), result)
 
         input = 'ALDH3A2'
         result = 'http://mseqdr.lumc.edu/MITO/genes/ALDH3A2?page_size=1000&page=1'
-        self.assertEqual(self.database2.get_gene_homepage_url(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_gene_homepage_url(), result)
 
     def test_get_available_genes(self):
         self.fail('Not implemented yet.')
@@ -414,20 +434,24 @@ class TestLOVD3Database(unittest.TestCase):
         # Two genes from database1
         input = 'BBS1'
         result = 'NM_024649.4'
-        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_transcript_refseqid(), result)
 
         input = 'CTC1'
         result = 'NM_025099.5'
-        self.assertEqual(self.database1.get_transcript_refseqid(input), result)
+        self.database1.set_gene_id(input)
+        self.assertEqual(self.database1.get_transcript_refseqid(), result)
 
         # Two genes from database2
         input = 'AMACR'
         result = 'NM_001167595.1'
-        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
         input = 'ALDH3A2'
         result = 'NM_000382.2'
-        self.assertEqual(self.database2.get_transcript_refseqid(input), result)
+        self.database2.set_gene_id(input)
+        self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
     def test_get_table_headers(self):
         self.fail('Not implemented yet.')

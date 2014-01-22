@@ -98,18 +98,17 @@ def extract_data_and_submit_remap(leiden_database, gene_id):
     @rtype: namedtuple
     """
     try:
+        print('    ---> Processing Variant Data...')
+
         # Get header data
-        print('    ---> Downloading Variant Data...')
-        column_labels = leiden_database.get_table_headers(gene_id)
+        column_labels = leiden_database.get_table_headers()
         hgvs_mutation_column = Utilities.find_string_index(column_labels, u'DNA\xa0change')
 
-        print('    ---> Processing Variant Data...')
         # Get table data for variants on given gene
-        table_entries = leiden_database.get_table_data(gene_id)
+        table_entries = leiden_database.get_table_data()
         variants = [x[hgvs_mutation_column] for x in table_entries]
 
         print('    ---> Submitting Remapping...')
-        # Remap all variants to genomic coordinates
         remapper = VariantRemapper()
         remapping_batch_id_number = remapper.submit_variant_batch(variants)
 

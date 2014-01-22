@@ -5,33 +5,27 @@ from ExtractLeidenDataFunctions import *
 """
 COMMAND LINE INTERFACE
 """
-parser = argparse.ArgumentParser(description="Given a geneID, saves two files: <geneID>.txt and \
-<geneID>_MutalyzerInput.txt. from the Leiden Database (http://www.dmd.nl/nmdb2/home.php?action=switch_db). \
-1. <geneID>.txt contains the extracted table data containing variants specific to the specified geneID in the Leiden \
-Database. Each variant is on its own line and columns are separated by commas. Header labels are included as the first \
-line of the file.\
-2. <geneID>_MutalyzerInput.txt contains only the DNA Change column of <geneID>.txt (one variant per line). This file \
-can be directly input to the mutalyzer batch position converter tool by LOVD \
-(https://mutalyzer.nl/batchPositionConverter)")
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-d", "--debug", action="store_true",
-                   help="When errors are encountered, a full stack traceback is printed.")
+parser = argparse.ArgumentParser(description="Given URL to the base URL of any LOVD 2 or 3 database installation, \
+    such as http://www.dmd.nl/nmdb2/, extract variant entries associated with specified genes. Can specify either \
+    a space-separated list of gene names or -a option to extract data from all genes at the specified URL. Variants \
+    for each gene are saved in a file named according to the gene name they are associated with.")
 
-group2 = parser.add_mutually_exclusive_group()
-group2.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
-group2.add_argument("-a", "--all", action="store_true",
-                    help="Extract data for all available genes in the Leiden Database.")
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
+group.add_argument("-a", "--all", action="store_true",
+                    help="Extract data for all available genes in the specified Leiden Database.")
 
 parser.add_argument("leidenURL", help="base URL of the particular Leiden database to be used. For example, the Leiden \
- muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to the homepage, \
- any .php page at the end of the URL will be ignored. URLs may not contain the & character in some command line shells")
+ muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of database. For \
+ example, http://databases.lovd.nl/whole_genome/ is a valid LOVD3 URL, while http://databases.lovd.nl/whole_genome/genes \
+ is not. A list of such acceptable URLs is maintained here: http://www.lovd.nl/2.0/index_list.php")
 parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from the Leiden Database.", nargs="*")
 
 args = parser.parse_args()
 
 # Get database object and print the LOVD version number
 print("---> DETECTING LOVD VERSION: IN PROGRESS...")
-database = get_leiden_database(args.leidenURL)
+database = make_leiden_database(args.leidenURL)
 version_number = database.get_version_number()
 print("---> DETECTING LOVD VERSION: COMPLETE")
 print("    ---> VERSION " + str(version_number) + " DETECTED")
@@ -61,6 +55,8 @@ else:
 if genes is not None:
     for gene in genes:
         print("---> " + gene + ": IN PROGRESS...")
+        print("    ---> Downloading Data...")
+        database.set_gene_id(gene)
 
         # Extract data and submit variants for remapping
         result = extract_data_and_submit_remap(database, gene)
@@ -68,7 +64,8 @@ if genes is not None:
         table_data.append(result.table_entries)
         headers.append(result.column_labels)
 
-        if len(result.table_data) == 0:
+        if len(table_data) == 0:
+            print('    ---> ERROR: No Entries Found. Please Verify.')
             print('    ---> ERROR: No Entries Found. Please Verify.')
 
 
