@@ -73,7 +73,7 @@ if genes is not None:
 
 
     print('---> Retrieving Remapping Results...')
-    remapping_results = get_remapping_results(genes, id_numbers)
+    remapping_results = get_remapping_results(id_numbers)
 
     print('---> Saving Output Files...')
 

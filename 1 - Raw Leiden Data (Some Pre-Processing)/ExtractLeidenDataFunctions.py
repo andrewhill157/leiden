@@ -3,34 +3,29 @@ import traceback
 import time
 from collections import namedtuple
 
-# TODO update documentation
-def get_remapping_results(gene_ids, id_numbers):
+def get_remapping_results(batch_id_numbers):
     """
+    Returns batch remapping results for all batch_id_numbers in list. Assumes that all id_numbers in batch_id_numbers
+    are valid and are ids for jobs that have already been submitted.
 
-    @param gene_ids:
-    @type gene_ids:
-    @param id_numbers:
-    @type id_numbers:
-    @return:
-    @rtype:
+    @param batch_id_numbers: batch remapping id numbers
+    @type batch_id_numbers: list
+    @return: remapped variants
+    @rtype: list
     """
 
     remapper = VariantRemapper()
     results = []
 
-    for i in range(0, len(gene_ids)):
-        print('    ---> ' + gene_ids[i])
-
-        if id_numbers[i] > 0:
-            while remapper.entries_remaining_in_batch(id_numbers[i]) > 0:
+    for id_number in batch_id_numbers:
+        if id_number > 0:
+            while remapper.entries_remaining_in_batch(id_number) > 0:
                 time.sleep(0.5)
 
-            results.append(remapper.get_batch_results(id_numbers[i]))
-            print('        ---> Complete')
+            results.append(remapper.get_batch_results(id_number))
 
         else:
             results.append([])
-            print('        ---> ERROR')
 
     return results
 
