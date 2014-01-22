@@ -55,7 +55,7 @@ def format_output_text(header, table_data, remapping):
 
         # Insert remapping result columns
         for i in range(0, len(remapping.chromosome_number)):
-            table_data[i][remapping_start_index:remapping_start_index] = \
+            table_data[i][remapping_start_index:remapping_start_index] =
                 [remapping.chromosome_number[i], remapping.coordinate[i], remapping.ref[i], remapping.alt[i]]
 
     # Combine all data into one list of lists
@@ -138,12 +138,12 @@ def match_column_order(header_template, data_header, table_data):
     represents the desired order of the columns and data_header represents the order of columns in provided table_data.
     Columns in table_data are reordered to match the order indicated by header_template.
 
-    @param header_template: desired order of columns in table_data. Must be equal in length to data_header and contain \
+    @param header_template: desired order of columns in table_data. Must be equal in length to data_header and contain
     the same items.
     @type header_template: list
     @param header: order of columns in table_data. Must be equal in length to header_template and contain the same items.
     @type header: list
-    @param table_data: list of lists. Each inner list represents a row of data and must match the length of \
+    @param table_data: list of lists. Each inner list represents a row of data and must match the length of
     data_header and header_template.
     @type: list of lists
     @return: table_data with columns reordered to match the order indicated by the header_template
