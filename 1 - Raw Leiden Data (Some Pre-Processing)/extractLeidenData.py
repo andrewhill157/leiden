@@ -63,13 +63,13 @@ if genes is not None:
         print("---> " + gene + ": IN PROGRESS...")
 
         # Extract data and submit variants for remapping
-        result = process_gene(database, gene)
-        id_numbers.append(result.id_number)
-        table_data.append(result.table_data)
-        headers.append(result.header_data)
+        result = extract_data_and_submit_remap(database, gene)
+        id_numbers.append(result.remapping_batch_id_number)
+        table_data.append(result.table_entries)
+        headers.append(result.column_labels)
 
         if len(result.table_data) == 0:
-            print(get_errors(gene))
+            print('    ---> ERROR: No Entries Found. Please Verify.')
 
 
     print('---> Retrieving Remapping Results...')

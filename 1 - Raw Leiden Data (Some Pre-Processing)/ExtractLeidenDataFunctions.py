@@ -29,17 +29,18 @@ def get_remapping_results(batch_id_numbers):
 
     return results
 
-# TODO update documentation
+
 def format_output_text(header, table_data, remapping):
     """
+    Combine data from header, table_data, and remapping to form single list of lists.
 
-    @param header:
-    @type header:
-    @param table_data:
-    @type table_data:
-    @param remapping:
-    @type remapping:
-    @return:
+    @param header: column labels (must match number of columns in table_data)
+    @type header: list
+    @param table_data: list of lists where inner lists represent rows of data in a table
+    @type table_data: list of lists
+    @param remapped_variants: genomic mappings of variants (must match number of entries in table_data)
+    @type remapped_variants: list
+    @return: combined data from headers, table_data, and remapped_variants
     @rtype: list of lists
     """
 
@@ -50,7 +51,7 @@ def format_output_text(header, table_data, remapping):
 
         # Insert remapping result columns
         for i in range(0, len(remapping.chromosome_number)):
-            table_data[i][remapping_start_index:remapping_start_index] =
+            table_data[i][remapping_start_index:remapping_start_index] = \
                 [remapping.chromosome_number[i], remapping.coordinate[i], remapping.ref[i], remapping.alt[i]]
 
     # Combine all data into one list of lists
@@ -58,16 +59,14 @@ def format_output_text(header, table_data, remapping):
     return table_data
 
 
-# TODO update documentation
-def write_output_file(gene_id, output_data):
+def write_output_file(file_name, output_data):
     """
+    Writes output_data to tab-delimited file with one row of data per line.
 
-    @param gene_id:
-    @type gene_id:
-    @param output_data:
-    @type output_data:
-    @return:
-    @rtype:
+    @param file_name: name of output file without extension (can include path)
+    @type file_name: string
+    @param output_data: table data to output to file
+    @type output_data: list of lists
     """
 
     # Constants for file delimiters
@@ -75,7 +74,7 @@ def write_output_file(gene_id, output_data):
     row_delimiter = '\n'
     column_delimiter = '\t'
 
-    filename = "".join([gene_id, file_extension])
+    filename = "".join([file_name, file_extension])
 
     # write table data to file in Unicode encoding (some characters are not ASCII encodable)
     with open(filename, 'w', encoding='utf-8') as f:
@@ -87,46 +86,46 @@ def write_output_file(gene_id, output_data):
         f.write(row_delimiter.join(file_lines))
 
 
-# TODO update documentation
-def process_gene(leiden_database, gene_id):
+def extract_data_and_submit_remap(leiden_database, gene_id):
     """
+    Extracts variant table data for given gene in leiden_database and submits variants for remapping to genomic coordinates.
 
-    @param leiden_database:
-    @type leiden_database:
-    @param gene_id:
-    @type gene_id:
-    @return:
-    @rtype:
+    @param leiden_database: database containing tables of variant data for specified gene_id
+    @type leiden_database: LeidenDatabase
+    @param gene_id: a string with the Gene ID of the gene to be extracted.
+    @type gene_id: string
+    @return: namedtuple containing remapping_batch_id_number, table_entries, and column_label entries.
+    @rtype: namedtuple
     """
     try:
         # Get header data
         print('    ---> Downloading Variant Data...')
-        headers = leiden_database.get_table_headers(gene_id)
-        hgvs_mutation_column = Utilities.find_string_index(headers, u'DNA\xa0change')
+        column_labels = leiden_database.get_table_headers(gene_id)
+        hgvs_mutation_column = Utilities.find_string_index(column_labels, u'DNA\xa0change')
 
         print('    ---> Processing Variant Data...')
         # Get table data for variants on given gene
-        entries = leiden_database.get_table_data(gene_id)
-        variants = [x[hgvs_mutation_column] for x in entries]
+        table_entries = leiden_database.get_table_data(gene_id)
+        variants = [x[hgvs_mutation_column] for x in table_entries]
 
         print('    ---> Submitting Remapping...')
         # Remap all variants to genomic coordinates
         remapper = VariantRemapper()
-        id_number = remapper.submit_variant_batch(variants)
+        remapping_batch_id_number = remapper.submit_variant_batch(variants)
 
-        if id_number > 0:
+        if remapping_batch_id_number > 0:
             print('    ---> Remapping Submitted.')
         else:
             print('    ---> ERROR: Batch Remapping Failed.')
     except:
-        id_number = -1
-        entries = []
-        headers = []
+        remapping_batch_id_number = -1
+        table_entries = []
+        column_labels = []
 
-    process_gene_results = namedtuple('process_gene_results', 'id_number table_data, header_data')
-    return process_gene_results(id_number, entries, headers)
+    results = namedtuple('results', 'remapping_batch_id_number table_entries, column_labels')
+    return results(remapping_batch_id_number, table_entries, column_labels)
 
-# TODO add unit test
+
 def match_column_order(header_template, data_header, table_data):
     """
     Given data and column labels, matches the order of columns in the data to a provided template. header_template
@@ -136,8 +135,7 @@ def match_column_order(header_template, data_header, table_data):
     @param header_template: desired order of columns in table_data. Must be equal in length to data_header and contain
     the same items.
     @type header_template: list
-    @param header: order of columns in table_data. Must be equal in length to header_template and contain the same items.
-    @type header: list
+    @param data_header: order of columns in table_data.
     @param table_data: list of lists. Each inner list represents a row of data and must match the length of
     data_header and header_template.
     @type: list of lists
@@ -147,7 +145,7 @@ def match_column_order(header_template, data_header, table_data):
 
     if(sorted(data_header) == sorted(header_template)):
         for i in range(0, len(header_template)):
-            # Find
+            # Find index of current string from template in data_header
             header_index = Utilities.find_string_index(data_header, header_template[i])
 
             # Swap respective rows in table_data if positioning is incorrect
@@ -159,15 +157,3 @@ def match_column_order(header_template, data_header, table_data):
         raise ValueError('data_header and header_template do not contain the same elements')
 
     return table_data
-
-
-# TODO update documentation
-def get_errors(gene_id):
-    """
-
-    @param gene_id:
-    @return:
-    @rtype:
-    """
-
-    return '    ---> ERROR: No Entries Found. Please Verify.'
