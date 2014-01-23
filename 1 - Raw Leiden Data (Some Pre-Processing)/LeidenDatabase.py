@@ -463,6 +463,7 @@ class LeidenDatabase:
 
     def get_variant_database_url(self):
         """
+        Must call set_gene_id prior to use.
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
 
         @return: URL linking to the table of variant entries for the specified gene_id on the
@@ -474,6 +475,7 @@ class LeidenDatabase:
 
     def get_gene_homepage_url(self):
         """
+        Must call set_gene_id prior to use.
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
 
         @return: URL linking to the homepage for the specified gene on the Leiden Database site.
