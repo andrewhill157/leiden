@@ -1,5 +1,5 @@
-import unittest  # Testing framework
-from ExtractLeidenDataFunctions import *  # Module under test
+import unittest
+from ExtractLeidenDataFunctions import *
 
 class TestExtractLeidenData(unittest.TestCase):
     def test_match_column_order(self):
