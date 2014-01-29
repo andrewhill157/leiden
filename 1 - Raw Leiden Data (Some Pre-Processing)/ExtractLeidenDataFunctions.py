@@ -38,8 +38,8 @@ def format_output_text(header, table_data, remapping):
     @type header: list
     @param table_data: list of lists where inner lists represent rows of data in a table
     @type table_data: list of lists
-    @param remapped_variants: genomic mappings of variants (must match number of entries in table_data)
-    @type remapped_variants: list
+    @param remapping: genomic mappings of variants (must match number of entries in table_data)
+    @type remapping: named tuples of lists. Entries are chromosome_number, coordinate, ref, and alt.
     @return: combined data from headers, table_data, and remapped_variants
     @rtype: list of lists
     """
@@ -59,25 +59,46 @@ def format_output_text(header, table_data, remapping):
     return table_data
 
 
+def format_vcf_text(remapping):
+    """
+    Create formatted VCF file data from remapped variants.
+
+    @param remapping: genomic mappings of variants (must match number of entries in table_data)
+    @type remapping: named tuples of lists. Entries are chromosome_number, coordinate, ref, and alt.
+    @return: list of lists where each inner list is a row of the VCF-format output text
+    @rtype: list of lists
+    """
+
+    # Initialize with required header information for the VCF input to Variant Effect Predictor
+    vcf_text = [
+        ['##fileformat=VCFv4.0'],
+        ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
+    ]
+
+    # Build remaining rows using remapped variants
+    for i in range(0, len(remapping.chromosome_number)):
+        row = [remapping.chromosome_number[i], remapping.coordinate[i], '.', remapping.ref[i], remapping.alt[i], '.', '.', '.']
+        vcf_text.append(row)
+
+    return vcf_text
+
+
 def write_output_file(file_name, output_data):
     """
     Writes output_data to tab-delimited file with one row of data per line.
 
-    @param file_name: name of output file without extension (can include path)
+    @param file_name: name of output file with extension (can include path)
     @type file_name: string
     @param output_data: table data to output to file
     @type output_data: list of lists
     """
 
     # Constants for file delimiters
-    file_extension = '.txt'
     row_delimiter = '\n'
     column_delimiter = '\t'
 
-    filename = "".join([file_name, file_extension])
-
     # write table data to file in Unicode encoding (some characters are not ASCII encodable)
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(file_name, 'w', encoding='utf-8') as f:
         file_lines = []
 
         for row in output_data:
@@ -123,36 +144,3 @@ def extract_data_and_submit_remap(leiden_database, gene_id):
 
     results = namedtuple('results', 'remapping_batch_id_number table_entries, column_labels')
     return results(remapping_batch_id_number, table_entries, column_labels)
-
-
-def match_column_order(header_template, data_header, table_data):
-    """
-    Given data and column labels, matches the order of columns in the data to a provided template. header_template
-    represents the desired order of the columns and data_header represents the order of columns in provided table_data.
-    Columns in table_data are reordered to match the order indicated by header_template.
-
-    @param header_template: desired order of columns in table_data. Must be equal in length to data_header and contain
-    the same items.
-    @type header_template: list
-    @param data_header: order of columns in table_data.
-    @param table_data: list of lists. Each inner list represents a row of data and must match the length of
-    data_header and header_template.
-    @type: list of lists
-    @return: table_data with columns reordered to match the order indicated by the header_template
-    @raise: ValueError if contents of lists do not match when sorted
-    """
-
-    if(sorted(data_header) == sorted(header_template)):
-        for i in range(0, len(header_template)):
-            # Find index of current string from template in data_header
-            header_index = Utilities.find_string_index(data_header, header_template[i])
-
-            # Swap respective rows in table_data if positioning is incorrect
-            if i is not header_index:
-                table_data = [Utilities.swap(row, i, header_index) for row in table_data]
-                data_header = Utilities.swap(data_header, i, header_index)
-
-    else:
-        raise ValueError('data_header and header_template do not contain the same elements')
-
-    return table_data

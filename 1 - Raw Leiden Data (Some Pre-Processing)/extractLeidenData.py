@@ -8,11 +8,17 @@ COMMAND LINE INTERFACE
 parser = argparse.ArgumentParser(description="Given URL to the base URL of any LOVD 2 or 3 database installation, \
     such as http://www.dmd.nl/nmdb2/, extract variant entries associated with specified genes. Can specify either \
     a space-separated list of gene names or -a option to extract data from all genes at the specified URL. Variants \
-    for each gene are saved in a file named according to the gene name they are associated with.")
+    for each gene are saved in a file named according to the gene name they are associated with. Optional VCF output \
+    also available via -v option")
 
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
-group.add_argument("-a", "--all", action="store_true",
+group1 = parser.add_mutually_exclusive_group()
+group1 = group1.add_argument('-v', '--vcf', action='store_true', help='Output VCF formatted files for each gene. Regular data \
+                                                               files will still be output. VCF files named according \
+                                                               to <geneID>_VCF.txt')
+
+group2 = parser.add_mutually_exclusive_group()
+group2.add_argument("-g", "--availableGenes", action="store_true", help="A list of all available genes is printed.")
+group2.add_argument("-a", "--all", action="store_true",
                     help="Extract data for all available genes in the specified Leiden Database.")
 
 parser.add_argument("leidenURL", help="base URL of the particular Leiden database to be used. For example, the Leiden \
@@ -51,8 +57,9 @@ else:
     else:
         print('Must specify at least one geneID.')
 
-# Process any available genes
+
 if genes is not None:
+    # Process any available genes
     for gene in genes:
         print("---> " + gene + ": IN PROGRESS...")
         print("    ---> Downloading Data...")
@@ -74,22 +81,20 @@ if genes is not None:
 
     print('---> Saving Output Files...')
 
-    first_header = None
-
+    # Output results to file for each gene
     for i in range(0, len(genes)):
-
-            # Remember first gene with valid header row
-            if first_header is None:
-                first_header = i
-
-            # Ensure consistent column order between genes
-            try:
-                table_data[i] = match_column_order(headers[first_header], headers[i], table_data[i])
-            except ValueError:
-                print('    ---> ' + genes[i] + ': Header entries do not contain expected columns.')
-
+        if len(remapping_results[i]) > 0:
             # Output data to file
-            output_data = format_output_text(headers[first_header], table_data[i], remapping_results[i])
-            write_output_file(genes[i], output_data)
+            output_data = format_output_text(headers[i], table_data[i], remapping_results[i])
+
+            file_name = genes[i] + '.txt'
+            write_output_file(file_name, output_data)
+
+            if args.vcf:
+                # Output VCF file
+                vcf_data = format_vcf_text(remapping_results[i])
+
+                file_name = genes[i] + '.vcf'
+                write_output_file(file_name, vcf_data)
 
     print('---> Job Complete.')
