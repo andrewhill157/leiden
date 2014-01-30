@@ -209,6 +209,10 @@ class TestVariantRemapper(unittest.TestCase):
         result = ''
         self.assertEqual(VariantRemapper.get_alt(input), result)
 
+    def test_get_page_html(self):
+        #TODO not sure what test would be appropriate here
+        self.fail('Not implemented yet.')
+
 
 class TestLeidenDatabase(unittest.TestCase):
     def setUp(self):
@@ -256,8 +260,8 @@ class TestLeidenDatabase(unittest.TestCase):
         pass
 
     def test_get_table_data(self):
-        # Abstract, not implemented for parent class
-        pass
+        #TODO not sure what test would be appropriate here
+        self.fail('Not implemented yet.')
 
 
 class TestLOVD2Database(unittest.TestCase):
@@ -354,9 +358,11 @@ class TestLOVD2Database(unittest.TestCase):
         self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
     def test_get_table_headers(self):
+        #TODO not sure what test would be appropriate here
         self.fail('Not implemented yet.')
 
-    def test_get_table_data(self):
+    def test_get_table_data_page_n(self):
+        #TODO not sure what test would be appropriate here
         self.fail('Not implemented yet.')
 
 
@@ -454,9 +460,11 @@ class TestLOVD3Database(unittest.TestCase):
         self.assertEqual(self.database2.get_transcript_refseqid(), result)
 
     def test_get_table_headers(self):
+        #TODO not sure what test would be appropriate here
         self.fail('Not implemented yet.')
 
-    def test_get_table_data(self):
+    def test_get_table_data_page_n(self):
+        #TODO not sure what test would be appropriate here
         self.fail('Not implemented yet.')
 
 if __name__ == '__main__':

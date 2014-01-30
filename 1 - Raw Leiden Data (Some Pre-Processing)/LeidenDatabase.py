@@ -4,6 +4,7 @@ import re
 from suds.client import Client
 import suds
 import base64
+import math
 from collections import namedtuple
 
 
@@ -158,6 +159,25 @@ class Utilities:
 
         list[i], list[j] = list[j], list[i]
         return list
+
+    @staticmethod
+    def get_page_html(page_url):
+        """
+        Returns the html describing the page at the specified URL.
+
+        @param page_url: URL to a specified website
+        @type page_url: string
+        @return: HTML describing the specified page
+        @rtype: string
+        @raise: IOError if URL requested website could not be reached
+        """
+        try:
+            with urllib.request.urlopen(page_url) as url:
+                url_text = url.read().decode('utf-8', 'ignore')
+
+            return url_text
+        except IOError:
+            raise IOError('HTML from requested URL could not be retrieved.')
 
 
 class VariantRemapper:
@@ -411,9 +431,7 @@ class LeidenDatabase:
         @rtype: float
         """
 
-        # Get HTML from specified URL
-        with urllib.request.urlopen(leiden_url) as url:
-            html = url.read().decode('utf-8')
+        html = Utilities.get_page_html(leiden_url)
 
         # Extract the version number from HTML
         regex = re.compile('LOVD v\.([23])\.\d')
@@ -449,12 +467,11 @@ class LeidenDatabase:
             self.gene_homepage_url = self.get_gene_homepage_url()
 
             # Extract HTML and create BeautifulSoup objects for gene_id pages
-            with urllib.request.urlopen(self.variant_database_url) as url:
-                html = url.read()
-                self.database_soup = BeautifulSoup(html)
-            with urllib.request.urlopen(self.gene_homepage_url) as url:
-                html = url.read()
-                self.gene_homepage_soup = BeautifulSoup(html)
+            html = Utilities.get_page_html(self.variant_database_url)
+            self.database_soup = BeautifulSoup(html)
+
+            html = Utilities.get_page_html(self.gene_homepage_url)
+            self.gene_homepage_soup = BeautifulSoup(html)
 
             # Extract RefSeq ID for gene_id's reference transcript
             self.ref_seq_id = self.get_transcript_refseqid()
@@ -578,14 +595,63 @@ class LeidenDatabase:
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
         its elements are the entries for each column within the respective row.
 
-        @rtype: lists of lists of strings
         @return: table data from the Leiden Database. Each sub-list represents a row of the table data, where its
         elements are the entries for each column within the respective row. The order of the sub-lists contained in
         the list matches the order of rows within the table from top to bottom and individual entries are ordered
         from left to right as they appear on the Leiden Database.
+        @rtype: lists of lists of strings
+        """
+
+        total_variant_count = self.get_total_variant_count()
+
+        # Calculate the number of pages website will use to present data
+        variants_per_page = 1000  # max allowed value
+        total_pages = math.ceil(total_variant_count/variants_per_page)
+
+        # Get table data from all pages
+        table_data = []
+        for page_number in range(1, total_pages + 1):
+            table_data.extend(self.get_table_data_page_n(page_number))
+
+        return table_data
+
+    def get_table_data_page_n(self, page_number):
+        """
+        Gets the table data from a specified page of the table of variant entries. Each page number (positive integer)
+        has 1000 variants. The requested page number must not exceed the number of pages required to display the
+        total number of variants. For example, using page_number = 3 for a gene with 1500 variants is not valid, as
+        these are only displayed on two pages.
+
+        @param page_number: Page containing the desired table data.
+        @type page_number: integer
+        @return: table data from the specified page Leiden Database. Each sub-list represents a row of the table data,
+        where its elements are the entries for each column within the respective row. The order of the sub-lists
+        contained in the list matches the order of rows within the table from top to bottom and individual entries are
+        ordered from left to right as they appear on the Leiden Database.
+        @rtype: lists of lists of strings
         """
 
         raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
+
+    def get_total_variant_count(self):
+        """
+        Get the total number of variants in the database associated with the current gene. This is the total
+        number of variant entries in table of variants, not the number of unique entries.
+
+        @return: Number of variants listed for current gene
+        @rtype: number
+        @raise: ValueError if the number of entries could not be found on web page
+        """
+
+        # Search for sequences of digits that are four digits or longer in length.
+        m = re.compile('(\d+)\sentries')
+        results = m.search(self.database_soup.get_text())
+
+        # Return entire matched sequence (PMID)
+        if results is not None:
+            return int(results.group(1))
+        else:
+            raise ValueError('Input URL did not contain 4+ digit number.')
 
 
 class LOVD2Database(LeidenDatabase):
@@ -630,12 +696,11 @@ class LOVD2Database(LeidenDatabase):
         start_url = "".join([self.leiden_home_url, '?action=switch_db'])
 
         # Download and parse HTML from base URL
-        with urllib.request.urlopen(start_url) as url:
-            url_text = url.read()
-            url_soup = BeautifulSoup(url_text)
+        html = Utilities.get_page_html(start_url)
+        url_soup = BeautifulSoup(html)
 
-            # Extract all options from the SelectGeneDB drop-down control
-            options = url_soup.find(id='SelectGeneDB').find_all('option')
+        # Extract all options from the SelectGeneDB drop-down control
+        options = url_soup.find(id='SelectGeneDB').find_all('option')
 
         # Return all options in the drop-down
         available_genes = []
@@ -657,13 +722,23 @@ class LOVD2Database(LeidenDatabase):
                 result.append(h.strip())
         return result
 
-    def get_table_data(self):
+    def get_table_data_page_n(self, page_number):
+
+        # TODO can this redundancy in LOVD2/LOVD3 be eliminated?
+        if page_number is not 1:
+
+            page_url = self.variant_database_url + '&page=' + str(page_number)
+
+            html = Utilities.get_page_html(page_url)
+            database_soup = BeautifulSoup(html)
+        else:
+            database_soup = self.database_soup
 
         # id specific to data table in HTML (must be unicode due to underscore)
         table_id = "".join([u'table', u'\u005F', u'data'])
 
         # Extract the HTML specific to the table data
-        table = self.database_soup.find_all(id=table_id)[0].find_all('tr')
+        table = database_soup.find_all(id=table_id)[0].find_all('tr')
 
         # First row may contain a row of images for some reason. Filter out if present.
         if table[0].find('img') is not None:
@@ -722,13 +797,12 @@ class LOVD3Database(LeidenDatabase):
         start_url = "".join([self.leiden_home_url, 'genes/', '?page_size=1000&page=1'])
 
         # Download and parse HTML from base URL
-        with urllib.request.urlopen(start_url) as url:
-            url_text = url.read()
-            url_soup = BeautifulSoup(url_text)
+        html = Utilities.get_page_html(start_url)
+        url_soup = BeautifulSoup(html)
 
-            # Extract all gene entries from the database homepage
-            table_class = 'data'
-            options = url_soup.find_all('tr', class_=table_class)
+        # Extract all gene entries from the database homepage
+        table_class = 'data'
+        options = url_soup.find_all('tr', class_=table_class)
 
         available_genes = []
         for genes in options:
@@ -760,7 +834,7 @@ class LOVD3Database(LeidenDatabase):
                 result.append(h.strip())
         return result
 
-    def get_table_data(self):
+    def get_table_data_page_n(self, page_number):
         """
         Returns a list containing lists of strings (sub-lists). Each sub-list represents a row of the table data, where
         its elements are the entries for each column within the respective row.
@@ -772,11 +846,21 @@ class LOVD3Database(LeidenDatabase):
         from left to right as they appear on the Leiden Database.
         """
 
+        # TODO can this redundancy in LOVD2/LOVD3 be eliminated?
+        if page_number is not 1:
+
+            page_url = self.variant_database_url + '&page=' + str(page_number)
+
+            html = Utilities.get_page_html(page_url)
+            database_soup = BeautifulSoup(html)
+        else:
+            database_soup = self.database_soup
+
         # id specific to data table in HTML (must be unicode due to underscore)
         table_class = u'data'
 
         # Extract the HTML specific to the table data
-        table = self.database_soup.find_all('tr', class_=table_class)
+        table = database_soup.find_all('tr', class_=table_class)
 
         # First row may contain a row of images for some reason. Filter out if present.
         if table[0].find('img') is not None:
