@@ -59,25 +59,33 @@ def format_output_text(header, table_data, remapping):
     return table_data
 
 
-def format_vcf_text(remapping):
+def format_vcf_text(header, table_data, remapping):
     """
     Create formatted VCF file data from remapped variants.
 
+    @param header: column labels (must match number of columns in table_data)
+    @type header: list
+    @param table_data: list of lists where inner lists represent rows of data in a table
+    @type table_data: list of lists
     @param remapping: genomic mappings of variants (must match number of entries in table_data)
     @type remapping: named tuples of lists. Entries are chromosome_number, coordinate, ref, and alt.
-    @return: list of lists where each inner list is a row of the VCF-format output text
+    @return: combined data from headers, table_data, and remapped_variants
     @rtype: list of lists
     """
 
     # Initialize with required header information for the VCF input to Variant Effect Predictor
     vcf_text = [
-        ['##fileformat=VCFv4.0'],
+        ['##fileformat=VCFv4.0','##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change"'],
         ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
     ]
 
     # Build remaining rows using remapped variants
     for i in range(0, len(remapping.chromosome_number)):
-        row = [remapping.chromosome_number[i], remapping.coordinate[i], '.', remapping.ref[i], remapping.alt[i], '.', '.', '.']
+        # Extract amino-acid change
+        amino_acid_change_row = Utilities.find_string_index(header, 'Protein\xa0change')
+        laa_change = table_data[i][amino_acid_change_row]
+
+        row = [remapping.chromosome_number[i], remapping.coordinate[i], '.', remapping.ref[i], remapping.alt[i], '.', '.', 'LAA_CHANGE='+laa_change]
         vcf_text.append(row)
 
     return vcf_text

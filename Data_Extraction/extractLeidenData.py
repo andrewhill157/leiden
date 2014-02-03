@@ -92,7 +92,7 @@ if genes is not None:
 
             if args.vcf:
                 # Output VCF file
-                vcf_data = format_vcf_text(remapping_results[i])
+                vcf_data = format_vcf_text(headers[i], table_data[i], remapping_results[i])
 
                 file_name = genes[i] + '.vcf'
                 write_output_file(file_name, vcf_data)
