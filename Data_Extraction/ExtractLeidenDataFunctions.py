@@ -1,5 +1,4 @@
 from LeidenDatabase import *
-import traceback
 import time
 from collections import namedtuple
 
@@ -43,20 +42,23 @@ def format_output_text(header, table_data, remapping):
     @return: combined data from headers, table_data, and remapped_variants
     @rtype: list of lists
     """
+    # Copy to prevent input variables from being modified
+    result = list(table_data)
+    result_header = list(header)
 
     if len(remapping) > 0:
         # Insert new column headers for remapping results
         remapping_start_index = Utilities.find_string_index(header, u'DNA\xa0change') + 1
-        header[remapping_start_index:remapping_start_index] = ['Chromosome Number', 'Coordinate', 'Ref', 'Alt']
+        result_header[remapping_start_index:remapping_start_index] = ['Chromosome Number', 'Coordinate', 'Ref', 'Alt']
 
         # Insert remapping result columns
         for i in range(0, len(remapping.chromosome_number)):
-            table_data[i][remapping_start_index:remapping_start_index] = \
+            result[i][remapping_start_index:remapping_start_index] = \
                 [remapping.chromosome_number[i], remapping.coordinate[i], remapping.ref[i], remapping.alt[i]]
 
     # Combine all data into one list of lists
-    table_data.insert(0, header)
-    return table_data
+    result.insert(0, result_header)
+    return result
 
 
 def format_vcf_text(header, table_data, remapping):
@@ -75,7 +77,8 @@ def format_vcf_text(header, table_data, remapping):
 
     # Initialize with required header information for the VCF input to Variant Effect Predictor
     vcf_text = [
-        ['##fileformat=VCFv4.0','##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change"'],
+        ['##fileformat=VCFv4.0'],
+        ['##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change"'],
         ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
     ]
 
