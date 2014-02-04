@@ -78,7 +78,7 @@ def format_vcf_text(header, table_data, remapping):
     # Initialize with required header information for the VCF input to Variant Effect Predictor
     vcf_text = [
         ['##fileformat=VCFv4.0'],
-        ['##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change"'],
+        ['##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change">'],
         ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
     ]
 
