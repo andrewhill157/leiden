@@ -41,7 +41,7 @@ parser.add_argument("file_name", help="File or files (including extension) to pr
 args = parser.parse_args()
 
 if args.all:
-    for files in get_tagged_files("FINAL"):
+    for files in get_tagged_files("AC"):
         try:
             flag_annotation_file(files)
             print("---> " + files + ": COMPLETE")
