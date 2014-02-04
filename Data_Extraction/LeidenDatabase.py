@@ -180,6 +180,27 @@ class Utilities:
             raise IOError('HTML from requested URL could not be retrieved.')
 
 
+    def deep_copy(nested_list):
+        """
+        Makes a deep copy of lists that may or may not contain nested lists. Nested items that are not lists will not
+        be deep copied, they will be shallow copied.
+
+        @param nested_list: a list that may or may not contain nested lists. Nested lists may contain additional nested
+        lists.
+        @type nested_list: list or list of lists
+        @return: deep copy of nested_list
+        @rtype: list or list of lists (matches input)
+        """
+        copy = []
+        for item in nested_list:
+            if isinstance(item, list):
+                copy.append(Utilities.deep_copy(item))
+            else:
+                copy.append(item)
+        return copy
+
+
+
 class VariantRemapper:
     """
     Class containing functions for remapping of variants from HGVS to genomic coordinate notation.

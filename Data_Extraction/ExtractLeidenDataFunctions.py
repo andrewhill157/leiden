@@ -1,5 +1,6 @@
 from LeidenDatabase import *
 import time
+import copy
 from collections import namedtuple
 
 def get_remapping_results(batch_id_numbers):
@@ -43,8 +44,8 @@ def format_output_text(header, table_data, remapping):
     @rtype: list of lists
     """
     # Copy to prevent input variables from being modified
-    result = list(table_data)
-    result_header = list(header)
+    result = Utilities.deep_copy(table_data)
+    result_header = Utilities.deep_copy(header)
 
     if len(remapping) > 0:
         # Insert new column headers for remapping results

@@ -116,6 +116,30 @@ class TestUtilities(unittest.TestCase):
         result = [1, 2, 3, 4, 5]
         self.assertEqual(Utilities.swap(input, 3, 3), result)
 
+    def test_get_page_html(self):
+        #TODO not sure what test would be appropriate here
+        self.fail('Not implemented yet.')
+
+    def test_deep_copy(self):
+        # Simple list, copy should match original
+        input = [1, 2, 3, 4]
+        result = Utilities.deep_copy(input)
+        self.assertEqual(result, input)
+
+        # Changing one of the two should not change the other
+        input[0] = 0
+        self.assertEqual(result, [1,2,3,4])
+
+        # List of lists, copy should match original
+        input = [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
+        result = Utilities.deep_copy(input)
+        self.assertEqual(result, input)
+
+        # Changing an element in the inner list in one of the two should not change the other
+        input[0][0] = 0
+        self.assertEqual(result, [[1, 2, 3], [1, 2, 3], [1, 2, 3]])
+
+
 class TestVariantRemapper(unittest.TestCase):
     def setUp(self):
         self.remapper = VariantRemapper()
