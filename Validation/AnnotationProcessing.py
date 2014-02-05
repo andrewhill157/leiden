@@ -13,18 +13,20 @@ def map_aa_codes(code):
 
     # Mapping from three letter amino acid codes to one letter amino acid codes
     one_letter_aa_codes = dict(VAL='V', ILE='I', LEU='L', GLU='E', GLN='Q', ASP='D', ASN='N', HIS='H', TRP='W', PHE='F',
-                               TYR='Y', ARG='R', LYS='K', SER='S', THR='T', MET='M', ALA='A', GLY='G', PRO='P', CYS='C')
+                               TYR='Y', ARG='R', LYS='K', SER='S', THR='T', MET='M', ALA='A', GLY='G', PRO='P', CYS='C',
+                               X='*', XAA='*', SCY='*')  # Different notations for stop codons
 
     # Mapping from one letter amino acid codes to three letter amino acid codes
-    three_letter_aa_codes = dict([[v,k] for k, v in one_letter_aa_codes.items()])
+    three_letter_aa_codes = dict([[v,k] for k, v in one_letter_aa_codes.items() if v != '*'])
 
     if "*" in code:
         return code
+
     code_length = len(code)
-    if code_length is 1:
-        return three_letter_aa_codes[code]
-    elif code_length is 3:
+    if code_length == 3 or code == 'X':
         return one_letter_aa_codes[code]
+    elif code_length == 1:
+        return three_letter_aa_codes[code]
     else:
         return "ERROR"
 
@@ -102,8 +104,8 @@ def get_laa_change(annotation_info):
     if "-" in raw_annotation or "?" in raw_annotation or "=" in raw_annotation:
         return ""  # no change or unknown change in LAA
     else:
-        raw_annotation = remove_parentheses(raw_annotation);
-        return re.split("[0-9]+", raw_annotation)
+        raw_annotation = remove_parentheses(raw_annotation)
+        return re.split("[0-9+]+", raw_annotation)
 
 
 def get_aa_change(annotation_info):
@@ -138,6 +140,7 @@ def is_concordant(laa_change, aa_change):
         laa_change = [x.upper() for x in laa_change]
         aa_change = [x.upper() for x in aa_change]
         laa_change = [map_aa_codes(x) for x in laa_change]
+
         if laa_change == aa_change:
             return "OK"
         else:
@@ -218,6 +221,7 @@ def flag_annotation_file(annotation_file):
                     elif concordance == "FAIL":
                         flags.append("".join([concordance_flag, "NOT_CONCORDANT"]))
                     elif concordance == "ERROR":
+                        print('LOVD: ' + str(laa_change) +'; VEP: ' + str(aa_change))
                         flags.append("".join([concordance_flag, "ERROR"]))
 
                 # STEP 2 - Extract the SEVERE_IMPACT entry
