@@ -86,7 +86,7 @@ def format_vcf_text(header, table_data, remapping):
     # Build remaining rows using remapped variants
     for i in range(0, len(remapping.chromosome_number)):
         # Extract amino-acid change
-        amino_acid_change_row = Utilities.find_string_index(header, 'Protein\xa0change')
+        amino_acid_change_row = Utilities.find_string_index(header, 'Protein')
         laa_change = table_data[i][amino_acid_change_row]
 
         row = [remapping.chromosome_number[i], remapping.coordinate[i], '.', remapping.ref[i], remapping.alt[i], '.', '.', 'LAA_CHANGE='+laa_change]
