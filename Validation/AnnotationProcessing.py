@@ -105,8 +105,13 @@ def get_laa_change(annotation_info):
         return ""  # no change or unknown change in LAA
     else:
         raw_annotation = remove_parentheses(raw_annotation)
-        return re.split("[0-9+]+", raw_annotation)
+        pattern = re.compile('([A-Za-z\*]{1,3})[\d+]+([A-Za-z\*]{1,3})[A-Za-z\*]*\d*')
+        match = re.search(pattern, raw_annotation)
 
+        if match is not None:
+            return [match.group(1), match.group(2)]
+        else:
+            return ['-', '-']
 
 def get_aa_change(annotation_info):
     """
