@@ -4,6 +4,6 @@
 *.txt
 *.docx
 *.pptx
+*.log
 .idea/
 .metadata/
-

@@ -1,59 +1,107 @@
 import argparse
-from AnnotationProcessing import *
+import AnnotationProcessing
+import logging
 
+ERROR_FILENAME = 'errors.log'
+DISCORDANT_FILENAME = 'discordant.log'
+logging.basicConfig(filename=ERROR_FILENAME,filemode='w',level=logging.DEBUG)
+logging.basicConfig(filename=DISCORDANT_FILENAME,filemode='w',level=logging.WARNING)
 
-parser = argparse.ArgumentParser(description="Given the VCF-like file output by annotation of variants, add a column \
-    of flags as the first column in the file to summarize information contained in the INFO column. \
-    The script will output files in the same directory as the script called <original_file_name>_FLAGGED.vcf \
-    For example, the command python processAnnotatedMutations ACTA1_FINAL.vcf would produce a file called \
-    ACTA1_FLAGGED.vcf, etc. \
-    \
-    The output file will contain all the same information as the original file, except the column will now contain a \
-    semi-colon delimited list of tags and corresponding values for each mutation: TAG1=VALUE;TAG2=VALUE;TAG3=VALUE \
-    Note that the original columns in the file will all be shifted right one column in the output.\
-    Tag and value definitions in resulting output file: \
-    CONCORDANCE= \
-        - CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file match \
-        - NOT_CONCORDANT: The amino acid changes predicted by LAA_CHANGE and AA_CHANGE in the input file do not match \
-        - ERROR: There was an error processing the LAA_CHANGE and/or AA_CHANGE entry \
-        - NO_AA_CHANGE: No amino acid change is predicted by the annotation \
-    \
-    SEVERE_IMPACT= \
-        - The value of SEVERE_IMPACT in the original file is simply copied as the value of this tag for convenience \
-    \
-    HGMD= \
-        - OVERLAPS - An HGMD_MUT entry is present in the original file \
-        - NOT_IN_HGMD - No HGMD_MUT entry is present in the original file \
-    \
-    ALLELE_FREQUENCY=  \
-        - LOW_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is less than or equal to 0.5% \
-        - HIGH_FREQUENCY: Overall allele frequency,(AC_MAC26K/AN_MAC26K)*100, is greater than 0.5% \
-        - NOT_IN_26K_DATABASE: There were no AC_MAC26K or AN_MAC26K entries for this mutation")
+#TODO add a description
+parser = argparse.ArgumentParser(description='TODO document')
 
 group = parser.add_mutually_exclusive_group()
-group.add_argument("-d", "--debug", action="store_true",
-                   help="When errors are encountered, a full stack traceback is printed.")
-group.add_argument("-a", "--all", action="store_true",
-                   help="Process all vcf files in the given directory. Only files containing FINAL in the file name \
-                   will be processed.")
-parser.add_argument("file_name", help="File or files (including extension) to process.", nargs="*")
-
+parser.add_argument("file_names", help="File containing full paths to the VCF files to be processed.")
 args = parser.parse_args()
 
-if args.all:
-    for files in get_tagged_files("AC"):
+# Counts of various categories of variants
+concordant_annotation_count = 0
+discordant_annotation_count = 0
+error_count = 0
+
+hgmd_site_count = 0
+hgmd_mutation_count = 0
+
+high_26K_frequency_count = 0
+overlap_26K_count = 0
+
+total_mutation_count = 0
+
+with open(args.file_names, 'r') as file_list:
+    files_to_process = file_list.read().splitlines()
+
+for file in files_to_process:
+    # Extract all non-header lines from VCF file
+    with open(file, 'r') as vcf_file:
+        variants = [x for x in vcf_file if not x.startswith('#')]
+
+    for variant in variants:
+
+        vcf_info_column_list = AnnotationProcessing.get_vcf_info_column(variant)
+
+        severe_impact = AnnotationProcessing.get_severe_impact(vcf_info_column_list)
+
+        # Check concordance
         try:
-            flag_annotation_file(files)
-            print("---> " + files + ": COMPLETE")
-        except:
-            print_errors(args, files)
-else:
-    for files in args.file_name:
-        try:
-            flag_annotation_file(files)
-            print("---> " + files + ": COMPLETE")
-        except: 
-            print_errors(args, files)
+            laa_change = ''
+            aa_change = ''
+
+            laa_change = AnnotationProcessing.get_laa_change(vcf_info_column_list)
+            aa_change = AnnotationProcessing.get_aa_change(vcf_info_column_list)
+
+            if AnnotationProcessing.is_concordant_annotation(laa_change, aa_change):
+                concordant_annotation_count += 1
+            else:
+                discordant_annotation_count += 1
+                logging.warning(file + ': ' + variant.split('\t')[1] + ' ---> LAA_CHANGE: ' + str(laa_change) + '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
+        except Exception as e:
+            logging.debug(str(e))
+            error_count += 1
+
+        # Check allele frequency
+        allele_frequency = AnnotationProcessing.get_overall_26K_allele_frequency(vcf_info_column_list)
+
+        if allele_frequency > 0.5:
+            high_26K_frequency_count += 1
+        if allele_frequency > 0:
+            overlap_26K_count += 1
+
+        # Check HGMD Overlap
+        HGMD_SITE_TAG = 'HGMD_SITE'
+        HGMD_MUTATION_TAG = 'HGMD_MUT'
+        hgmd_site = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_SITE')
+        hgmd_mutation = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_MUT')
+
+        if hgmd_site != '':
+            hgmd_site_count += 1
+        if hgmd_mutation != '':
+            hgmd_mutation_count += 1
+
+        total_mutation_count += 1
+
+# Print results
+print('Total Mutations: ' + str(total_mutation_count))
+print('Concordant Annotations: ' + str(concordant_annotation_count))
+print('Discordant Annotations: ' + str(discordant_annotation_count))
+print('Errors and Indels: ' + str(error_count))
+print('')
+print('HGMD Sites: ' + str(hgmd_site_count))
+print('HGMD Mutations: ' + str(hgmd_mutation_count))
+print('')
+print('High 26K Frequency: ' + str(high_26K_frequency_count))
+print('26K Overlap Count: ' + str(overlap_26K_count))
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
