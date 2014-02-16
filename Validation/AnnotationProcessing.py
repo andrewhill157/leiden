@@ -186,13 +186,12 @@ def get_aa_change(vcf_info_column_list):
             match = re.search(search_pattern, change)
 
             if match is not None:
-                #return aa_change(match.group(1), match.group(1))
-                return aa_change('','')
+                # Return with before and after being the same amino acid
+                return aa_change(match.group(1), match.group(1))
 
     return aa_change('', '')  # no entry found
 
 
-# TODO implementation not updated
 def is_concordant_annotation(laa_change, aa_change):
     """
     Given the laa_change and aa_change tagged entries (the Protein change entry from LOVD and the predicted changes from
@@ -205,11 +204,15 @@ def is_concordant_annotation(laa_change, aa_change):
     @return: true if the laa_change and aa_change are concordant, false otherwise
     @rtype: bool
     """
+    laa_change_before = map_aa_codes(laa_change.before)
+    laa_change_after = map_aa_codes(laa_change.after)
+    aa_change_before = map_aa_codes(aa_change.before)
+    aa_change_after = map_aa_codes(aa_change.after)
 
-    return map_aa_codes(laa_change.before) == map_aa_codes(laa_change.before) and \
-           map_aa_codes(laa_change.after) == map_aa_codes(aa_change.after)
+    matching_annotation = laa_change_before == aa_change_before and laa_change_after == aa_change_after
+    synonymous_mutation = laa_change_before == laa_change_after and aa_change_before == aa_change_after
 
-
+    return matching_annotation or synonymous_mutation
 
 
 def get_severe_impact(vcf_info_column_list):
