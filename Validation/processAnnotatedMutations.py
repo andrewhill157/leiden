@@ -53,7 +53,8 @@ for file in files_to_process:
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
-                logging.warning(file + ': ' + variant.split('\t')[1] + ' ---> LAA_CHANGE: ' + str(laa_change) + '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
+                logging.warning(file + ': ' + variant.split('\t')[1] + ' ---> LAA_CHANGE: ' + str(laa_change) +
+                                '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
         except Exception as e:
             logging.debug(str(e))
             error_count += 1
