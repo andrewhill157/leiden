@@ -61,7 +61,7 @@ def format_output_text(header, table_data, remapping):
     result.insert(0, result_header)
     return result
 
-
+# TODO clean up extraneous code
 def format_vcf_text(header, table_data, remapping):
     """
     Create formatted VCF file data from remapped variants.
@@ -80,6 +80,7 @@ def format_vcf_text(header, table_data, remapping):
     vcf_text = [
         ['##fileformat=VCFv4.0'],
         ['##INFO=<ID=LAA_CHANGE,Number=1,Type=String,Description="LOVD amino acid change">'],
+        ['##INFO=<ID=HGVS_NOTATION,Number=1,Type=String,Description="LOVD HGVS notation describing DNA change">'],
         ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
     ]
 
@@ -91,9 +92,13 @@ def format_vcf_text(header, table_data, remapping):
 
         hgvs_notation_column = Utilities.find_string_index(header, 'DNA')
         hgvs_notation = table_data[i][hgvs_notation_column]
+        try:
+            hgvs_notation = hgvs_notation.split(':')[1]
+        except:
+            print(hgvs_notation)
 
         vcf_file_row = [remapping.chromosome_number[i], remapping.coordinate[i], '.', remapping.ref[i], remapping.alt[i], '.',
-               '.', 'LAA_CHANGE='+laa_change + ';HGVS_NOTATION=' + hgvs_notation]
+               '.', 'LAA_CHANGE='+laa_change + ';HGVS=' + hgvs_notation]
         vcf_text.append(vcf_file_row)
 
     return vcf_text
