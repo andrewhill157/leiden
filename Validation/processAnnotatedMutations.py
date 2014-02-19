@@ -41,6 +41,18 @@ for file in files_to_process:
 
         severe_impact = AnnotationProcessing.get_severe_impact(vcf_info_column_list)
 
+        # Get original HGVS notation
+        try:
+            hgvs_mutation = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGVS')
+        except:
+            hgvs_mutation = 'NOT_FOUND'
+
+        # Get original protein change
+        try:
+            protein_change = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'LAA_CHANGE')
+        except:
+            protein_change = 'NOT_FOUND'
+
         # Check concordance
         try:
             laa_change = ''
@@ -53,10 +65,10 @@ for file in files_to_process:
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
-                logging.warning(file + ': ' + variant.split('\t')[1] + ' ---> LAA_CHANGE: ' + str(laa_change) +
-                                '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
+                logging.warning('FILE_NAME: ' + file + '; HGVS:' + hgvs_mutation + '; PROTEIN_CHANGE: ' + protein_change +
+                                ';LAA_CHANGE: ' + str(laa_change) + '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
         except Exception as e:
-            logging.debug(str(e))
+            logging.debug('FILE_NAME: ' + file + '; ERROR_MESSAGE: ' + str(e) + '; HGVS: ' + hgvs_mutation + '; PROTEIN_CHANGE: ' + protein_change)
             error_count += 1
 
         # Check allele frequency
@@ -79,6 +91,7 @@ for file in files_to_process:
             hgmd_mutation_count += 1
 
         total_mutation_count += 1
+
 
 # Print results
 print('Total Mutations: ' + str(total_mutation_count))
