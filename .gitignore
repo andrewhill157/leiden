@@ -8,5 +8,5 @@
 *.list
 .idea/
 .metadata/
-extraction/eye/
-extraction/muscle/
+eye/
+muscle/

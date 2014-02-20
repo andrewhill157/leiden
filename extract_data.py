@@ -5,7 +5,7 @@ from ExtractLeidenDataFunctions import *
 """
 COMMAND LINE INTERFACE
 """
-parser = argparse.ArgumentParser(description="Given URL to the base URL of any LOVD 2 or 3 database installation, \
+parser = argparse.ArgumentParser(description="Given URL to the base URL of any lovd 2 or 3 database installation, \
     such as http://www.dmd.nl/nmdb2/, extract variant entries associated with specified genes. Can specify either \
     a space-separated list of gene names or -a option to extract data from all genes at the specified URL. Variants \
     for each gene are saved in a file named according to the gene name they are associated with. Optional VCF output \
@@ -29,11 +29,11 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
-# Get database object and print the LOVD version number
-print("---> DETECTING LOVD VERSION: IN PROGRESS...")
+# Get database object and print the lovd version number
+print("---> DETECTING lovd VERSION: IN PROGRESS...")
 database = make_leiden_database(args.leidenURL)
 version_number = database.get_version_number()
-print("---> DETECTING LOVD VERSION: COMPLETE")
+print("---> DETECTING lovd VERSION: COMPLETE")
 print("    ---> VERSION " + str(version_number) + " DETECTED")
 
 id_numbers = []

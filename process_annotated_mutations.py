@@ -1,5 +1,5 @@
 import argparse
-import AnnotationProcessing
+from lovd.validation import annotation_processing
 import logging
 
 ERROR_FILENAME = 'errors.log'
@@ -37,19 +37,19 @@ for file in files_to_process:
 
     for variant in variants:
 
-        vcf_info_column_list = AnnotationProcessing.get_vcf_info_column(variant)
+        vcf_info_column_list = annotation_processing.get_vcf_info_column(variant)
 
-        severe_impact = AnnotationProcessing.get_severe_impact(vcf_info_column_list)
+        severe_impact = annotation_processing.get_severe_impact(vcf_info_column_list)
 
         # Get original HGVS notation
         try:
-            hgvs_mutation = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGVS')
+            hgvs_mutation = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGVS')
         except:
             hgvs_mutation = 'NOT_FOUND'
 
         # Get original protein change
         try:
-            protein_change = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'LAA_CHANGE')
+            protein_change = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'LAA_CHANGE')
         except:
             protein_change = 'NOT_FOUND'
 
@@ -58,10 +58,10 @@ for file in files_to_process:
             laa_change = ''
             aa_change = ''
 
-            laa_change = AnnotationProcessing.get_laa_change(vcf_info_column_list)
-            aa_change = AnnotationProcessing.get_aa_change(vcf_info_column_list)
+            laa_change = annotation_processing.get_laa_change(vcf_info_column_list)
+            aa_change = annotation_processing.get_aa_change(vcf_info_column_list)
 
-            if AnnotationProcessing.is_concordant_annotation(laa_change, aa_change):
+            if annotation_processing.is_concordant_annotation(laa_change, aa_change):
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
@@ -72,7 +72,7 @@ for file in files_to_process:
             error_count += 1
 
         # Check allele frequency
-        allele_frequency = AnnotationProcessing.get_overall_26K_allele_frequency(vcf_info_column_list)
+        allele_frequency = annotation_processing.get_overall_26K_allele_frequency(vcf_info_column_list)
 
         if allele_frequency > 0.5:
             high_26K_frequency_count += 1
@@ -82,8 +82,8 @@ for file in files_to_process:
         # Check HGMD Overlap
         HGMD_SITE_TAG = 'HGMD_SITE'
         HGMD_MUTATION_TAG = 'HGMD_MUT'
-        hgmd_site = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_SITE')
-        hgmd_mutation = AnnotationProcessing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_MUT')
+        hgmd_site = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_SITE')
+        hgmd_mutation = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_MUT')
 
         if hgmd_site != '':
             hgmd_site_count += 1
