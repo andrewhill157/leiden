@@ -1,5 +1,5 @@
-import ExtractLeidenDataFunctions
-import LeidenDatabase
+from lovd.database import extract_data_functions
+from lovd.database.utilities import Utilities
 from collections import namedtuple
 import os
 import argparse
@@ -26,16 +26,16 @@ for file in files_to_process:
             header = file_text[0]
             table_data = file_text[1:]
 
-            chromosome_number = [x[LeidenDatabase.Utilities.find_string_index(header, 'Chromosome number')] for x in table_data]
-            coordinate = [x[LeidenDatabase.Utilities.find_string_index(header, 'coordinate')] for x in table_data]
-            ref = [x[LeidenDatabase.Utilities.find_string_index(header, 'ref')] for x in table_data]
-            alt = [x[LeidenDatabase.Utilities.find_string_index(header, 'alt')] for x in table_data]
+            chromosome_number = [x[Utilities.find_string_index(header, 'Chromosome number')] for x in table_data]
+            coordinate = [x[Utilities.find_string_index(header, 'coordinate')] for x in table_data]
+            ref = [x[Utilities.find_string_index(header, 'ref')] for x in table_data]
+            alt = [x[Utilities.find_string_index(header, 'alt')] for x in table_data]
 
             remapping_results = namedtuple('remapping_results', 'chromosome_number coordinate ref alt')
             remapping = remapping_results(chromosome_number, coordinate, ref, alt)
 
-            vcf_text = ExtractLeidenDataFunctions.format_vcf_text(header, table_data, remapping)
-            ExtractLeidenDataFunctions.write_output_file(vcf_file_name, vcf_text)
+            vcf_text = extract_data_functions.format_vcf_text(header, table_data, remapping)
+            extract_data_functions.write_output_file(vcf_file_name, vcf_text)
     except Exception as e:
         print('Error: ' + file)
         for lines in table_data:

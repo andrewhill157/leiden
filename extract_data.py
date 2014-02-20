@@ -1,6 +1,6 @@
 import argparse
-from LeidenDatabase import *
-from ExtractLeidenDataFunctions import *
+from lovd.database.leiden_database import *
+from lovd.database.extract_data_functions import *
 
 """
 COMMAND LINE INTERFACE
