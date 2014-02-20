@@ -1,6 +1,7 @@
 import argparse
-from lovd.database.leiden_database import *
 from lovd.database.extract_data_functions import *
+from lovd.database.utilities import write_output_file
+from lovd.database.leiden_database import make_leiden_database
 
 """
 COMMAND LINE INTERFACE
@@ -28,8 +29,6 @@ parser.add_argument("leidenURL", help="base URL of the particular Leiden databas
 parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from the Leiden Database.", nargs="*")
 
 args = parser.parse_args()
-
-
 
 id_numbers = []
 table_data = []

@@ -1,11 +1,6 @@
 import argparse
+from lovd.database import utilities
 from lovd.validation import annotation_processing
-import logging
-
-ERROR_FILENAME = 'errors.log'
-DISCORDANT_FILENAME = 'discordant.log'
-logging.basicConfig(filename=ERROR_FILENAME,filemode='w',level=logging.DEBUG)
-logging.basicConfig(filename=DISCORDANT_FILENAME,filemode='w',level=logging.WARNING)
 
 #TODO add a description
 parser = argparse.ArgumentParser(description='TODO document')
@@ -26,6 +21,9 @@ high_26K_frequency_count = 0
 overlap_26K_count = 0
 
 total_mutation_count = 0
+
+processing_errors = []
+discordant_annotations = []
 
 with open(args.file_names, 'r') as file_list:
     files_to_process = file_list.read().splitlines()
@@ -65,11 +63,14 @@ for file in files_to_process:
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
-                logging.warning('FILE_NAME: ' + file + '; HGVS:' + hgvs_mutation + '; PROTEIN_CHANGE: ' + protein_change +
-                                ';LAA_CHANGE: ' + str(laa_change) + '; AA_CHANGE: ' + str(aa_change) + '; SEVERE_IMPACT: ' + severe_impact)
+                discordant_annotations.append([file, hgvs_mutation, protein_change,
+                                               annotation_processing.map_aa_codes(laa_change.before) + '/' +
+                                               annotation_processing.map_aa_codes(laa_change.after),
+                                               annotation_processing.map_aa_codes(aa_change.before) + '/' +
+                                               annotation_processing.map_aa_codes(aa_change.after), severe_impact])
         except Exception as e:
-            logging.debug('FILE_NAME: ' + file + '; ERROR_MESSAGE: ' + str(e) + '; HGVS: ' + hgvs_mutation + '; PROTEIN_CHANGE: ' + protein_change)
             error_count += 1
+            processing_errors.append([file, str(e), hgvs_mutation, protein_change])
 
         # Check allele frequency
         allele_frequency = annotation_processing.get_overall_26K_allele_frequency(vcf_info_column_list)
@@ -92,6 +93,12 @@ for file in files_to_process:
 
         total_mutation_count += 1
 
+# Write out errors and discordant mutations to file
+processing_errors.insert(0, ['file', 'error', 'hgvs', 'protein'])
+utilities.write_output_file('processing_errors.log', processing_errors)
+
+discordant_annotations.insert(0, ['file', 'hgvs', 'protein', 'aa_change_lovd', 'aa_change_vep', 'severe_impact'])
+utilities.write_output_file('discordant_annotations.log', discordant_annotations)
 
 # Print results
 print('Total Mutations: ' + str(total_mutation_count))
