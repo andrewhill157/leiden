@@ -34,20 +34,31 @@ for file in files_to_process:
         variants = [x for x in vcf_file if not x.startswith('#')]
 
     for variant in variants:
+        # Extract info from line of VCF
+        vcf_columns = variant.split('\t')
+        chromosome_number = vcf_columns[0]
+        coordinate = vcf_columns[1]
+        ref = vcf_columns[3]
+        alt = vcf_columns[4]
+        info = vcf_columns[7].split(';')
 
-        vcf_info_column_list = annotation_processing.get_vcf_info_column(variant)
+        # Get link to relevant location in UCSC genome browser
+        viewing_interval = 25
+        if coordinate != '.':
+            ucsc_link = annotation_processing.get_ucsc_location_link(chromosome_number,
+                                                                    str(int(coordinate) - viewing_interval),
+                                                                    str(int(coordinate) + viewing_interval))
 
-        severe_impact = annotation_processing.get_severe_impact(vcf_info_column_list)
+        # Get tagged information from the info column
+        severe_impact = annotation_processing.get_tagged_entry_value(info, 'SEVERE_IMPACT')
 
-        # Get original HGVS notation
         try:
-            hgvs_mutation = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGVS')
+            hgvs_mutation = annotation_processing.get_tagged_entry_value(info, 'HGVS')
         except:
             hgvs_mutation = 'NOT_FOUND'
 
-        # Get original protein change
         try:
-            protein_change = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'LAA_CHANGE')
+            protein_change = annotation_processing.get_tagged_entry_value(info, 'LAA_CHANGE')
         except:
             protein_change = 'NOT_FOUND'
 
@@ -56,24 +67,34 @@ for file in files_to_process:
             laa_change = ''
             aa_change = ''
 
-            laa_change = annotation_processing.get_laa_change(vcf_info_column_list)
-            aa_change = annotation_processing.get_aa_change(vcf_info_column_list)
+            laa_change = annotation_processing.get_laa_change(info)
+            aa_change = annotation_processing.get_aa_change(info)
 
             if annotation_processing.is_concordant_annotation(laa_change, aa_change):
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
-                discordant_annotations.append([file, hgvs_mutation, protein_change,
+                discordant_annotations.append([file,
+                                               hgvs_mutation,
+                                               chromosome_number,
+                                               coordinate,
+                                               ref,
+                                               alt,
+                                               ucsc_link,
+                                               protein_change,
                                                annotation_processing.map_aa_codes(laa_change.before) + '/' +
                                                annotation_processing.map_aa_codes(laa_change.after),
                                                annotation_processing.map_aa_codes(aa_change.before) + '/' +
                                                annotation_processing.map_aa_codes(aa_change.after), severe_impact])
         except Exception as e:
             error_count += 1
-            processing_errors.append([file, str(e), hgvs_mutation, protein_change])
+            processing_errors.append([file,
+                                      str(e),
+                                      hgvs_mutation,
+                                      protein_change])
 
         # Check allele frequency
-        allele_frequency = annotation_processing.get_overall_26K_allele_frequency(vcf_info_column_list)
+        allele_frequency = annotation_processing.get_overall_26K_allele_frequency(info)
 
         if allele_frequency > 0.5:
             high_26K_frequency_count += 1
@@ -83,8 +104,8 @@ for file in files_to_process:
         # Check HGMD Overlap
         HGMD_SITE_TAG = 'HGMD_SITE'
         HGMD_MUTATION_TAG = 'HGMD_MUT'
-        hgmd_site = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_SITE')
-        hgmd_mutation = annotation_processing.get_tagged_entry_value(vcf_info_column_list, 'HGMD_MUT')
+        hgmd_site = annotation_processing.get_tagged_entry_value(info, 'HGMD_SITE')
+        hgmd_mutation = annotation_processing.get_tagged_entry_value(info, 'HGMD_MUT')
 
         if hgmd_site != '':
             hgmd_site_count += 1
@@ -94,10 +115,25 @@ for file in files_to_process:
         total_mutation_count += 1
 
 # Write out errors and discordant mutations to file
-processing_errors.insert(0, ['file', 'error', 'hgvs', 'protein'])
+processing_errors.insert(0, ['file',
+                             'error',
+                             'hgvs',
+                             'protein'])
+
 utilities.write_output_file('processing_errors.log', processing_errors)
 
-discordant_annotations.insert(0, ['file', 'hgvs', 'protein', 'aa_change_lovd', 'aa_change_vep', 'severe_impact'])
+discordant_annotations.insert(0, ['file',
+                                  'hgvs',
+                                  'chromosome',
+                                  'coordinate',
+                                  'ref',
+                                  'alt',
+                                  'ucsc',
+                                  'protein',
+                                  'aa_change_lovd',
+                                  'aa_change_vep',
+                                  'severe_impact'])
+
 utilities.write_output_file('discordant_annotations.log', discordant_annotations)
 
 # Print results
