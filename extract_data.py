@@ -2,6 +2,7 @@ import argparse
 from lovd.database.extract_data_functions import *
 from lovd.database.utilities import write_output_file
 from lovd.database.leiden_database import make_leiden_database
+from lovd.remapping.remapping import VariantRemapper
 
 """
 COMMAND LINE INTERFACE
@@ -30,9 +31,6 @@ parser.add_argument("geneID", help="Gene ID or multiple geneIDs to retrieve from
 
 args = parser.parse_args()
 
-id_numbers = []
-table_data = []
-headers = []
 genes = None
 
 # User has specified the available genes option, print a list of all available genes.
@@ -62,42 +60,62 @@ else:
 
 
     if genes is not None:
-        # Process any available genes
+
+        print('---> Loading refSeq transcripts for remapping...')
+        remapper = VariantRemapper()
+
+        remapping_errors = []
+        variant_entries_found = False
+
         for gene in genes:
-            print("---> " + gene + ": IN PROGRESS...")
-            print("    ---> Downloading Data...")
-            database.set_gene_id(gene)
+            print '---> ' + gene + ': IN PROGRESS...'
+            print '    ---> Downloading data...'
 
-            # Extract data and submit variants for remapping
-            result = extract_data_and_submit_remap(database, gene)
-            id_numbers.append(result.remapping_batch_id_number)
-            table_data.append(result.table_entries)
-            headers.append(result.column_labels)
+            try:
+                table_data, column_labels = extract_data(database, gene)
+                variant_entries_found = True
+            except ValueError as e:
+                print '    ---> ' + str(e)
+                variant_entries_found = False
 
-            if len(table_data) == 0:
-                print('    ---> ERROR: No Entries Found. Please Verify.')
-                print('    ---> ERROR: No Entries Found. Please Verify.')
+            if variant_entries_found:
+                hgvs_index = utilities.find_string_index(column_labels, 'dna')
+                protein_change_index = utilities.find_string_index(column_labels, 'protein')
+
+                print '    ---> Remapping variants'
+                vcf_format_variants = []
+                hgvs_notation = []
+                protein_change = []
+
+                for row in table_data:
+                    try:
+                        remapped_variant = remapper.hgvs_to_vcf(row[hgvs_index])
+                        hgvs_notation.append(row[hgvs_index])
+
+                        protein_change.append(row[protein_change_index])
+
+                        vcf_format_variants.append(remapped_variant)
+
+                    except Exception as e:
+                        remapping_errors.append([gene, row[hgvs_index], str(e)])
+
+                info_column_tags = {'HGVS': ('string', 'LOVD HGVS notation describing DNA change', hgvs_notation),
+                                    'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
+
+                vcf_text = format_vcf_text(vcf_format_variants, info_column_tags)
+
+                print '    ---> Saving VCF file...'
+                vcf_file_name = gene + '.vcf'
+                utilities.write_output_file(vcf_file_name, vcf_text)
 
 
-        print('---> Retrieving Remapping Results...')
-        remapping_results = get_remapping_results(id_numbers)
+                print '    ---> Saving raw data...'
+                output_file_name = gene + '.txt'
+                table_data.insert(0, column_labels)
 
-        print('---> Saving Output Files...')
+                utilities.write_output_file(output_file_name, table_data)
 
-        # Output results to file for each gene
-        for i in range(0, len(genes)):
-            if len(remapping_results[i]) > 0:
-                # Output data to file
-                output_data = format_output_text(headers[i], table_data[i], remapping_results[i])
+        print '---> Saving remapping errors to remapping_errors.log'
+        utilities.write_output_file('remapping_errors.log', remapping_errors)
 
-                file_name = genes[i] + '.txt'
-                write_output_file(file_name, output_data)
-
-                if args.vcf:
-                    # Output VCF file
-                    vcf_data = format_vcf_text(headers[i], table_data[i], remapping_results[i])
-
-                    file_name = genes[i] + '.vcf'
-                    write_output_file(file_name, vcf_data)
-
-        print('---> Job Complete.')
+        print('---> All genes complete..')
