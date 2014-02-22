@@ -108,7 +108,6 @@ else:
                 vcf_file_name = gene + '.vcf'
                 utilities.write_output_file(vcf_file_name, vcf_text)
 
-
                 print '    ---> Saving raw data...'
                 output_file_name = gene + '.txt'
                 table_data.insert(0, column_labels)

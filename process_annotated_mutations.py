@@ -46,8 +46,8 @@ for file in files_to_process:
         viewing_interval = 25
         if coordinate != '.':
             ucsc_link = annotation_processing.get_ucsc_location_link(chromosome_number,
-                                                                    str(int(coordinate) - viewing_interval),
-                                                                    str(int(coordinate) + viewing_interval))
+                                                                     str(int(coordinate) - viewing_interval),
+                                                                     str(int(coordinate) + viewing_interval))
 
         # Get tagged information from the info column
         severe_impact = annotation_processing.get_tagged_entry_value(info, 'SEVERE_IMPACT')
