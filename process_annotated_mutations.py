@@ -137,16 +137,16 @@ discordant_annotations.insert(0, ['file',
 utilities.write_output_file('discordant_annotations.log', discordant_annotations)
 
 # Print results
-print('Total Mutations: ' + str(total_mutation_count))
-print('Concordant Annotations: ' + str(concordant_annotation_count))
-print('Discordant Annotations: ' + str(discordant_annotation_count))
-print('Errors and Indels: ' + str(error_count))
-print('')
-print('HGMD Sites: ' + str(hgmd_site_count))
-print('HGMD Mutations: ' + str(hgmd_mutation_count))
-print('')
-print('High 26K Frequency: ' + str(high_26K_frequency_count))
-print('26K Overlap Count: ' + str(overlap_26K_count))
+print 'Total Mutations: ' + str(total_mutation_count)
+print 'Concordant Annotations: ' + str(concordant_annotation_count)
+print 'Discordant Annotations: ' + str(discordant_annotation_count)
+print 'Errors and Indels: ' + str(error_count)
+print ''
+print 'HGMD Sites: ' + str(hgmd_site_count)
+print 'HGMD Mutations: ' + str(hgmd_mutation_count)
+print ''
+print 'High 26K Frequency: ' + str(high_26K_frequency_count)
+print '26K Overlap Count: ' + str(overlap_26K_count)
 
 
 
