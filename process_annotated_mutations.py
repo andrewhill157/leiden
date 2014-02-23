@@ -120,7 +120,7 @@ processing_errors.insert(0, ['file',
                              'hgvs',
                              'protein'])
 
-utilities.write_output_file('processing_errors.log', processing_errors)
+utilities.write_table_to_file('processing_errors.log', processing_errors)
 
 discordant_annotations.insert(0, ['file',
                                   'hgvs',
@@ -134,7 +134,7 @@ discordant_annotations.insert(0, ['file',
                                   'aa_change_vep',
                                   'severe_impact'])
 
-utilities.write_output_file('discordant_annotations.log', discordant_annotations)
+utilities.write_table_to_file('discordant_annotations.log', discordant_annotations)
 
 # Print results
 print 'Total Mutations: ' + str(total_mutation_count)

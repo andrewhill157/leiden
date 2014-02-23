@@ -1,6 +1,6 @@
 import argparse
 from lovd.database.extract_data_functions import *
-from lovd.database.utilities import write_output_file
+from lovd.database.utilities import write_table_to_file
 from lovd.database.leiden_database import make_leiden_database
 from lovd.remapping.remapping import VariantRemapper
 
@@ -106,15 +106,15 @@ else:
 
                 print '    ---> Saving VCF file...'
                 vcf_file_name = gene + '.vcf'
-                utilities.write_output_file(vcf_file_name, vcf_text)
+                utilities.write_table_to_file(vcf_file_name, vcf_text)
 
                 print '    ---> Saving raw data...'
                 output_file_name = gene + '.txt'
                 table_data.insert(0, column_labels)
 
-                utilities.write_output_file(output_file_name, table_data)
+                utilities.write_table_to_file(output_file_name, table_data)
 
         print '---> Saving remapping errors to remapping_errors.log'
-        utilities.write_output_file('remapping_errors.log', remapping_errors)
+        utilities.write_table_to_file('remapping_errors.log', remapping_errors)
 
         print('---> All genes complete..')

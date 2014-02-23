@@ -55,11 +55,11 @@ for file in files_to_process:
                     'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
 
             vcf_file_text = extract_data_functions.format_vcf_text(vcf_notation_variants, info_column_tags)
-            utilities.write_output_file(vcf_file_name, vcf_file_text)
+            utilities.write_table_to_file(vcf_file_name, vcf_file_text)
 
     except Exception as e:
         print 'Error: ' + file + ': ' + str(e)
 
 print 'VCF files saved adjacent files in input list.'
 print 'Saving remapping errors to remapping_errors.log'
-utilities.write_output_file('remapping_errors.log', remapping_errors)
+utilities.write_table_to_file('remapping_errors.log', remapping_errors)
