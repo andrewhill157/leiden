@@ -8,12 +8,13 @@ predicted protein changes.
 For help, execute: python generate_vcf_files.py --help
 """
 
-from lovd.database import extract_data_functions
-from lovd.database import utilities
-from lovd.remapping.remapping import VariantRemapper
 import os
-import codecs
 import argparse
+
+from lovd.database import utilities
+from lovd.io import file_io
+from lovd.remapping.remapping import VariantRemapper
+
 
 #TODO add a description
 parser = argparse.ArgumentParser(description='Generates VCF files from a tab-separated file containing a list of '
@@ -52,57 +53,53 @@ remapping_errors = []
 
 for file in files_to_process:
     try:
-        with codecs.open(file, 'r', 'utf-8') as input_file:
-            file_text = [x.split('\t') for x in input_file.read().splitlines()]
+        table_data = file_io.read_table_from_file(file)
+        header = table_data.pop(0)
 
-            # Isolate column labels
-            header = file_text[0]
-            table_data = file_text[1:]
+        # Isolate data columns with HGVS mutations and protein change
+        hgvs_notation_index = utilities.find_string_index(header, args.hgvs_mutation_column)
+        hgvs_notation = []
 
-            # Isolate data columns with HGVS mutations and protein change
-            hgvs_notation_index = utilities.find_string_index(header, args.hgvs_mutation_column)
-            hgvs_notation = []
+        protein_change_index = utilities.find_string_index(header, args.protein_change_column)
+        protein_change = []
 
-            protein_change_index = utilities.find_string_index(header, args.protein_change_column)
-            protein_change = []
+        # Remap Variants and build list for INFO column tags
+        vcf_notation_variants = []
 
-            # Remap Variants and build list for INFO column tags
-            vcf_notation_variants = []
+        for row in table_data:
+            try:
+                vcf_notation = remapper.hgvs_to_vcf(row[hgvs_notation_index])
+                vcf_notation_variants.append(vcf_notation)
 
-            for row in table_data:
-                try:
-                    vcf_notation = remapper.hgvs_to_vcf(row[hgvs_notation_index])
-                    vcf_notation_variants.append(vcf_notation)
+                hgvs_notation.append(row[hgvs_notation_index])
+                protein_change.append(row[protein_change_index])
 
-                    hgvs_notation.append(row[hgvs_notation_index])
-                    protein_change.append(row[protein_change_index])
+            except Exception as e:
+                remapping_errors.append([file, row[hgvs_notation_index], str(e)])
 
-                except Exception as e:
-                    remapping_errors.append([file, row[hgvs_notation_index], str(e)])
-
-            info_column_tags = {'HGVS': ('string', 'LOVD HGVS notation describing DNA change', hgvs_notation),
-                    'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
+        info_column_tags = {'HGVS': ('string', 'LOVD HGVS notation describing DNA change', hgvs_notation),
+                'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
 
 
-            if output_directory != '':
-                # Save output files to specified directory
-                base_file_name = os.path.basename(file)
-            else:
-                # Save output files adjacent to input files
-                base_file_name = file
+        if output_directory != '':
+            # Save output files to specified directory
+            base_file_name = os.path.basename(file)
+        else:
+            # Save output files adjacent to input files
+            base_file_name = file
 
-            # Construct VCF file path
-            vcf_file_name = os.path.splitext(base_file_name)[0] + '.vcf'
-            vcf_file_name = os.path.join(output_directory, vcf_file_name)
+        # Construct VCF file path
+        vcf_file_name = os.path.splitext(base_file_name)[0] + '.vcf'
+        vcf_file_name = os.path.join(output_directory, vcf_file_name)
 
-            vcf_file_text = extract_data_functions.format_vcf_text(vcf_notation_variants, info_column_tags)
-            utilities.write_table_to_file(vcf_file_name, vcf_file_text)
+        vcf_file_text = file_io.format_vcf_text(vcf_notation_variants, info_column_tags)
+        file_io.write_table_to_file(vcf_file_name, vcf_file_text)
 
     # Display any files that failed to process entirely
     except Exception as e:
         print 'Error: ' + file + ': ' + str(e)
 
 # Remind user of file locations and save error log
-print 'Saving remapping errors to remapping_errors.log'
 error_log_file_name = os.path.join(output_directory, 'remapping_errors.log')
-utilities.write_table_to_file(error_log_file_name, remapping_errors)
+file_io.write_table_to_file(error_log_file_name, remapping_errors)
+print 'Remapping errors to: ' + error_log_file_name

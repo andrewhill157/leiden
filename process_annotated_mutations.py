@@ -1,13 +1,36 @@
+"""
+Andrew Hill
+MacArthur Lab - 2014
+
+Outputs error logs and validation statistics on VEP and 26K annotated VCF files. Meant to validate variants converted
+from HGVS to VCF format.
+
+For help, execute: python process_annotated_mutations.py --help
+"""
+
 import argparse
-from lovd.database import utilities
+import os
+from lovd.io.file_io import write_table_to_file
 from lovd.validation import annotation_processing
+from lovd.io import file_io
 
-#TODO add a description
-parser = argparse.ArgumentParser(description='TODO document')
+parser = argparse.ArgumentParser(description='Output validation statitics and error logs when processing VEP and AC '
+                                             'annotated VCF files. Outputs processing_errors.log and '
+                                             'discordant_annotations.log, which contain information on variants that '
+                                             'could not be validated due to syntax errors and variants that not '
+                                             'correctly validate respectively.')
 
-group = parser.add_mutually_exclusive_group()
-parser.add_argument("file_names", help="File containing full paths to the VCF files to be processed.")
+group = parser.add_argument_group()
+group.add_argument('-f', '--file_names', required=True, help="File containing full paths to the VCF files to be processed.")
+group.add_argument('-o', '--output_directory', default='.', help='Output directory for .log files.')
 args = parser.parse_args()
+
+# Make the output directory if does not already exist
+output_directory = args.output_directory
+
+if not os.path.exists(output_directory):
+    os.mkdir(args.output_directory)
+
 
 # Counts of various categories of variants
 concordant_annotation_count = 0
@@ -30,17 +53,16 @@ with open(args.file_names, 'r') as file_list:
 
 for file in files_to_process:
     # Extract all non-header lines from VCF file
-    with open(file, 'r') as vcf_file:
-        variants = [x for x in vcf_file if not x.startswith('#')]
+    vcf_file = file_io.read_table_from_file(file)
+    variants = [x for x in vcf_file if not x[0].startswith('#')]
 
-    for variant in variants:
+    for variant_row in variants:
         # Extract info from line of VCF
-        vcf_columns = variant.split('\t')
-        chromosome_number = vcf_columns[0]
-        coordinate = vcf_columns[1]
-        ref = vcf_columns[3]
-        alt = vcf_columns[4]
-        info = vcf_columns[7].split(';')
+        chromosome_number = variant_row[0]
+        coordinate = variant_row[1]
+        ref = variant_row[3]
+        alt = variant_row[4]
+        info = variant_row[7].split(';')
 
         # Get link to relevant location in UCSC genome browser
         viewing_interval = 25
@@ -120,7 +142,8 @@ processing_errors.insert(0, ['file',
                              'hgvs',
                              'protein'])
 
-utilities.write_table_to_file('processing_errors.log', processing_errors)
+processing_errors_file_name = os.path.join(output_directory, 'processing_errors.log')
+write_table_to_file(processing_errors_file_name, processing_errors)
 
 discordant_annotations.insert(0, ['file',
                                   'hgvs',
@@ -133,8 +156,8 @@ discordant_annotations.insert(0, ['file',
                                   'aa_change_lovd',
                                   'aa_change_vep',
                                   'severe_impact'])
-
-utilities.write_table_to_file('discordant_annotations.log', discordant_annotations)
+discordant_annotations_file_name = os.path.join(output_directory, 'discordant_annotations.log')
+write_table_to_file(discordant_annotations_file_name, discordant_annotations)
 
 # Print results
 print 'Total Mutations: ' + str(total_mutation_count)

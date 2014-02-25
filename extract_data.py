@@ -9,10 +9,14 @@ For help, execute: python extract_data.py --help
 """
 
 import argparse
-from lovd.database.extract_data_functions import *
+from collections import namedtuple
+import os
+
+from lovd.io import file_io
+from lovd.database import utilities
 from lovd.database.leiden_database import make_leiden_database
 from lovd.remapping.remapping import VariantRemapper
-import os
+
 
 # Command line interface definition
 parser = argparse.ArgumentParser(description='Given URL to the base URL of any LOVD 2 or 3 database installation, '
@@ -55,6 +59,30 @@ if not os.path.exists(output_directory):
 genes = None
 
 # User has specified the available genes option, print a list of all available genes.
+def extract_data(leiden_database, gene_id):
+    """
+    Extracts variant table data for given gene in leiden_database and submits variants for remapping to genomic coordinates.
+
+    @param leiden_database: database containing tables of variant data for specified gene_id
+    @type leiden_database: LeidenDatabase
+    @param gene_id: a string with the Gene ID of the gene to be extracted.
+    @type gene_id: string
+    @return: namedtuple containing remapping_batch_id_number, table_entries, and column_label entries.
+    @rtype: namedtuple
+    @raise: IOError if could not get data
+    """
+    try:
+        leiden_database.set_gene_id(gene_id)
+        column_labels = leiden_database.get_table_headers()
+        table_entries = leiden_database.get_table_data()
+
+    except Exception as e:
+        raise e
+
+    results = namedtuple('results', 'table_entries, column_labels')
+    return results(table_entries, column_labels)
+
+
 if args.genes_available:
     database = make_leiden_database(args.leiden_url)
 
@@ -135,20 +163,20 @@ else:
                     info_column_tags = {'HGVS': ('string', 'LOVD HGVS notation describing DNA change', hgvs_notation),
                                         'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
 
-                    vcf_text = format_vcf_text(vcf_format_variants, info_column_tags)
+                    vcf_text = file_io.format_vcf_text(vcf_format_variants, info_column_tags)
 
                     print '    ---> Saving VCF file...'
                     vcf_file_name = os.path.join(output_directory, gene + '.vcf')
-                    utilities.write_table_to_file(os.path.join(vcf_file_name), vcf_text)
+                    file_io.write_table_to_file(os.path.join(vcf_file_name), vcf_text)
 
                 print '    ---> Saving raw data...'
                 table_data.insert(0, column_labels)
                 output_file_name = os.path.join(output_directory, gene + '.txt')
 
-                utilities.write_table_to_file(output_file_name, table_data)
+                file_io.write_table_to_file(output_file_name, table_data)
 
         print '---> Saving remapping errors to remapping_errors.log'
         error_log_file_name = os.path.join(output_directory, 'remapping_errors.log')
-        utilities.write_table_to_file(error_log_file_name, remapping_errors)
+        file_io.write_table_to_file(error_log_file_name, remapping_errors)
 
         print('---> All genes complete..')
