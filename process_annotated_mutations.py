@@ -40,7 +40,13 @@ error_count = 0
 hgmd_site_count = 0
 hgmd_mutation_count = 0
 
-high_26K_frequency_count = 0
+overall_high_26K_frequency_count = 0
+eur_high_26K_frequency_count = 0
+amr_high_26K_frequency_count = 0
+afr_high_26K_frequency_count = 0
+sas_high_26K_frequency_count = 0
+eas_high_26K_frequency_count = 0
+
 overlap_26K_count = 0
 
 total_mutation_count = 0
@@ -116,11 +122,28 @@ for file in files_to_process:
                                       protein_change])
 
         # Check allele frequency
-        allele_frequency = annotation_processing.get_overall_26K_allele_frequency(info)
+        overall_allele_frequency = annotation_processing.get_26K_allele_frequency('MAC26K', info)
+        eur_allele_frequency = annotation_processing.get_26K_allele_frequency('EUR', info)
+        amr_allele_frequency = annotation_processing.get_26K_allele_frequency('AMR', info)
+        afr_allele_frequency = annotation_processing.get_26K_allele_frequency('AFR', info)
+        sas_allele_frequency = annotation_processing.get_26K_allele_frequency('SAS', info)
+        eas_allele_frequency = annotation_processing.get_26K_allele_frequency('EAS', info)
 
-        if allele_frequency > 0.5:
-            high_26K_frequency_count += 1
-        if allele_frequency > 0:
+        HIGH_FREQUENCY_THRESHOLD = 0.5
+        if overall_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            overall_high_26K_frequency_count += 1
+        if eur_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            eur_high_26K_frequency_count += 1
+        if amr_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            amr_high_26K_frequency_count
+        if afr_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            afr_high_26K_frequency_count
+        if sas_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            sas_high_26K_frequency_count
+        if eas_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
+            eas_high_26K_frequency_count
+
+        if overall_allele_frequency > 0:
             overlap_26K_count += 1
 
         # Check HGMD Overlap
@@ -168,5 +191,10 @@ print ''
 print 'HGMD Sites: ' + str(hgmd_site_count)
 print 'HGMD Mutations: ' + str(hgmd_mutation_count)
 print ''
-print 'High 26K Frequency: ' + str(high_26K_frequency_count)
-print '26K Overlap Count: ' + str(overlap_26K_count)
+print 'High 26K Frequency - Overall: ' + str(overall_high_26K_frequency_count)
+print 'High 26K Frequency - EUR: ' + str(eur_high_26K_frequency_count)
+print 'High 26K Frequency - AMR: ' + str(amr_high_26K_frequency_count)
+print 'High 26K Frequency - AFR: ' + str(afr_high_26K_frequency_count)
+print 'High 26K Frequency - SAS: ' + str(sas_high_26K_frequency_count)
+print 'High 26K Frequency - EAS: ' + str(eas_high_26K_frequency_count)
+print '26K Overlap Total Count (All Frequencies): ' + str(overlap_26K_count)
