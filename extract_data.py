@@ -9,13 +9,37 @@ For help, execute: python extract_data.py --help
 """
 
 import argparse
-from collections import namedtuple
 import os
+from collections import namedtuple
+from macarthur_core.io import file_io
+from macarthur_core.lovd import utilities
+from macarthur_core.lovd.leiden_database import make_leiden_database
+from macarthur_core.remapping.remapping import VariantRemapper
 
-from lovd.io import file_io
-from lovd.database import utilities
-from lovd.database.leiden_database import make_leiden_database
-from lovd.remapping.remapping import VariantRemapper
+
+# User has specified the available genes option, print a list of all available genes.
+def extract_data(leiden_database, gene_id):
+    """
+    Extracts variant table data for given gene in leiden_database and submits variants for remapping to genomic coordinates.
+
+    @param leiden_database: database containing tables of variant data for specified gene_id
+    @type leiden_database: LeidenDatabase
+    @param gene_id: a string with the Gene ID of the gene to be extracted.
+    @type gene_id: string
+    @return: namedtuple containing remapping_batch_id_number, table_entries, and column_label entries.
+    @rtype: namedtuple
+    @raise: IOError if could not get data
+    """
+    try:
+        leiden_database.set_gene_id(gene_id)
+        column_labels = leiden_database.get_table_headers()
+        table_entries = leiden_database.get_table_data()
+
+    except Exception as e:
+        raise e
+
+    results = namedtuple('results', 'table_entries, column_labels')
+    return results(table_entries, column_labels)
 
 
 # Command line interface definition
@@ -57,31 +81,6 @@ if not os.path.exists(output_directory):
     os.mkdir(args.output_directory)
 
 genes = None
-
-# User has specified the available genes option, print a list of all available genes.
-def extract_data(leiden_database, gene_id):
-    """
-    Extracts variant table data for given gene in leiden_database and submits variants for remapping to genomic coordinates.
-
-    @param leiden_database: database containing tables of variant data for specified gene_id
-    @type leiden_database: LeidenDatabase
-    @param gene_id: a string with the Gene ID of the gene to be extracted.
-    @type gene_id: string
-    @return: namedtuple containing remapping_batch_id_number, table_entries, and column_label entries.
-    @rtype: namedtuple
-    @raise: IOError if could not get data
-    """
-    try:
-        leiden_database.set_gene_id(gene_id)
-        column_labels = leiden_database.get_table_headers()
-        table_entries = leiden_database.get_table_data()
-
-    except Exception as e:
-        raise e
-
-    results = namedtuple('results', 'table_entries, column_labels')
-    return results(table_entries, column_labels)
-
 
 if args.genes_available:
     database = make_leiden_database(args.leiden_url)

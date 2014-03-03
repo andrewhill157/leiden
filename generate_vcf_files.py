@@ -11,12 +11,11 @@ For help, execute: python generate_vcf_files.py --help
 import os
 import argparse
 
-from lovd.database import utilities
-from lovd.io import file_io
-from lovd.remapping.remapping import VariantRemapper
+from macarthur_core.lovd import utilities
+from macarthur_core.io import file_io
+from macarthur_core.remapping.remapping import VariantRemapper
 
 
-#TODO add a description
 parser = argparse.ArgumentParser(description='Generates VCF files from a tab-separated file containing a list of '
                                              'mutations in HGVS notation and their corresponding predicted protein '
                                              'change (for validation purposes). The first line of the file must contain '

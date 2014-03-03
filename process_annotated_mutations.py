@@ -10,9 +10,9 @@ For help, execute: python process_annotated_mutations.py --help
 
 import argparse
 import os
-from lovd.io.file_io import write_table_to_file
-from lovd.validation import annotation_processing
-from lovd.io import file_io
+from macarthur_core.io.file_io import write_table_to_file
+from macarthur_core.validation import annotation_processing
+from macarthur_core.io import file_io
 
 parser = argparse.ArgumentParser(description='Output validation statitics and error logs when processing VEP and AC '
                                              'annotated VCF files. Outputs processing_errors.log and '
@@ -170,19 +170,3 @@ print 'HGMD Mutations: ' + str(hgmd_mutation_count)
 print ''
 print 'High 26K Frequency: ' + str(high_26K_frequency_count)
 print '26K Overlap Count: ' + str(overlap_26K_count)
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-            
