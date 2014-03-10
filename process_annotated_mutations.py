@@ -10,9 +10,9 @@ For help, execute: python process_annotated_mutations.py --help
 
 import argparse
 import os
-from macarthur_core.io.file_io import write_table_to_file
 from macarthur_core.validation import annotation_processing
 from macarthur_core.io import file_io
+import re
 
 parser = argparse.ArgumentParser(description='Output validation statitics and error logs when processing VEP and AC '
                                              'annotated VCF files. Outputs processing_errors.log and '
@@ -33,9 +33,15 @@ if not os.path.exists(output_directory):
 
 
 # Counts of various categories of variants
+no_predicted_aa_change_count = 0
+lovd_aa_not_reported_count = 0
 concordant_annotation_count = 0
 discordant_annotation_count = 0
 error_count = 0
+frameshift_variant_count = 0
+splice_acceptor_variant_count = 0
+splice_donor_variant_count = 0
+splice_region_variant_count = 0
 
 hgmd_site_count = 0
 hgmd_mutation_count = 0
@@ -98,7 +104,19 @@ for file in files_to_process:
             laa_change = annotation_processing.get_laa_change(info)
             aa_change = annotation_processing.get_aa_change(info)
 
-            if annotation_processing.is_concordant_annotation(laa_change, aa_change):
+            if laa_change == ('', '') and aa_change == ('', ''):
+                no_predicted_aa_change_count += 1
+            elif laa_change == ('', ''):
+                lovd_aa_not_reported_count += 1
+            elif severe_impact == 'FRAMESHIFT_VARIANT':
+                frameshift_variant_count += 1
+            elif severe_impact == 'SPLICE_ACCEPTOR_VARIANT':
+                splice_acceptor_variant_count += 1
+            elif severe_impact == 'SPLICE_DONOR_VARIANT':
+                splice_donor_variant_count += 1
+            elif severe_impact == 'SPLICE_REGION_VARIANT':
+                splice_region_variant_count += 1
+            elif annotation_processing.is_concordant_annotation(laa_change, aa_change, severe_impact):
                 concordant_annotation_count += 1
             else:
                 discordant_annotation_count += 1
@@ -113,13 +131,16 @@ for file in files_to_process:
                                                annotation_processing.map_aa_codes(laa_change.before) + '/' +
                                                annotation_processing.map_aa_codes(laa_change.after),
                                                annotation_processing.map_aa_codes(aa_change.before) + '/' +
-                                               annotation_processing.map_aa_codes(aa_change.after), severe_impact])
+                                               annotation_processing.map_aa_codes(aa_change.after),
+                                               severe_impact])
         except Exception as e:
+
             error_count += 1
             processing_errors.append([file,
                                       str(e),
                                       hgvs_mutation,
-                                      protein_change])
+                                      protein_change,
+                                      severe_impact])
 
         # Check allele frequency
         overall_allele_frequency = annotation_processing.get_26K_allele_frequency('MAC26K', info)
@@ -135,13 +156,13 @@ for file in files_to_process:
         if eur_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
             eur_high_26K_frequency_count += 1
         if amr_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
-            amr_high_26K_frequency_count
+            amr_high_26K_frequency_count += 1
         if afr_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
-            afr_high_26K_frequency_count
+            afr_high_26K_frequency_count += 1
         if sas_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
-            sas_high_26K_frequency_count
+            sas_high_26K_frequency_count += 1
         if eas_allele_frequency > HIGH_FREQUENCY_THRESHOLD:
-            eas_high_26K_frequency_count
+            eas_high_26K_frequency_count += 1
 
         if overall_allele_frequency > 0:
             overlap_26K_count += 1
@@ -163,10 +184,11 @@ for file in files_to_process:
 processing_errors.insert(0, ['file',
                              'error',
                              'hgvs',
-                             'protein'])
+                             'protein',
+                             'severe_impact'])
 
 processing_errors_file_name = os.path.join(output_directory, 'processing_errors.log')
-write_table_to_file(processing_errors_file_name, processing_errors)
+file_io.write_table_to_file(processing_errors_file_name, processing_errors)
 
 discordant_annotations.insert(0, ['file',
                                   'hgvs',
@@ -180,13 +202,19 @@ discordant_annotations.insert(0, ['file',
                                   'aa_change_vep',
                                   'severe_impact'])
 discordant_annotations_file_name = os.path.join(output_directory, 'discordant_annotations.log')
-write_table_to_file(discordant_annotations_file_name, discordant_annotations)
+file_io.write_table_to_file(discordant_annotations_file_name, discordant_annotations)
 
 # Print results
 print 'Total Mutations: ' + str(total_mutation_count)
+print 'No LOVD or VEP AA Change Reported: ' + str(no_predicted_aa_change_count)
+print 'No LOVD AA Change Reported: ' + str(lovd_aa_not_reported_count)
+print 'Frameshift Variants (Not Yet Examined): ' + str(frameshift_variant_count)
+print 'Splice Donor Variants (Not Yet Examined): ' + str(splice_donor_variant_count)
+print 'Splice Acceptor Variants (Not Yet Examined): ' + str(splice_acceptor_variant_count)
+print 'Splice Region Variants (Not Yet Examined): ' + str(splice_region_variant_count)
 print 'Concordant Annotations: ' + str(concordant_annotation_count)
 print 'Discordant Annotations: ' + str(discordant_annotation_count)
-print 'Errors and Indels: ' + str(error_count)
+print 'Errors: ' + str(error_count)
 print ''
 print 'HGMD Sites: ' + str(hgmd_site_count)
 print 'HGMD Mutations: ' + str(hgmd_mutation_count)
