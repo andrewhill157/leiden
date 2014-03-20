@@ -2,6 +2,7 @@
 *.vcf
 *.o
 *.txt
+*.tsv
 *.docx
 *.pptx
 *.log
