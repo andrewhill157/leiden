@@ -76,8 +76,8 @@ for file in files_to_process:
             except Exception as e:
                 remapping_errors.append([file, row[hgvs_notation_index], str(e)])
 
-        info_column_tags = {'HGVS': ('string', 'LOVD HGVS notation describing DNA change', hgvs_notation),
-                'LAA_CHANGE': ('string', 'LOVD amino acid change', protein_change)}
+        info_column_tags = {'HGVS': ('String', 'LOVD HGVS notation describing DNA change', hgvs_notation),
+                'LAA_CHANGE': ('String', 'LOVD amino acid change', protein_change)}
 
 
         if output_directory != '':
