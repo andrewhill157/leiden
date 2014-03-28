@@ -68,9 +68,9 @@ def is_concordant(variant_vcf_row):
 
 
 def is_concordant_splice_mutation(variant_vcf_row):
-    info_column = variant_row[INFO_COLUMN_INDEX]
+    info_column = variant_vcf_row[INFO_COLUMN_INDEX]
     hgvs = get_unique_tagged_entry_values(info_column, 'HGVS')[0]
-    ref = variant_row[REF_INDEX]
+    ref = variant_vcf_row[REF_INDEX]
 
     pattern = re.compile('([+-]\d)([A-Z])>[A-Z]', re.IGNORECASE)
     match = re.search(pattern, hgvs)
@@ -157,6 +157,7 @@ def map_aa_codes(code):
 
     except KeyError:
         raise ValueError('Unrecognized amino acid or stop codon code: ' + code)
+
 
 def get_unique_tagged_entry_values(info_column, tag, tagged_entry_delimiter=';', value_delimiter=','):
     """

@@ -1,48 +1,181 @@
-from nose.tools import assert_equals
-from nose.tools import assert_raises
-from nose.tools import assert_items_equal
+from nose.tools import assert_equals, assert_raises, assert_items_equal, assert_true, assert_false
 import process_annotated_mutations
 
 
 #######################################################################################################################
 # Tests for has_vep_aa_change
 #######################################################################################################################
+def test_has_vep_aa_change_with_standard_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
+    result = True
+    assert_equals(process_annotated_mutations.has_vep_aa_change(input), result)
+
+
+def test_has_vep_aa_change_with_no_vep_aa_change():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
+    result = False
+    assert_equals(process_annotated_mutations.has_vep_aa_change(input), result)
 
 
 #######################################################################################################################
 # Tests for has_lovd_aa_change
 #######################################################################################################################
+def test_has_lovd_aa_change_with_standard_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
+    result = True
+    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
+
+
+def test_has_vep_aa_change_with_no_aa_change():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
+    result = False
+    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
+
+
+def test_has_vep_aa_change_with_invalid_aa_change():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(=)'
+    result = False
+    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
 
 
 #######################################################################################################################
 # Tests for get_severe_impact
 #######################################################################################################################
+def test_get_severe_impact_with_standard_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT'
+    result = 'NONSENSE_VARIANT'
+    assert_equals(process_annotated_mutations.get_severe_impact(input), result)
 
 
-#######################################################################################################################
-# Tests for get_severe_impact
-#######################################################################################################################
+def test_get_severe_impact_with_multiple_categories():
+    # Even if there are multiple categories, only the first one should be returned
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT,OTHER_CATEGORY'
+    result = 'NONSENSE_VARIANT'
+    assert_equals(process_annotated_mutations.get_severe_impact(input), result)
+
+
+def test_get_severe_impact_with_multiple_categories():
+    # Even if there are multiple categories, only the first one should be returned
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'NO_SEVERE_IMPACT_TAG=NONE'
+    assert_raises(ValueError, process_annotated_mutations.get_severe_impact, input)
 
 
 #######################################################################################################################
 # Tests for is_concordant
 #######################################################################################################################
+def test_is_concordant_with_standard_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/Y'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant(input), result)
+
+
+def test_is_concordant_with_discordant_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W'
+    result = False
+    assert_equals(process_annotated_mutations.is_concordant(input), result)
+
+
+def test_is_concordant_with_one_correct_option_in_list():
+    # If there are multiple annotations (different transcripts), return true if any are concordant
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W,G/Y'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant(input), result)
 
 
 #######################################################################################################################
 # Tests for is_concordant_splice_mutation
 #######################################################################################################################
 
+# First four tests check for conserved +1G,+2T,-1G,-2A patterns at donor and acceptor sites
+def test_is_concordant_splice_mutation_with_plus_1_g():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+1G>T;SPLICE_POS=1'
+    input[process_annotated_mutations.REF_INDEX] = 'G'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+def test_is_concordant_splice_mutation_with_plus_2_t():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+2T>G;SPLICE_POS=2'
+    input[process_annotated_mutations.REF_INDEX] = 'T'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+def test_is_concordant_splice_mutation_with_minus_1_g():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-1G>T;SPLICE_POS=-1'
+    input[process_annotated_mutations.REF_INDEX] = 'G'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+def test_is_concordant_splice_mutation_with_minus_2_a():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[process_annotated_mutations.REF_INDEX] = 'A'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+# Other tests
+def test_is_concordant_splice_mutation_with_discordant_site():
+    # This position does not match a conserved pattern
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[process_annotated_mutations.REF_INDEX] = 'G'
+    result = False
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+def test_is_concordant_splice_mutation_with_discordant_site():
+    # This position does not match a conserved pattern
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=2'
+    input[process_annotated_mutations.REF_INDEX] = 'A'
+    result = False
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+def test_is_concordant_splice_mutation_with_non_conserved_acceptor_site():
+    # Other splice sites are not necessarily conserved, cannot validate
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-100A>G;SPLICE_POS=-100'
+    input[process_annotated_mutations.REF_INDEX] = 'A'
+    result = False
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
+
+def test_is_concordant_splice_mutation_with_non_conserved_acceptor_site():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[process_annotated_mutations.REF_INDEX] = 'A'
+    result = True
+    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+
 
 #######################################################################################################################
 # Tests for is_concordant_inframe_codon_loss
 #######################################################################################################################
 
+# TODO - not implemented
 
 #######################################################################################################################
 # Tests for plot_allele_frequency_histogram
 #######################################################################################################################
 
+# TODO - is not easily testable with unit tests
 
 #######################################################################################################################
 # Tests for get_ucsc_location_link
@@ -67,28 +200,28 @@ def test_map_aa_codes_with_three_letter_code():
     assert_equals(process_annotated_mutations.map_aa_codes(input), result)
 
 
-def test_mapp_aa_code_with_lower_case():
+def test_map_aa_code_with_lower_case():
     # Case should not matter
     input = 'met'
     result = 'M'
     assert_equals(process_annotated_mutations.map_aa_codes(input), result)
 
 
-def test_mapp_aa_code_with_one_letter_code():
+def test_map_aa_code_with_one_letter_code():
     # One letter codes returned unchanged
     input = 'E'
     result = 'E'
     assert_equals(process_annotated_mutations.map_aa_codes(input), result)
 
 
-def test_mapp_aa_code_with_lower_case_one_letter_code():
+def test_map_aa_code_with_lower_case_one_letter_code():
     # One letter codes are returned as capitals regardless of input case
     input = 'k'
     result = 'K'
     assert_equals(process_annotated_mutations.map_aa_codes(input), result)
 
 
-def test_mapp_aa_code_with_standard_stop_codon():
+def test_map_aa_code_with_standard_stop_codon():
     # Stop codons are returned unchanged
     input = '*'
     result = '*'
@@ -102,7 +235,7 @@ def test_map_aa_code_with_non_standard_stop_codon():
     assert_equals(process_annotated_mutations.map_aa_codes(input), result)
 
 
-def test_mapp_aa_code_with_del_codon_notation():
+def test_map_aa_code_with_del_codon_notation():
     # del should be returned as is, representing deletion
     input = 'del'
     result = 'DEL'
@@ -205,6 +338,34 @@ def test_remove_p_dot_notation_with_missing_closing_parentheses():
 #######################################################################################################################
 # Tests for get_laa_change
 #######################################################################################################################
+def test_get_laa_change_with_standard_input():
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457GLY)'
+    result = ('TYR', 'GLY')
+    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+
+
+def test_get_laa_change_with_stop_codon():
+    # Test stop codon notation
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457*)'
+    result = ('TYR', '*')
+    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+
+
+def test_get_laa_change_with_alternate_stop_codon():
+    # Test alternate stop codon notation (X rather than *)
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457X)'
+    result = ('TYR', 'X')
+    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+
+
+def test_get_laa_change_with_invalid_notation():
+    # Should fail with amino acid sequences that are more than 3 letters long (must be invalid)
+    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
+    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(fs*)'
+    assert_raises(ValueError, process_annotated_mutations.get_laa_change, input)
 
 
 #######################################################################################################################
@@ -230,6 +391,7 @@ def test_get_vep_aa_change_with_synonymous_mutation():
 # Tests for get_26K_allele_frequency
 #######################################################################################################################
 
+# TODO - not implemented
 
 
 
