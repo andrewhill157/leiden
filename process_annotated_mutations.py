@@ -443,6 +443,7 @@ if __name__ == '__main__':
                     else:
                         # Variant is not a category that we can process right now
                         not_processed_count += 1
+                        no_vep_aa_change.append([severe_impact] + variant_row)
                         validation_function = is_concordant_frameshift_mutation
 
                     concordant = validation_function(variant_row)
@@ -500,22 +501,33 @@ if __name__ == '__main__':
 
     if args.plots:
         # Plot allele frequency histograms
+        common_axes = pyplot.subplot(111)
+        common_axes.set_xlabel('Allele Frequency (%)')
+        common_axes.set_ylabel('Counts')
+
         pyplot.subplot(231)
+        pyplot.title('Overall')
         plot_allele_frequency_histogram(overall_high_26K_frequency_count)
+
         pyplot.subplot(232)
+        pyplot.title('European')
         plot_allele_frequency_histogram(eur_high_26K_frequency_count)
+
         pyplot.subplot(233)
+        pyplot.title('American')
         plot_allele_frequency_histogram(amr_high_26K_frequency_count)
+
         pyplot.subplot(234)
+        pyplot.title('African')
         plot_allele_frequency_histogram(afr_high_26K_frequency_count)
+
         pyplot.subplot(235)
+        pyplot.title('East Asian')
         plot_allele_frequency_histogram(eas_high_26K_frequency_count)
+
         pyplot.subplot(236)
+        pyplot.title('South Asian')
         plot_allele_frequency_histogram(sas_high_26K_frequency_count)
 
-        pyplot.title('Allele Frequency')
-        pyplot.ylabel('Allele Frequency (%)')
-        pyplot.xlabel('Count')
-
-
+        pyplot.tight_layout(h_pad=2.0)
         pyplot.show()
