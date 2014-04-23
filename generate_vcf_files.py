@@ -30,9 +30,7 @@ parser = argparse.ArgumentParser(description='Generates VCF files from a tab-sep
                                              'if specified. Output file does not include file mutations that failed to remap.')
 
 group = parser.add_argument_group()
-group.add_argument('-l', '--file_list', required=True, help='File containing list of full paths to the data files to be processed.')
-group.add_argument('-m', '--hgvs_mutation_column', required=True, help='Label for column with HGVS coordinates.')
-group.add_argument('-p', '--protein_change_column', required=True, help='Label for column with protein change description.')
+group.add_argument('-f', '--file_list', required=True, help='File containing list of full paths to the data files to be processed.')
 group.add_argument('-o', '--output_directory', default='', help='Output directory for saved files.')
 args = parser.parse_args()
 
@@ -56,29 +54,53 @@ for file in files_to_process:
         header = table_data.pop(0)
 
         # Isolate data columns with HGVS mutations and protein change
-        hgvs_notation_index = utilities.find_string_index(header, args.hgvs_mutation_column)
-        hgvs_notation = []
+        lovd_hgvs_notation_index = utilities.find_string_index(header, 'DNA')
+        lovd_hgvs_notation = []
 
-        protein_change_index = utilities.find_string_index(header, args.protein_change_column)
+        lovd_db_id_index = utilities.find_string_index(header, 'DB-ID')
+        lovd_db_id = []
+
+        lovd_genetic_origin_index = utilities.find_string_index(header, 'GENET_ORI')
+        lovd_genetic_origin = []
+
+        lovd_reference_index = utilities.find_string_index(header, 'REFERENCE')
+        lovd_reference = []
+
+        lovd_template_index = utilities.find_string_index(header, 'TEMPLATE')
+        lovd_template = []
+
+        lovd_technique_index = utilities.find_string_index(header, 'TECHNIQUE')
+        lovd_technique = []
+
+        protein_change_index = utilities.find_string_index(header, 'PROTEIN')
         protein_change = []
 
         # Remap Variants and build list for INFO column tags
         vcf_notation_variants = []
 
         for row in table_data:
+
+            lovd_hgvs_notation.append(row[lovd_hgvs_notation_index])
+            lovd_db_id.append(row[lovd_db_id_index])
+            lovd_genetic_origin.append(row[lovd_genetic_origin_index])
+            lovd_reference.append(row[lovd_reference_index])
+            lovd_template.append(row[lovd_template_index])
+            lovd_technique.append(row[lovd_technique_index])
+            protein_change.append(row[protein_change_index])
+
             try:
-                vcf_notation = remapper.hgvs_to_vcf(row[hgvs_notation_index])
+                vcf_notation = remapper.hgvs_to_vcf(row[lovd_hgvs_notation_index])
                 vcf_notation_variants.append(vcf_notation)
-
-                hgvs_notation.append(row[hgvs_notation_index])
-                protein_change.append(row[protein_change_index])
-
             except Exception as e:
-                remapping_errors.append([file, row[hgvs_notation_index], str(e)])
+                remapping_errors.append([file, row[lovd_hgvs_notation_index], str(e)])
 
-        info_column_tags = {'HGVS': ('String', 'LOVD HGVS notation describing DNA change', hgvs_notation),
-                'LAA_CHANGE': ('String', 'LOVD amino acid change', protein_change)}
-
+        info_column_tags = {'LOVD_HGVS': ('String', 'LOVD HGVS notation describing DNA change', lovd_hgvs_notation),
+                            'LOVD_DB_ID': ('String', 'LOVD database ID', lovd_db_id),
+                            'LOVD_GENETIC_ORIGIN': ('String', 'LOVD genetic origin entry', lovd_genetic_origin),
+                            'LOVD_REFERENCE': ('String', 'LOVD publication references', lovd_reference),
+                            'LOVD_TEMPLATE': ('String', 'LOVD template entry', lovd_template),
+                            'LOVD_TECHNIQUE': ('String', 'LOVD techniques entry', lovd_technique),
+                            'LOVD_AA_CHANGE': ('String', 'LOVD amino acid change', protein_change)}
 
         if output_directory != '':
             # Save output files to specified directory

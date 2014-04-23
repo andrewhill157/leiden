@@ -8,7 +8,7 @@ this script can only be run on the Broad Cluster and is dependent on absolute pa
 For help, execute: python annotate_vcfs.py --help
 """
 
-from macarthur_core.validation import annotate_vcf
+from macarthur_core.annotation import annotate_vcf
 import argparse
 
 # Command line interface definition
@@ -24,4 +24,5 @@ args = parser.parse_args()
 # Annotate with VEP and 26K data
 annotate_vcf.annotate_vep(args.input_file, args.output_file)
 annotate_vcf.annotate_26k(args.output_file, args.output_file)
-annotate_vcf.annotate_hgvs(args.output_file, args.output_file)
+annotate_vcf.annotate_hgmd(args.output_file, args.output_file)
+# annotate_vcf.annotate_dbsnp(args.output_file, args.output_file)  # not yet working

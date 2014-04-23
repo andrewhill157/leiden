@@ -41,15 +41,16 @@ if not args.no_download:
         f.write(extract_data_log)
 
 # Produce VCF files
-extracted_data_files = glob.glob(os.path.join(output_directory, '*.txt'))
+GENE_LIST_FILE = 'extracted_files.temp'
+extracted_data_files = '\n'.join(glob.glob(os.path.join(output_directory, '*.txt')))
 
-remapping_errors = []
-for data_file in extracted_data_files:
-    output_file = os.path.splitext(data_file)[0] + '.vcf'
-    errors = remapping.generate_vcf_from_hgvs(data_file, output_file, 'dna', 'protein')
-    remapping_errors = remapping_errors + errors
+with open(GENE_LIST_FILE, 'w') as f:
+    f.write(extracted_data_files)
 
-file_io.write_table_to_file('remapping_errors.log', remapping_errors)
+pipe = subprocess.Popen(['python', 'generate_vcf_files.py',
+                         '-f', GENE_LIST_FILE,
+                         '-o', args.output_directory])
+pipe.communicate()[0]
 
 # Annotate VCF files
 vcf_files = glob.glob(os.path.join(output_directory, '*.vcf'))
@@ -64,5 +65,3 @@ for vcf in vcf_files:
     command = 'python annotate_vcfs.py -i ' + vcf + ' -o ' + annotated_file_name
 
     lsf.bsub(command, job_name, lsf_output_file)
-
-# Can we link validation/finalized file writing to this?
