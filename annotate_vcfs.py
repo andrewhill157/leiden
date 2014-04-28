@@ -8,10 +8,11 @@ this script can only be run on the Broad Cluster and is dependent on absolute pa
 For help, execute: python annotate_vcfs.py --help
 """
 
-from macarthur_core.annotation import annotate_vcf
 import argparse
 
 # Command line interface definition
+from leiden.annotation import annotate_vcf
+
 parser = argparse.ArgumentParser(description='Annotate a given file using 26K, HGMD, and VEP. Note that this script '
                                              'requires the macarthur_core package and must be run on the Broad Cluster, '
                                              'as it depends on absolute paths to tools housed there.')

@@ -10,10 +10,10 @@ For help, execute: python generate_vcf_files.py --help
 
 import os
 import argparse
+from leiden.io import file_io
 
-from macarthur_core.lovd import utilities
-from macarthur_core.io import file_io
-from macarthur_core.remapping.remapping import VariantRemapper
+from lovd import utilities
+from remapping.remapping import VariantRemapper
 
 
 parser = argparse.ArgumentParser(description='Generates VCF files from a tab-separated file containing a list of '
@@ -80,13 +80,13 @@ for file in files_to_process:
 
         for row in table_data:
 
-            lovd_hgvs_notation.append(row[lovd_hgvs_notation_index])
-            lovd_db_id.append(row[lovd_db_id_index])
-            lovd_genetic_origin.append(row[lovd_genetic_origin_index])
-            lovd_reference.append(row[lovd_reference_index])
-            lovd_template.append(row[lovd_template_index])
-            lovd_technique.append(row[lovd_technique_index])
-            protein_change.append(row[protein_change_index])
+            lovd_hgvs_notation.append(row[lovd_hgvs_notation_index].replace(r'\s', ''))
+            lovd_db_id.append(row[lovd_db_id_index].replace(r'\s', ''))
+            lovd_genetic_origin.append(row[lovd_genetic_origin_index].replace(r'\s', ''))
+            lovd_reference.append(row[lovd_reference_index].replace(r'\s', ''))
+            lovd_template.append(row[lovd_template_index].replace(r'\s', ''))
+            lovd_technique.append(row[lovd_technique_index].replace(r'\s', ''))
+            protein_change.append(row[protein_change_index].replace(r'\s', ''))
 
             try:
                 vcf_notation = remapper.hgvs_to_vcf(row[lovd_hgvs_notation_index])

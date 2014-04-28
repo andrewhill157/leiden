@@ -10,9 +10,9 @@ For help, execute: python process_annotated_mutations.py --help
 
 import argparse
 import os
-from macarthur_core.io import file_io
 import re
 from matplotlib import pyplot
+from io import file_io
 
 CHROMOSOME_NUMBER_INDEX = 0
 COORDINATE_INDEX = 1

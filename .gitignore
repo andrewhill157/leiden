@@ -7,9 +7,8 @@
 *.pptx
 *.log
 *.list
+*.temp
 .idea/
 .metadata/
-eye/
-muscle/
-lovd/remapping/resources/
+remapping/resources/
 hgvs-master/

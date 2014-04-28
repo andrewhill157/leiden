@@ -5,15 +5,12 @@ MacArthur Lab - 2014
 Driver script for extracting and validating data from the leiden open variation databases.
 """
 
-from macarthur_core.cluster import lsf
-from macarthur_core.remapping import remapping
-from macarthur_core.io import file_io
 import subprocess
 import argparse
 import glob
 import os
+from cluster import lsf
 
-# Command line interface definition
 parser = argparse.ArgumentParser(description='Driver script for extracting an validating data from the Leiden Open '
                                              'Variation Databases.')
 
