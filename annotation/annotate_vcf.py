@@ -46,8 +46,8 @@ HGMD_MUTATIONS_DESCRIPTION = "key=INFO,ID=HGMD_MUT,Number=1,Type=String,Descript
 HGMD_GENES_COLUMNS = "CHROM,FROM,TO,INFO/HGMD_GENE,-,-,-"
 HGMD_GENES_DESCRIPTION = "key=INFO,ID=HGMD_GENE,Number=0,Type=Flag,Description='HGMD Gene'"
 
-DBSNP_COLUMNS = "CHROM,FROM,REF,ALT,INFO/DBSNP_ID"
-DBSNP_DESCRIPTION = "key=INFO,ID=DBSNP_ID,Number=1,Type=Flag,Description='DBSNP ID'"
+DBSNP_COLUMNS = "CHROM,FROM,REF,ALT,INFO/DBSNP"
+DBSNP_DESCRIPTION = "key=INFO,ID=DBSNP,Number=1,Type=String,Description='DBSNP'"
 
 
 def annotate_vep(input_file, output_file):
