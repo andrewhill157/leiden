@@ -11,7 +11,7 @@ For help, execute: python annotate_vcfs.py --help
 import argparse
 
 # Command line interface definition
-from leiden.annotation import annotate_vcf
+from leiden.broad_cluster import annotate_vcf
 
 parser = argparse.ArgumentParser(description='Annotate a given file using 26K, HGMD, and VEP. Note that this script '
                                              'requires the macarthur_core package and must be run on the Broad Cluster, '

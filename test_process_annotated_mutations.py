@@ -1,96 +1,96 @@
 from nose.tools import assert_equals, assert_raises, assert_items_equal, assert_true, assert_false
-import process_annotated_mutations
+import validate_annotated_vcfs
 
 
 #######################################################################################################################
 # Tests for has_vep_aa_change
 #######################################################################################################################
 def test_has_vep_aa_change_with_standard_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
     result = True
-    assert_equals(process_annotated_mutations.has_vep_aa_change(input), result)
+    assert_equals(validate_annotated_vcfs.has_vep_aa_change(input), result)
 
 
 def test_has_vep_aa_change_with_no_vep_aa_change():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
     result = False
-    assert_equals(process_annotated_mutations.has_vep_aa_change(input), result)
+    assert_equals(validate_annotated_vcfs.has_vep_aa_change(input), result)
 
 
 #######################################################################################################################
 # Tests for has_lovd_aa_change
 #######################################################################################################################
 def test_has_lovd_aa_change_with_standard_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Tyr657Gly)'
     result = True
-    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
+    assert_equals(validate_annotated_vcfs.has_lovd_aa_change(input), result)
 
 
 def test_has_vep_aa_change_with_no_aa_change():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(Tyr657Gly)'
     result = False
-    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
+    assert_equals(validate_annotated_vcfs.has_lovd_aa_change(input), result)
 
 
 def test_has_vep_aa_change_with_invalid_aa_change():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(=)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'AA_CHANGE=p.(=)'
     result = False
-    assert_equals(process_annotated_mutations.has_lovd_aa_change(input), result)
+    assert_equals(validate_annotated_vcfs.has_lovd_aa_change(input), result)
 
 
 #######################################################################################################################
 # Tests for get_severe_impact
 #######################################################################################################################
 def test_get_severe_impact_with_standard_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT'
     result = 'NONSENSE_VARIANT'
-    assert_equals(process_annotated_mutations.get_severe_impact(input), result)
+    assert_equals(validate_annotated_vcfs.get_severe_impact(input), result)
 
 
 def test_get_severe_impact_with_multiple_categories():
     # Even if there are multiple categories, only the first one should be returned
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT,OTHER_CATEGORY'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'SEVERE_IMPACT=NONSENSE_VARIANT,OTHER_CATEGORY'
     result = 'NONSENSE_VARIANT'
-    assert_equals(process_annotated_mutations.get_severe_impact(input), result)
+    assert_equals(validate_annotated_vcfs.get_severe_impact(input), result)
 
 
 def test_get_severe_impact_with_multiple_categories():
     # Even if there are multiple categories, only the first one should be returned
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'NO_SEVERE_IMPACT_TAG=NONE'
-    assert_raises(ValueError, process_annotated_mutations.get_severe_impact, input)
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'NO_SEVERE_IMPACT_TAG=NONE'
+    assert_raises(ValueError, validate_annotated_vcfs.get_severe_impact, input)
 
 
 #######################################################################################################################
 # Tests for is_concordant
 #######################################################################################################################
 def test_is_concordant_with_standard_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/Y'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/Y'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant(input), result)
 
 
 def test_is_concordant_with_discordant_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W'
     result = False
-    assert_equals(process_annotated_mutations.is_concordant(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant(input), result)
 
 
 def test_is_concordant_with_one_correct_option_in_list():
     # If there are multiple annotations (different transcripts), return true if any are concordant
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W,G/Y'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(Gly456Tyr);AA_CHANGE=G/W,G/Y'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant(input), result)
 
 
 #######################################################################################################################
@@ -99,70 +99,70 @@ def test_is_concordant_with_one_correct_option_in_list():
 
 # First four tests check for conserved +1G,+2T,-1G,-2A patterns at donor and acceptor sites
 def test_is_concordant_splice_mutation_with_plus_1_g():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+1G>T;SPLICE_POS=1'
-    input[process_annotated_mutations.REF_INDEX] = 'G'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+1G>T;SPLICE_POS=1'
+    input[validate_annotated_vcfs.REF_INDEX] = 'G'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 def test_is_concordant_splice_mutation_with_plus_2_t():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+2T>G;SPLICE_POS=2'
-    input[process_annotated_mutations.REF_INDEX] = 'T'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990+2T>G;SPLICE_POS=2'
+    input[validate_annotated_vcfs.REF_INDEX] = 'T'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 def test_is_concordant_splice_mutation_with_minus_1_g():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-1G>T;SPLICE_POS=-1'
-    input[process_annotated_mutations.REF_INDEX] = 'G'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-1G>T;SPLICE_POS=-1'
+    input[validate_annotated_vcfs.REF_INDEX] = 'G'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 def test_is_concordant_splice_mutation_with_minus_2_a():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
-    input[process_annotated_mutations.REF_INDEX] = 'A'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[validate_annotated_vcfs.REF_INDEX] = 'A'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 # Other tests
 def test_is_concordant_splice_mutation_with_discordant_site():
     # This position does not match a conserved pattern
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
-    input[process_annotated_mutations.REF_INDEX] = 'G'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[validate_annotated_vcfs.REF_INDEX] = 'G'
     result = False
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 def test_is_concordant_splice_mutation_with_discordant_site():
     # This position does not match a conserved pattern
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=2'
-    input[process_annotated_mutations.REF_INDEX] = 'A'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=2'
+    input[validate_annotated_vcfs.REF_INDEX] = 'A'
     result = False
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 def test_is_concordant_splice_mutation_with_non_conserved_acceptor_site():
     # Other splice sites are not necessarily conserved, cannot validate
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-100A>G;SPLICE_POS=-100'
-    input[process_annotated_mutations.REF_INDEX] = 'A'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-100A>G;SPLICE_POS=-100'
+    input[validate_annotated_vcfs.REF_INDEX] = 'A'
     result = False
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 def test_is_concordant_splice_mutation_with_non_conserved_acceptor_site():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
-    input[process_annotated_mutations.REF_INDEX] = 'A'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'HGVS=NM_00012.2:c.990-2A>G;SPLICE_POS=-2'
+    input[validate_annotated_vcfs.REF_INDEX] = 'A'
     result = True
-    assert_equals(process_annotated_mutations.is_concordant_splice_mutation(input), result)
+    assert_equals(validate_annotated_vcfs.is_concordant_splice_mutation(input), result)
 
 
 #######################################################################################################################
@@ -187,7 +187,7 @@ def test_get_ucsc_location_link_with_standard_interval():
     end_coordinate = '52552'
     result = 'http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr1%3A15613-52552'
 
-    assert_equals(process_annotated_mutations.get_ucsc_location_link(chromosome, start_coordinate, end_coordinate), result)
+    assert_equals(validate_annotated_vcfs.get_ucsc_location_link(chromosome, start_coordinate, end_coordinate), result)
 
 
 #######################################################################################################################
@@ -197,49 +197,49 @@ def test_map_aa_codes_with_three_letter_code():
     # Remap three letter code to one letter code
     input = 'GLU'
     result = 'E'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_lower_case():
     # Case should not matter
     input = 'met'
     result = 'M'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_one_letter_code():
     # One letter codes returned unchanged
     input = 'E'
     result = 'E'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_lower_case_one_letter_code():
     # One letter codes are returned as capitals regardless of input case
     input = 'k'
     result = 'K'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_standard_stop_codon():
     # Stop codons are returned unchanged
     input = '*'
     result = '*'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_non_standard_stop_codon():
     # Alternative stop codon notations are all mapped to *
     input = 'X'
     result = '*'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 def test_map_aa_code_with_del_codon_notation():
     # del should be returned as is, representing deletion
     input = 'del'
     result = 'DEL'
-    assert_equals(process_annotated_mutations.map_aa_codes(input), result)
+    assert_equals(validate_annotated_vcfs.map_aa_codes(input), result)
 
 
 #######################################################################################################################
@@ -249,21 +249,21 @@ def test_get_tagged_entry_value_with_single_item():
     input = 'LAA_CHANGE=ENTRY'
     tag = 'LAA_CHANGE'
     result = ['ENTRY']
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 def test_get_tagged_entry_value_with_multiple_entries():
     input = 'LAA_CHANGE=ENTRY;AA_CHANGE=ENTRY2'
     tag = 'LAA_CHANGE'
     result = ['ENTRY']
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 def test_get_tagged_entry_value_with_multiple_entries_get_second_item():
     input = 'LAA_CHANGE=ENTRY;SECOND_TAG=ENTRY2'
     tag = 'SECOND_TAG'
     result = ['ENTRY2']
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 def test_get_tagged_entry_value_with_substring_tag():
@@ -271,14 +271,14 @@ def test_get_tagged_entry_value_with_substring_tag():
     input = 'LAA_CHANGE=ENTRY;AA_ENTRY=ENTRY2'
     tag = 'AA_ENTRY'
     result = ['ENTRY2']
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 def test_get_tagged_entry_value_with_nonexisting_tag():
     input = 'LAA_CHANGE=ENTRY;AA_CHANGE=ENTRY2'
     tag = 'NOT_IN_LIST'
     result = []
-    assert_raises(ValueError, process_annotated_mutations.get_unique_tagged_entry_values, input, tag)
+    assert_raises(ValueError, validate_annotated_vcfs.get_unique_tagged_entry_values, input, tag)
 
 
 def test_get_tagged_entry_value_with_empty_tag():
@@ -286,7 +286,7 @@ def test_get_tagged_entry_value_with_empty_tag():
     input = 'LAA_CHANGE=;AA_ENTRY=ENTRY2'
     tag = 'LAA_CHANGE'
     result = []
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 def test_get_tagged_entry_values_with_values_list():
@@ -294,7 +294,7 @@ def test_get_tagged_entry_values_with_values_list():
     input = 'LAA_CHANGE=A,B,C,D;AA_ENTRY=E,F,G,H'
     tag = 'LAA_CHANGE'
     result = ['A', 'B', 'C', 'D']
-    assert_items_equal(process_annotated_mutations.get_unique_tagged_entry_values(input, tag), result)
+    assert_items_equal(validate_annotated_vcfs.get_unique_tagged_entry_values(input, tag), result)
 
 
 #######################################################################################################################
@@ -304,87 +304,87 @@ def test_remove_p_dot_notation_with_standard_notation():
     # Basic notation with no parentheses
     input = 'p.Gly47Arg'
     result = 'Gly47Arg'
-    assert_equals(process_annotated_mutations.remove_p_dot_notation(input), result)
+    assert_equals(validate_annotated_vcfs.remove_p_dot_notation(input), result)
 
 
 def test_remove_p_dot_notation_with_parentheses():
     # Notation with enclosing parentheses
     input = 'p.(Lys5799Glu)'
     result = 'Lys5799Glu'
-    assert_equals(process_annotated_mutations.remove_p_dot_notation(input), result)
+    assert_equals(validate_annotated_vcfs.remove_p_dot_notation(input), result)
 
 
 def test_remove_p_dot_notation_with_brackets():
     # Use of brackets instead of parentheses
     input = 'p.[Lys5799Glu]'
     result = 'Lys5799Glu'
-    assert_equals(process_annotated_mutations.remove_p_dot_notation(input), result)
+    assert_equals(validate_annotated_vcfs.remove_p_dot_notation(input), result)
 
 
 def test_remove_p_dot_notation_with_missing_opening_parentheses():
     # Missing starting parentheses
     input = 'p.(Met563Lys'
     result = 'Met563Lys'
-    assert_equals(process_annotated_mutations.remove_p_dot_notation(input), result)
+    assert_equals(validate_annotated_vcfs.remove_p_dot_notation(input), result)
 
 
 def test_remove_p_dot_notation_with_missing_closing_parentheses():
     # Missing closing parentheses
     input = 'p.Met563Lys)'
     result = 'Met563Lys'
-    assert_equals(process_annotated_mutations.remove_p_dot_notation(input), result)
+    assert_equals(validate_annotated_vcfs.remove_p_dot_notation(input), result)
 
 
 #######################################################################################################################
 # Tests for get_laa_change
 #######################################################################################################################
 def test_get_laa_change_with_standard_input():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457GLY)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457GLY)'
     result = ('TYR', 'GLY')
-    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+    assert_equals(validate_annotated_vcfs.get_laa_change(input), result)
 
 
 def test_get_laa_change_with_stop_codon():
     # Test stop codon notation
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457*)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457*)'
     result = ('TYR', '*')
-    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+    assert_equals(validate_annotated_vcfs.get_laa_change(input), result)
 
 
 def test_get_laa_change_with_alternate_stop_codon():
     # Test alternate stop codon notation (X rather than *)
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457X)'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(TYR457X)'
     result = ('TYR', 'X')
-    assert_equals(process_annotated_mutations.get_laa_change(input), result)
+    assert_equals(validate_annotated_vcfs.get_laa_change(input), result)
 
 
 def test_get_laa_change_with_invalid_notation():
     # Should fail with amino acid sequences that are more than 3 letters long (must be invalid)
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(fs*)'
-    assert_raises(ValueError, process_annotated_mutations.get_laa_change, input)
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'LAA_CHANGE=p.(fs*)'
+    assert_raises(ValueError, validate_annotated_vcfs.get_laa_change, input)
 
 
 #######################################################################################################################
 # Tests for get_vep_aa_change
 #######################################################################################################################
 def test_get_vep_aa_change_with_standard_list():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=W/T,A/T'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'AA_CHANGE=W/T,A/T'
 
     result = [('W', 'T'), ('A', 'T')]
-    assert_items_equal(process_annotated_mutations.get_vep_aa_change(input), result)
+    assert_items_equal(validate_annotated_vcfs.get_vep_aa_change(input), result)
 
 
 def test_get_vep_aa_change_with_synonymous_mutation():
-    input = [''] * (process_annotated_mutations.INFO_COLUMN_INDEX + 1)
-    input[process_annotated_mutations.INFO_COLUMN_INDEX] = 'AA_CHANGE=W/T,A'
+    input = [''] * (validate_annotated_vcfs.INFO_COLUMN_INDEX + 1)
+    input[validate_annotated_vcfs.INFO_COLUMN_INDEX] = 'AA_CHANGE=W/T,A'
 
     result = [('W', 'T'), ('A', 'A')]
-    assert_items_equal(process_annotated_mutations.get_vep_aa_change(input), result)
+    assert_items_equal(validate_annotated_vcfs.get_vep_aa_change(input), result)
 
 
 #######################################################################################################################
