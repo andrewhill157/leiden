@@ -12,8 +12,8 @@ import hgvs
 import hgvs.utils
 from pygr.seqdb import SequenceFileDB
 
-from leiden.io import file_io
-from utility.lovd import utilities
+from leiden.input_output import file_io
+from leiden.lovd import utilities
 
 
 class VariantRemapper:

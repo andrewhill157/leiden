@@ -8,7 +8,7 @@ Module for working with and extracting data from Leiden Open Variation Databases
 import re
 import math
 from bs4 import BeautifulSoup
-from leiden.io import web_io
+from leiden.input_output import web_io
 from utility.lovd import utilities
 
 

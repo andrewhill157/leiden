@@ -9,8 +9,8 @@ For help, execute: python extract_data.py --help
 
 import argparse
 import os
-from leiden.io import file_io
-from lovd.leiden_database import make_leiden_database
+from leiden.input_output import file_io
+from leiden.lovd.leiden_database import make_leiden_database
 
 def extract_data(leiden_database, gene_id):
     """

@@ -9,7 +9,7 @@ import subprocess
 import argparse
 import glob
 import os
-from cluster import lsf
+from leiden.broad_cluster import lsf_commands
 
 parser = argparse.ArgumentParser(description='Driver script for extracting an validating data from the Leiden Open '
                                              'Variation Databases.')
@@ -54,11 +54,11 @@ vcf_files = glob.glob(os.path.join(output_directory, '*.vcf'))
 
 for vcf in vcf_files:
     # Submit LSF jobs for annotation
-    base_file_name = os.path.basename(vcf)
-    job_name = os.path.splitext(base_file_name)[0]
+    full_path_no_extension = os.path.splitext(vcf)[0]
+    job_name = os.path.basename(full_path_no_extension)
 
-    annotated_file_name = job_name + '_ANNOTATED.vcf'
-    lsf_output_file = job_name + '.o'
+    annotated_file_name = full_path_no_extension + '_ANNOTATED.vcf'
+    lsf_output_file = full_path_no_extension + '.o'
     command = 'python annotate_vcfs.py -i ' + vcf + ' -o ' + annotated_file_name
 
-    lsf.bsub(command, job_name, lsf_output_file)
+    lsf_commands.bsub(command, job_name, lsf_output_file)

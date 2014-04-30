@@ -10,10 +10,10 @@ For help, execute: python generate_vcf_files.py --help
 
 import os
 import argparse
-from leiden.io import file_io
+from leiden.input_output import file_io
 
-from lovd import utilities
-from remapping.remapping import VariantRemapper
+from leiden.lovd import utilities
+from leiden.remapping.remapping import VariantRemapper
 
 
 parser = argparse.ArgumentParser(description='Generates VCF files from a tab-separated file containing a list of '

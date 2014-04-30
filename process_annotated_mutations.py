@@ -12,7 +12,7 @@ import argparse
 import os
 import re
 from matplotlib import pyplot
-from io import file_io
+from leiden.input_output import file_io
 
 CHROMOSOME_NUMBER_INDEX = 0
 COORDINATE_INDEX = 1
