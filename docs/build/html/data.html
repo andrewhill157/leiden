@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data &mdash; leiden_cleanup 1.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
+    <link rel="prev" title="Other Scripts" href="other_scripts.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="other_scripts.html" title="Other Scripts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="data">
+<span id="id1"></span><h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<p>If you install from source or clone from GitHub, there will be examples of the major data formats used in this project;
+variants from the LOVD muscular dystrophy pages.</p>
+<p>I have (at the time of this writing) placed a copy of all data extracted from the LOVD muscular dystrophy pages at: <a class="reference external" href="http://www.broadinstitute.org/~ahill/lovd_muscle/">http://www.broadinstitute.org/~ahill/lovd_muscle/</a></p>
+<div class="section" id="extracted-data">
+<h2>Extracted Data<a class="headerlink" href="#extracted-data" title="Permalink to this headline">¶</a></h2>
+<p>The naming convention is &lt;gene_name&gt;.txt.</p>
+<p>Contains original variant data as found on LOVD. Files are saved per gene by extract_data.py.</p>
+</div>
+<div class="section" id="raw-vcf-files">
+<h2>Raw VCF Files<a class="headerlink" href="#raw-vcf-files" title="Permalink to this headline">¶</a></h2>
+<p>Naming convention is &lt;gene_name&gt;.vcf.</p>
+<p>Contains entries from extracted data that successfully remapped to VCF format. Files are save per input file by generate_vcf_files.py.</p>
+</div>
+<div class="section" id="annotated-vcf-files">
+<h2>Annotated VCF Files<a class="headerlink" href="#annotated-vcf-files" title="Permalink to this headline">¶</a></h2>
+<p>Naming convention is &lt;gene_name&gt;_ANNOTATED.vcf.</p>
+<p>Contains entries from original VCF files with annotations added. Files are saved per input file annotate_vcfs.py.</p>
+</div>
+<div class="section" id="final-vcf-files">
+<h2>Final VCF Files<a class="headerlink" href="#final-vcf-files" title="Permalink to this headline">¶</a></h2>
+<p>File is always named validated.vcf and contains variants from all input files.</p>
+<p>This is the file format output by validate_annotated_vcf.py. It is a VCF file that contains only validated (in terms of concordance)
+variants.</p>
+</div>
+<div class="section" id="log-files">
+<h2>Log Files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h2>
+<p>Log files containing information about errors are also saved by some scripts.</p>
+<div class="section" id="remapping-errors-log">
+<h3>remapping_errors.log<a class="headerlink" href="#remapping-errors-log" title="Permalink to this headline">¶</a></h3>
+<p>Contained variants that failed to remap to VCF format and any information about why they failed.</p>
+</div>
+<div class="section" id="validation-errors-log">
+<h3>validation_errors.log<a class="headerlink" href="#validation-errors-log" title="Permalink to this headline">¶</a></h3>
+<p>Contains variants that caused errors during validation and any information about why they failed.</p>
+</div>
+<div class="section" id="discordant-annotations-log">
+<h3>discordant_annotations.log<a class="headerlink" href="#discordant-annotations-log" title="Permalink to this headline">¶</a></h3>
+<p>Contains VCF formatted entries (with annotations) that were found to be discordant during validation.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data</a><ul>
+<li><a class="reference internal" href="#extracted-data">Extracted Data</a></li>
+<li><a class="reference internal" href="#raw-vcf-files">Raw VCF Files</a></li>
+<li><a class="reference internal" href="#annotated-vcf-files">Annotated VCF Files</a></li>
+<li><a class="reference internal" href="#final-vcf-files">Final VCF Files</a></li>
+<li><a class="reference internal" href="#log-files">Log Files</a><ul>
+<li><a class="reference internal" href="#remapping-errors-log">remapping_errors.log</a></li>
+<li><a class="reference internal" href="#validation-errors-log">validation_errors.log</a></li>
+<li><a class="reference internal" href="#discordant-annotations-log">discordant_annotations.log</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="other_scripts.html"
+                        title="previous chapter">Other Scripts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/data.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="other_scripts.html" title="Other Scripts"
+             >previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Andrew Hill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Packages &mdash; leiden_cleanup 1.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
+    <link rel="next" title="Driver Scripts" href="driver_scripts.html" />
+    <link rel="prev" title="Contributing to Leiden" href="contributing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="driver_scripts.html" title="Driver Scripts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing to Leiden"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="packages">
+<span id="id1"></span><h1>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h1>
+<p>This project contains a number of distinct packages that are responsible for the majority of all functionality in the
+project. This does not include any scripts in the root directory.</p>
+<p>Note that there are tests for most packages that are not simple wrappers for other scripts or libraries. These tests are
+included alongside modules in files called <tt class="docutils literal"><span class="pre">test_&lt;module_name&gt;.py</span></tt>. These tests are not 100% comprehensive, but they
+are a good start.</p>
+<p>Tests are compatible with the nose unit testing platform. This is an extension of the default unittest platform that makes
+tests very easy to develop and run. To run all unit tests for this project run the following from the root directory.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nosetests</span>
+</pre></div>
+</div>
+<p>Tests for specific packages/modules can also be run. Please see nose documentation for more information.</p>
+<div class="section" id="lovd">
+<h2>lovd<a class="headerlink" href="#lovd" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="leiden-database">
+<h3>leiden_database<a class="headerlink" href="#leiden-database" title="Permalink to this headline">¶</a></h3>
+<p>These classes allow a user to extract tables of data (mutations listed for a specific gene in the database) and other
+useful information from any Leiden Open Variation Database (LOVD) installation, such as <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>. Unfortunately,
+it has been necessary to do this by downloading the HTML for relevant pages on the database and parsing out the necessary
+data, as they do not provide an easy way to access the data otherwise. Note that I have chosen to use beautifulsoup4 internally
+for HTML parsing.</p>
+<p>The usage for these classes is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">leiden_url</span> <span class="o">=</span> <span class="s">&#39;http://www.dmd.nl/nmdb2/&#39;</span>  <span class="c"># base URL of LOVD installation</span>
+<span class="n">gene_id</span> <span class="o">=</span> <span class="s">&#39;ACTA1&#39;</span>  <span class="c"># External name for Gene</span>
+
+<span class="n">database</span> <span class="o">=</span> <span class="n">make_leiden_database</span><span class="p">(</span><span class="n">leiden_url</span><span class="p">)</span>  <span class="c"># factory method automatically chooses right database version</span>
+<span class="n">database</span><span class="o">.</span><span class="n">set_gene_id</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span>  <span class="c"># set_gene_id must be called before using the database object</span>
+
+<span class="c"># Get data about the gene</span>
+<span class="n">column_labels</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">get_table_headers</span><span class="p">()</span>
+<span class="n">table_entries</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">get_table_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that make_leiden_database returns a LeidenDatabase object. There are two subclasses of this type (one for each
+version of LOVD). This method ensures that the correct subclass is chosen for the provided URL.</p>
+<p>Unit tests for this module are currently quite slow because they actually make requests for HTML data. Ideally, this
+would be replaced with Mock Objects where we have canned HTML responses saved on disk.</p>
+<div class="section" id="module-leiden.lovd.leiden_database">
+<span id="member-descriptions"></span><h4>Member Descriptions<a class="headerlink" href="#module-leiden.lovd.leiden_database" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="leiden.lovd.leiden_database.LOVD2Database">
+<em class="property">class </em><tt class="descclassname">leiden.lovd.leiden_database.</tt><tt class="descname">LOVD2Database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LOVD2Database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
+<p>Provides LeidenDatabse interface specific to LOVF version 2. See LeidenDatabase super class for function documentation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leiden.lovd.leiden_database.LOVD3Database">
+<em class="property">class </em><tt class="descclassname">leiden.lovd.leiden_database.</tt><tt class="descname">LOVD3Database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LOVD3Database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
+<p>Provides LeidenDatabse interface specific to lovd version 3. See LeidenDatabase super class for function documentation.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase">
+<em class="property">class </em><tt class="descclassname">leiden.lovd.leiden_database.</tt><tt class="descname">LeidenDatabase</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
+<p>Class providing functions to extract information about a variants listed under a specified gene on a specified lovd
+Leiden Database installation. For example, <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>, is a particular installation for
+variants in genes associated with Muscular Dystrophy. A list of all known installations of lovd databases can be
+found at <a class="reference external" href="http://www.lovd.nl/2.0/index_list.php">http://www.lovd.nl/2.0/index_list.php</a>.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>version_number (float): LOVD version number
+leiden_home_url (str): url to homepage for specified gene ID
+gene_id (str): the current gene ID
+ref_seq_id (str): ID of the reference transcript used for the current reference transcript
+variant_database_url: url to the table data for current gene ID
+database_soup (BeautifulSoup): BeautifulSoup object for HTML on variant_database_url
+gene_homepage_soup (BeautifulSoup): BeautifulSoup object for HTML on gene homepage</dd>
+</dl>
+<dl class="staticmethod">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.extract_LOVD_version_number">
+<em class="property">static </em><tt class="descname">extract_LOVD_version_number</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.extract_LOVD_version_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the version number of the lovd installation at the specified URL.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>leiden_url (str): the base URL of the particular Leiden lovd to be used.</dt>
+<dd>For example, the Leiden muscular dystrophy pages homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>. This must be a
+valid URL to base page of lovd.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>float: lovd version number</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_available_genes">
+<tt class="descname">get_available_genes</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_available_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all genes available in the Leiden Database.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list of str: list of all genes available in the LeidenDatabase.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_gene_homepage_url">
+<tt class="descname">get_gene_homepage_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_gene_homepage_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>str: URL linking to the homepage for the specified gene on the Leiden Database site.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_link_urls">
+<tt class="descname">get_link_urls</tt><big>(</big><em>link_result_set</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_link_urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a BeautifulSoup ResultSet object containing only link tags, return the URLs as a list.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>link_result_set (BeautifulSoup ResultSet): a collection of links.</dt>
+<dd>All tags must be passed as a BeautifulSoup ResultSet object. This is the type of object returned by
+methods such as find_all in BeautifulSoup. See <a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all">http://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all</a>
+for more information.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>list of str: list of URLs from link_result_set</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_table_data">
+<tt class="descname">get_table_data</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_table_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Returns the table of variants from the set gene on the lovd.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list of list of str: table of variants from the set gene on the Leiden Database.</dt>
+<dd>1st dimension is rows, 2nd is columns</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_table_data_page_n">
+<tt class="descname">get_table_data_page_n</tt><big>(</big><em>page_number</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_table_data_page_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Returns the table data from a specified page of the table of variant entries. Each page number (positive integer)
+has 1000 variants at most. The requested page number should not exceed the number of pages required to display
+the total number of variants.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>page_number (int): page number containing the desired table data.</dd>
+<dt>Returns:</dt>
+<dd>list of list of str: table of variants from the set gene on the Leiden Database from the nth page.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_table_headers">
+<tt class="descname">get_table_headers</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_table_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Returns the column labels from the table of variants in the Leiden Database for the set gene.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list of str: column labels from the table of variants in the Leiden Database variant listing for the object&#8217;s gene_id.</dt>
+<dd>Returned in left to right order as they appear on the Leiden Database. Empty list returned if no labels are found.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_total_variant_count">
+<tt class="descname">get_total_variant_count</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_total_variant_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Get the total number of variants in the lovd associated with the current gene. This is the total
+number of variant entries in table of variants, not the number of unique entries.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: Number of variants listed for current gene</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if the number of entries could not be found on web page</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_transcript_refseqid">
+<tt class="descname">get_transcript_refseqid</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_transcript_refseqid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Returns the transcript refSeq ID (denoted by NM_&lt;ID&gt; on the gene homepage on the given gene_id).
+For example, the ACTA1 homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a> and the RefSeq ID for the reference
+transcript is &#8220;NM_001100.3&#8221;.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>string: transcript refSeqID for set gene. Returns an empty string if no refSeq ID is found.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_variant_database_url">
+<tt class="descname">get_variant_database_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_variant_database_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must call set_gene_id prior to use.
+Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>str: URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.get_version_number">
+<tt class="descname">get_version_number</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.get_version_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return version number of lovd in use for lovd.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>float: version number of lovd in use for lovd</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.lovd.leiden_database.LeidenDatabase.set_gene_id">
+<tt class="descname">set_gene_id</tt><big>(</big><em>gene_id</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.LeidenDatabase.set_gene_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be called before using any non-static functions. Initializes all necessary data sources for data extraction,
+resulting in long wait times for data to download over network.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>param gene_id (string): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for</dt>
+<dd>actin, as specified on the Leiden Muscular Dystrophy Pages at U(<a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a>?)</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if gene does not exist in the specified Leiden Database</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.leiden_database.make_leiden_database">
+<tt class="descclassname">leiden.lovd.leiden_database.</tt><tt class="descname">make_leiden_database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.leiden_database.make_leiden_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method that returns appropriate LeidenDatabase object for lovd version installed at specified URL.
+Only LOVD2 and LOVD3 installations are supported.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>leiden_url(str): The base URL of the particular Leiden lovd to be used.</dt>
+<dd>For example, the Leiden muscular dystrophy pages LOVD2 homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>. This must be a
+valid URL to base page of lovd. For LOVD3 installations, such as the Genetic Eye Disorder (GEI) Variation
+Database, the base url will be similar to <a class="reference external" href="http://mseqdr.lumc.edu/GEDI/">http://mseqdr.lumc.edu/GEDI/</a>. Extensions of this URL, such as
+<a class="reference external" href="http://mseqdr.lumc.edu/GEDI/genes">http://mseqdr.lumc.edu/GEDI/genes</a> or <a class="reference external" href="http://mseqdr.lumc.edu/GEDI/variants">http://mseqdr.lumc.edu/GEDI/variants</a> should not be used.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>LeidenDatabase: LeidenDatabase object for specified URL.</dd>
+<dt>Raises:</dt>
+<dd>Exception: If the lovd version installed at specified URL is unsupported (anything other than version 2 or 3)</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utilities">
+<h3>utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h3>
+<p>These are general utility functions, some of which are used in leiden_database.py as general purpose functions.</p>
+<div class="section" id="id2">
+<h4>Member Descriptions<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.lovd.utilities"></span><dl class="function">
+<dt id="leiden.lovd.utilities.deep_copy">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">deep_copy</tt><big>(</big><em>nested_list</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.deep_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a deep copy of lists that may or may not contain nested lists. Nested items that are not lists will not
+be deep copied, they will be shallow copied.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>nested_list (list): a list that may or may not contain nested lists. Nested lists may contain additional nestedlists.</dd>
+<dt>Returns:</dt>
+<dd>list: deep copy of nested_list</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.utilities.find_string_index">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">find_string_index</tt><big>(</big><em>string_list</em>, <em>search_string</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.find_string_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of strings and a string to search for, returns the index of the first element in the list
+that contains the search string. Note that the comparison is not sensitive to case or leading or trailing
+whitespace characters.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>string_list (list of str): list of strings
+search_string: a string to search for in elements of string_list</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>int: index of the first instance of search_string as a substring of element in string_list.</dt>
+<dd>Returns -1 if search_string is not found in the string_list.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.utilities.get_omimid">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">get_omimid</tt><big>(</big><em>link_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.get_omimid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a URL to an entry on OMIM, return a string containing the OMIM ID for the entry.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>link_url (str): URL to the entry on OMIM. Assumed to be a valid link to an entry on PUBMED.</dt>
+<dd>For example, U(<a class="reference external" href="http://www.omim.org/entry/102610#0003">http://www.omim.org/entry/102610#0003</a>) is a valid link to an OMIM entry on the ACTA1 gene.
+The url must contain the gene ID followed by the entry number in the URL separated by a hash mark
+(such as, 102610#0003 in the example URL). URL may not contain other instances of this pattern.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>str: OMIM entry associated with the URL.</dt>
+<dd>This consists of the gene ID (such as 102610 for ACTA1 and a specific entry number (0003) separated by a hash mark (102610#0003 in the example above).</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd>Value Error: if link does not contain a valid OMIM ID.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.utilities.get_pmid">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">get_pmid</tt><big>(</big><em>link_url</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.get_pmid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a URL to a publication listed on PUBMED, return a string containing the PUBMED ID of the publication.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>link_url(str): URL to the publication on PUBMED. Assumed to be a valid link to a publication on PUBMED.</dt>
+<dd>For example, U(<a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/19562689">http://www.ncbi.nlm.nih.gov/pubmed/19562689</a>) is a valid pubmed publication URL. The url must
+contain the PMID in the URL (19562689 in the example here) and contain no other 4 digit or longer numbers.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>str: PUBMED ID associated with link_url (as specified by the N digit ID included in PUBMED URLs).</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if there is no 4+ digit number in link_url</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.utilities.remove_times_reported">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">remove_times_reported</tt><big>(</big><em>hgvs_notation</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.remove_times_reported" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes (Reported N times)substring from input if exists. Comparison is not case sensitive.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hgvs_notation (str): typically an entry in the DNA Change column in table_data for a given variant on an lovd installation.</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>str: hgvs_notation with instances of (Reported N times) removed.</dt>
+<dd>Whitespace surrounding this substring is removed in returned string.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.lovd.utilities.swap">
+<tt class="descclassname">leiden.lovd.utilities.</tt><tt class="descname">swap</tt><big>(</big><em>list</em>, <em>i</em>, <em>j</em><big>)</big><a class="headerlink" href="#leiden.lovd.utilities.swap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swaps elements at indices i and j in list. Indices must be within bounds of array. Index swapped with itself
+leaves the list unchanged.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>list (list): list of elements
+i (int): index of element to be swapped with element at index j. Must be within bounds of array.
+j (int): index of element to be swapped with element at index i. Must be within bounds of array.</dd>
+<dt>Returns:</dt>
+<dd>list: list with elements at indices i and j swapped. If i and j are equal, list is unchanged.</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="remapping">
+<h2>remapping<a class="headerlink" href="#remapping" title="Permalink to this headline">¶</a></h2>
+<p>Genetic variants are often listed in one of two formats, HGVS or VCF. HGVS is compact and has its own (relatively complex)
+syntax for describing mutations. However, for large scale analysis projects HGVS is extremely difficult to use effectively
+for a number of reasons. This module facilitates conversion back and forth between the two formats.</p>
+<p>The class <tt class="docutils literal"><span class="pre">VariantRemapper</span></tt> in <tt class="docutils literal"><span class="pre">/remapping/remapping.py</span></tt> wraps a few functions from a third party module
+(hgvs - downloadable from PyPI) to make it easier to use within this project. The third party module documentation and
+description HGVS vs. VCF notation is described here: <a class="reference external" href="https://github.com/counsyl/hgvs">https://github.com/counsyl/hgvs</a>.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Unfortunately, the third-party tool used for remapping depends on a relatively large file that I cannot easily host on Github.
+This is normally housed in the folder <tt class="docutils literal"><span class="pre">/remapping/resources/</span></tt>. It is a human genome reference sequence (<tt class="docutils literal"><span class="pre">remapping/resources/hg19.fa</span></tt>)
+I have temporarily hosted a copy at at: <a class="reference external" href="http://www.broadinstitute.org/~ahill">http://www.broadinstitute.org/~ahill</a>. This file will need to decompressed using gunzip
+and placed in <tt class="docutils literal"><span class="pre">/remapping/resources/</span></tt>. The first time this package is used, two additional files will be generated
+(takes some time). Subsequent runs will not require this process to be repeated.</p>
+</div>
+<div class="section" id="id3">
+<h3>remapping<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>Member Descriptions<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.remapping.remapping"></span><dl class="class">
+<dt id="leiden.remapping.remapping.VariantRemapper">
+<em class="property">class </em><tt class="descclassname">leiden.remapping.remapping.</tt><tt class="descname">VariantRemapper</tt><a class="headerlink" href="#leiden.remapping.remapping.VariantRemapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing functions for remapping of variants from HGVS to genomic coordinate notation.</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>genome (SequenceFileDB): reference sequence DB object</dd>
+</dl>
+<dl class="method">
+<dt id="leiden.remapping.remapping.VariantRemapper.hgvs_to_vcf">
+<tt class="descname">hgvs_to_vcf</tt><big>(</big><em>hgvs_variant</em><big>)</big><a class="headerlink" href="#leiden.remapping.remapping.VariantRemapper.hgvs_to_vcf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a single variant provided in HGVS notation to genomic coordinate notation.</p>
+<p>See Counsyl&#8217;s HGVS library for more information on acceptable input formats: <a class="reference external" href="https://github.com/counsyl/hgvs">https://github.com/counsyl/hgvs</a>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>hgvs_variant (str): HGVS description of variant, such as NM_001100.3:c.137T&gt;C.</dt>
+<dd>The portion prior to the colon is the refseqID used as the reference for the variant The portion after
+the colon is an HGVS-style description of the mutation (a SNP from T to C at location 137 in the example above.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>tuple of str: (chromosome_number, coordinate, ref, alt) in that order denoting the VCF notation of the variant</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.remapping.remapping.VariantRemapper.vcf_to_hgvs">
+<tt class="descname">vcf_to_hgvs</tt><big>(</big><em>reference_transcript</em>, <em>vcf_notation</em><big>)</big><a class="headerlink" href="#leiden.remapping.remapping.VariantRemapper.vcf_to_hgvs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a single VCF notation variant to HGVS notation relative to a given transcript.</p>
+<p>See Counsyl&#8217;s HGVS library for more information on acceptable input formats: <a class="reference external" href="https://github.com/counsyl/hgvs">https://github.com/counsyl/hgvs</a>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>reference_transcript (str): the refseq id of the reference transcript to use for HGVS notation
+vcf_notation (tuple of str): a tuple containing elements chromosome_number, coordinate, ref, and alt in that order</dd>
+<dt>Returns:</dt>
+<dd>str: hgvs notatation of variant in format reference_transcript:hgvs_description</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="input-output">
+<h2>input_output<a class="headerlink" href="#input-output" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="file-io">
+<h3>file_io<a class="headerlink" href="#file-io" title="Permalink to this headline">¶</a></h3>
+<p>This module has functions for reading and writing delimited files to and from 2D lists where first dimension is rows and
+the second is columns. It also contains a function for formatting output text in VCF format from list inputs.</p>
+<div class="section" id="id5">
+<h4>Member Descriptions<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.input_output.file_io"></span><dl class="function">
+<dt id="leiden.input_output.file_io.format_vcf_text">
+<tt class="descclassname">leiden.input_output.file_io.</tt><tt class="descname">format_vcf_text</tt><big>(</big><em>vcf_format_variants</em>, <em>info_column_entries</em><big>)</big><a class="headerlink" href="#leiden.input_output.file_io.format_vcf_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create formatted VCF file data from remapped variants.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">vcf_format_variants (list of tuples of str): list of tuples that contain chromosome_number, coordinate, ref, alt in that order</p>
+<dl class="last docutils">
+<dt>info_column_entries (dict): dictionary where keys are tags to place in info column.</dt>
+<dd>The values are tuples that contain data_type, description, and a list of values (one per entry in vcf_format_variant)</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>list of lists: list of lists where each inner list is a row of the VCF file, and each element in the inner list represents the value of the respective column in a given row.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.input_output.file_io.read_table_from_file">
+<tt class="descclassname">leiden.input_output.file_io.</tt><tt class="descname">read_table_from_file</tt><big>(</big><em>file_name</em>, <em>column_delimiter='\t'</em><big>)</big><a class="headerlink" href="#leiden.input_output.file_io.read_table_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns table of data from tab-delimited file. Alternate delimiter can be specified.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_name (str): path to tab-delimited file wit
+column_delimiter (str, optional): column delimiter (tab by default)</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list of lists: table of data from tab-delimited file</dt>
+<dd>1st dimension is rows, 2nd is columns</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.input_output.file_io.write_table_to_file">
+<tt class="descclassname">leiden.input_output.file_io.</tt><tt class="descname">write_table_to_file</tt><big>(</big><em>file_name</em>, <em>table</em>, <em>column_delimiter='\t'</em><big>)</big><a class="headerlink" href="#leiden.input_output.file_io.write_table_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes table to tab-delimited file. Alternate delimiter can be specified.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>file_name (str): name of output file with extension (can include path)
+column_delimiter (str): column delimiter (tab by default)
+table (list of lists): table data to output to file. 1st dimension is rows, 2nd is columns.</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="web-io">
+<h3>web_io<a class="headerlink" href="#web-io" title="Permalink to this headline">¶</a></h3>
+<p>This module has functions for reading HTML data from URLs. Essentially, this is just wrapping the library used to
+make HTML requests to make it easier to change if needed.</p>
+<div class="section" id="id6">
+<h4>Member Descriptions<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.input_output.web_io"></span><dl class="function">
+<dt id="leiden.input_output.web_io.get_page_html">
+<tt class="descclassname">leiden.input_output.web_io.</tt><tt class="descname">get_page_html</tt><big>(</big><em>page_url</em><big>)</big><a class="headerlink" href="#leiden.input_output.web_io.get_page_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the html describing the page at the specified URL.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>page_url (str): URL to a specified website</dd>
+<dt>Returns:</dt>
+<dd>str: HTML describing the specified page</dd>
+<dt>Raises:</dt>
+<dd><dl class="first last docutils">
+<dt>IOError:</dt>
+<dd>if an error code is returned</dd>
+<dt>ValueError:</dt>
+<dd>if requested URL not found</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="broad-cluster">
+<h2>broad_cluster<a class="headerlink" href="#broad-cluster" title="Permalink to this headline">¶</a></h2>
+<p>This package contains functions that are useful in the context of running software specifically on the Broad Institute
+distributed computing cluster.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">These packages depend on resources on the Broad Institute distributed computing cluster, making them somewhat fragile
+and only usable in this context. This decision was made because some of the annotation tools and resources are very large
+and inconvenient to install elsewhere.</p>
+</div>
+<div class="section" id="lsf-commands">
+<h3>lsf_commands<a class="headerlink" href="#lsf-commands" title="Permalink to this headline">¶</a></h3>
+<p>This module contains a wrapper for the lsf command bsub with a number of default parameters. Most (if not all) parameters
+can be overridden to customize to user needs.</p>
+<div class="section" id="id7">
+<h4>Member Descriptions<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.broad_cluster.lsf_commands"></span><dl class="function">
+<dt id="leiden.broad_cluster.lsf_commands.bsub">
+<tt class="descclassname">leiden.broad_cluster.lsf_commands.</tt><tt class="descname">bsub</tt><big>(</big><em>command</em>, <em>job_name</em>, <em>outfile</em>, <em>queue='hour'</em>, <em>memory_usage='4'</em>, <em>io_usage='5'</em>, <em>wall_time='4:00'</em>, <em>project_name='test'</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.lsf_commands.bsub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits a job on an LSF-based distributed computing system. See LSF documentation for maximum allowed values
+for input parameters.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>command (str): command to be executed during job execution
+job_name (str): name for the job (can be anything)
+outfile (str): output file to contain outcome of job (errors, statistics, etc.)
+queue (str): name of the queue to submit job to
+memory_usage (str): number of GB memory required
+io_usage (str): number of IO units required
+wall_time (str): max-allowed time for job (4:00 for 4 hours for example)
+project_name (str): name of project job is associated with (can be anything)</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="annotate-vcf">
+<h3>annotate_vcf<a class="headerlink" href="#annotate-vcf" title="Permalink to this headline">¶</a></h3>
+<p>This module contains functions that run annotation on VCF files. These include VEP and VCF-Annotate using HGMD/26K/DBSNP.
+These are essentially wrappers to call scripts on the broad cluster from the command-line.</p>
+<div class="section" id="id8">
+<h4>Member Descriptions<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
+<span class="target" id="module-leiden.broad_cluster.annotate_vcf"></span><dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.annotate_26k">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">annotate_26k</tt><big>(</big><em>input_file</em>, <em>output_file</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.annotate_26k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate VCF file with MacArthur 26K data.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_file (str): input VCF file path
+output_file (str): output VCF file path (26K allele frequency annotation added to file)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.annotate_dbsnp">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">annotate_dbsnp</tt><big>(</big><em>input_file</em>, <em>output_file</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.annotate_dbsnp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate VCF file with known DBSNP IDs.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_file (str): input VCF file path
+output_file (str): output VCF file path (DBSNP information added to file)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.annotate_hgmd">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">annotate_hgmd</tt><big>(</big><em>input_file</em>, <em>output_file</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.annotate_hgmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate VCF file with known HGMD mutation, gene, and site information.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_file (str): input VCF file path
+output_file (str): output VCF file path (HGMD information added to file)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.annotate_snpeff">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">annotate_snpeff</tt><big>(</big><em>input_file</em>, <em>output_file</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.annotate_snpeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate VCF file using SNPEff.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_file: input VCF file path
+output_file: output VCF file path (SNPEff annotation added to file)</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.annotate_vep">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">annotate_vep</tt><big>(</big><em>input_file</em>, <em>output_file</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.annotate_vep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate VCF file with Variant Effect Predictor.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_file (str): input VCF file path
+output_file (str): output VCF file path (VEP annotation added to file).</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="leiden.broad_cluster.annotate_vcf.vcf_annotate">
+<tt class="descclassname">leiden.broad_cluster.annotate_vcf.</tt><tt class="descname">vcf_annotate</tt><big>(</big><em>input_text</em>, <em>annotation_source</em>, <em>columns</em>, <em>descriptions</em><big>)</big><a class="headerlink" href="#leiden.broad_cluster.annotate_vcf.vcf_annotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotate file text using VCF annotate. Input and outputs are subprocess Popen objects for piping.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_text (Pipe): Popen object to pipe input text
+annotation_source (str): path to VCF annotate formatted txt file with reference variants for annotation
+columns (str): columns contained in annotation_source file
+descriptions (list of str): list of description text inputs for VCF annotate.</dd>
+<dt>Returns:</dt>
+<dd>Pipe: object (subprocess) to output pipe of this annotation</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+</div>
+<div class="section" id="validation">
+<h2>validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id9">
+<h3>validation<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<p>This module contains functions that are used to help with validation of the annotated VCF files produced by a driver
+script like run_all.py that formats data from LOVD as a VCF and runs specific annotations. These functions rely heavily
+on the presence of specific tags in the INFO field of the VCF.</p>
+<span class="target" id="module-leiden.validation.validation"></span></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Packages</a><ul>
+<li><a class="reference internal" href="#lovd">lovd</a><ul>
+<li><a class="reference internal" href="#leiden-database">leiden_database</a><ul>
+<li><a class="reference internal" href="#module-leiden.lovd.leiden_database">Member Descriptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utilities">utilities</a><ul>
+<li><a class="reference internal" href="#id2">Member Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#remapping">remapping</a><ul>
+<li><a class="reference internal" href="#id3">remapping</a><ul>
+<li><a class="reference internal" href="#id4">Member Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#input-output">input_output</a><ul>
+<li><a class="reference internal" href="#file-io">file_io</a><ul>
+<li><a class="reference internal" href="#id5">Member Descriptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web-io">web_io</a><ul>
+<li><a class="reference internal" href="#id6">Member Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#broad-cluster">broad_cluster</a><ul>
+<li><a class="reference internal" href="#lsf-commands">lsf_commands</a><ul>
+<li><a class="reference internal" href="#id7">Member Descriptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#annotate-vcf">annotate_vcf</a><ul>
+<li><a class="reference internal" href="#id8">Member Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#validation">validation</a><ul>
+<li><a class="reference internal" href="#id9">validation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="contributing.html"
+                        title="previous chapter">Contributing to Leiden</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="driver_scripts.html"
+                        title="next chapter">Driver Scripts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/packages.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="driver_scripts.html" title="Driver Scripts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing to Leiden"
+             >previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Andrew Hill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

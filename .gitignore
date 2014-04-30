@@ -9,6 +9,7 @@
 *.list
 *.temp
 .idea/
+leiden.egg-info
 .metadata/
-remapping/resources/
+leiden/remapping/resources/
 hgvs-master/

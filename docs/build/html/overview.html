@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; leiden_cleanup 1.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
+    <link rel="next" title="Installation" href="dependencies.html" />
+    <link rel="prev" title="Leiden Open Variation Database (LOVD) Cleanup" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dependencies.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Leiden Open Variation Database (LOVD) Cleanup"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="overview">
+<span id="id1"></span><h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="about">
+<h2>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h2>
+<p>The Leiden Open Variation Database platform is a popular genetic variant database platform whose installations are home to
+many voluntarily curated mutations implicated in a variety of disease areas.</p>
+<ul class="simple">
+<li>A list of all current installations: <a class="reference external" href="http://www.lovd.nl/2.0/index_list.php">http://www.lovd.nl/2.0/index_list.php</a></li>
+<li>LOVD platform: <a class="reference external" href="http://www.lovd.nl/3.0/home">http://www.lovd.nl/3.0/home</a></li>
+</ul>
+<p>Unfortunately these variants are in HGVS format (popular in clinical settings) and in coordinates relative to specific
+cDNA transcripts. Perhaps more concerning is that the standard for submission of disease causing mutations was has become much
+stricter in the time since LOVDs inception. This implies that there are many false positives within this data set. Voluntary
+curation of these databases is completely voluntary, making many variants completely unreliable or unusable. Despite these
+challenges, there are likely many true positives amongst the noise, many of which may not be in HGMD. Locating and reporting
+these true positives is an important goal for the research community.</p>
+<p>A technical barrier to this effort is that bioinformatics researchers need these variants to be in VCF format because these
+coordinates are in genomic space and compatible with popular tools such as VEP. While LOVD Version 3 is currently seeking
+to address this problem, many databases have not been migrated. Furthermore, LOVD Version 3 lists variants in HGVS genomic coordinates, not VCF format.
+Lastly, much of the variants (or important fields from their entries) are not easily accessible publicly.</p>
+<p>The goals of this project are to provide tools for:</p>
+<ul class="simple">
+<li>Extracting variants from these databases</li>
+<li>Remapping these variants to VCF format</li>
+<li>Cross-checking of information about these variants to infer concordance of entries</li>
+<li>Augmenting existing data with allele frequency data to allow filtering of common variants</li>
+</ul>
+<p>This is a good first step towards finding true variants. Actually implicating variants as being pathogenic will require
+manual curation by examining any publication references included with the extracted data. This is a future goal and not
+within the scope of the tools provided here.</p>
+</div>
+<div class="section" id="general-workflow">
+<h2>General Workflow<a class="headerlink" href="#general-workflow" title="Permalink to this headline">¶</a></h2>
+<p>In general, the workflow is as follows:
+1. Extract raw variants from LOVD
+2. Remap raw variants to VCF format
+3. Annotate VCF files
+4. Validate annotated variants by cross-checking submitted data with annotation</p>
+<p>The scripts I have included make it easy to carry out this workflow. Custom scripts can also be written for modified
+workflows using the functionality in the leiden package.</p>
+</div>
+<div class="section" id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>/bin/ - contains all scripts (see <a class="reference internal" href="driver_scripts.html#driver-scripts"><em>Driver Scripts</em></a> and <a class="reference internal" href="other_scripts.html#other-scripts"><em>Other Scripts</em></a> for more info)</li>
+<li>/leiden/ - custom python packages for project (see <a class="reference internal" href="packages.html#packages"><em>Packages</em></a> for more info)</li>
+<li>/docs/ - project documentation written in the sphinx framework</li>
+<li>/data/ - sample data formats (see <a class="reference internal" href="data.html#data"><em>Data</em></a> section for more info)</li>
+</ul>
+<p>Other folders are for build and distribution purposes.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#about">About</a></li>
+<li><a class="reference internal" href="#general-workflow">General Workflow</a></li>
+<li><a class="reference internal" href="#project-structure">Project Structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Leiden Open Variation Database (LOVD) Cleanup</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dependencies.html"
+                        title="next chapter">Installation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dependencies.html" title="Installation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Leiden Open Variation Database (LOVD) Cleanup"
+             >previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Andrew Hill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

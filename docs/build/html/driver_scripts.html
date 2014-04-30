@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Driver Scripts &mdash; leiden_cleanup 1.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
+    <link rel="next" title="Other Scripts" href="other_scripts.html" />
+    <link rel="prev" title="Packages" href="packages.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="other_scripts.html" title="Other Scripts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="packages.html" title="Packages"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="driver-scripts">
+<span id="id1"></span><h1>Driver Scripts<a class="headerlink" href="#driver-scripts" title="Permalink to this headline">¶</a></h1>
+<p>The packages described above provide the main functionality of the project. However, I have also developed a set of
+scripts that are specific to my project needs. These simply act as driver scripts to provide a command-line interface
+for the protocols I used for this project.</p>
+<p>Note that all scripts are implemented using argparse and have built-in help, which accessible via:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python &lt;script_name&gt;.py --help
+</pre></div>
+</div>
+<div class="section" id="run-all-py">
+<h2>run_all.py<a class="headerlink" href="#run-all-py" title="Permalink to this headline">¶</a></h2>
+<p>Run all is the driver script that replicates exactly what I did to produce the set of annotated VCF files that are ready
+for validation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This script depends on resources on the Broad Institute distributed computing cluster, making it somewhat fragile
+and only usable in this context. This decision was made because some of the annotation tools and resources are very large
+and inconvenient to install elsewhere.</p>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Note that because annotation is performed via bsub on the Broad Institute distributed computing cluster, the actual validation is not run
+by this script. This decision was made because I have very low priority on the cluster, so it was not feasible to block
+execution until the annotation step was complete. Future improvements could seek to eliminate this intermediate step.</p>
+</div>
+<p>There are two use-cases for run_all.py:</p>
+<ol class="arabic simple">
+<li>You are starting completely from scratch (no data has been downloaded from LOVD)</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="n">run_all</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">u</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">dmd</span><span class="o">.</span><span class="n">nl</span><span class="o">/</span><span class="n">nmdb2</span><span class="o">/</span> <span class="o">-</span><span class="n">output_directory</span> <span class="n">my_output_directory</span>
+</pre></div>
+</div>
+<p>This will download data from all genes on the specifed LOVD URL, saving one .txt file (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;.txt</span></tt>) with raw data as
+well as two VCF files per gene - one that contains remapped variants in VCF format along with data from LOVD as tags in
+the INFO field (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;.vcf</span></tt>) and one that has been annotated with HGMD/26K/DBSNP (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;_ANNOTATED.vcf</span></tt>).</p>
+<p>Note that files are not saved for genes with no entries on LOVD. Variants that fail to remap to VCF format are save along
+with any information about their failure in <tt class="docutils literal"><span class="pre">remapping_errors.log</span></tt>.</p>
+<p>2. You already have the txt files containing raw data from LOVD, but want to re-run the rest of the process. Note that
+this was primarily useful during development, but may still have some utility for others.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="n">run_all</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">no_download</span> <span class="o">-</span><span class="n">output_directory</span> <span class="n">my_output_directory</span>
+</pre></div>
+</div>
+<p>Note that this assumes that the .txt files containing data extracted from LOVD are located in the specified output directory.</p>
+</div>
+<div class="section" id="validate-annotated-vcfs-py">
+<h2>validate_annotated_vcfs.py<a class="headerlink" href="#validate-annotated-vcfs-py" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Driver Scripts</a><ul>
+<li><a class="reference internal" href="#run-all-py">run_all.py</a></li>
+<li><a class="reference internal" href="#validate-annotated-vcfs-py">validate_annotated_vcfs.py</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="packages.html"
+                        title="previous chapter">Packages</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="other_scripts.html"
+                        title="next chapter">Other Scripts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/driver_scripts.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="other_scripts.html" title="Other Scripts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="packages.html" title="Packages"
+             >previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Andrew Hill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

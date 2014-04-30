@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; leiden_cleanup 1.0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
+    <link rel="next" title="Contributing to Leiden" href="contributing.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing to Leiden"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation">
+<span id="dependencies"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation-for-general-use-no-development">
+<h2>Installation for General Use (No Development)<a class="headerlink" href="#installation-for-general-use-no-development" title="Permalink to this headline">¶</a></h2>
+<p>While this project is registered in PyPI and ideally could be installed using <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">leiden</span></tt>, two dependencies
+(pygr and hgvs) do not always install correctly with pip.</p>
+<p>In the next sections I will step through the installation process for the two finicky dependencies.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Install the dependencies below first and then install leiden.</p>
+</div>
+<p>Once these two initial dependencies have been installed, you can do any of the following:</p>
+<p>Clone:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:andrewhill157/leiden.git
+</pre></div>
+</div>
+<p>Clone and Install from Source:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:andrewhill157/leiden.git
+<span class="nb">cd </span>leiden
+python setup.py install leiden
+</pre></div>
+</div>
+<p>Install using pip:</p>
+<div class="highlight-bash"><div class="highlight"><pre>pip install leiden
+</pre></div>
+</div>
+<p>All project dependencies are listed in requirements.txt. If you find that you are missing any requirements after the
+installation you can install them using:</p>
+<div class="highlight-bash"><div class="highlight"><pre>pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="pygr">
+<h2>pygr<a class="headerlink" href="#pygr" title="Permalink to this headline">¶</a></h2>
+<p>pygr requires that you have bsddb3 and Berkeley DB installed. This can be installed using homebrew:</p>
+<div class="highlight-bash"><div class="highlight"><pre>brew install berkeley-db --without-java
+
+<span class="c"># Note prefix to pip not required on Broad cluster</span>
+sudo <span class="nv">BERKELEYDB_DIR</span><span class="o">=</span>/usr/local/Cellar/berkeley-db/5.3.15/ pip install bsddb3
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">bsddb3 and Berkeley DB should already be installed on the Broad cluster!</p>
+</div>
+<p>Once bbd3 and Berkeley DB are installed, you should be able to install pygr with <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pygr</span></tt>. If there are still errors,
+the following may correct the problem.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span>-Qunused-arguments
+<span class="nb">export </span><span class="nv">CPPFLAGS</span><span class="o">=</span>-Qunused-arguments
+pip install pygr
+</pre></div>
+</div>
+<p>I have not encountered any additional problems installing pygr.</p>
+</div>
+<div class="section" id="hgvs">
+<h2>hgvs<a class="headerlink" href="#hgvs" title="Permalink to this headline">¶</a></h2>
+<p>I have had no luck installing hgvs with pip. I am not sure exactly what is causing the problem, so I advise cloning
+the Github repository and installing from source:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:counsyl/hgvs.git
+python hgvs setup.py install
+rm -rf hgvs
+</pre></div>
+</div>
+<p>I have not encountered any additional problems installing hgvs.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Unfortunately, this tool depends on a relatively large file that I cannot easily host on Github.
+This is normally housed in the folder <tt class="docutils literal"><span class="pre">/leiden/remapping/resources/</span></tt>. It is a human genome reference sequence (<tt class="docutils literal"><span class="pre">hg19.fa</span></tt>)
+I have temporarily hosted a copy at at: <a class="reference external" href="http://www.broadinstitute.org/~ahill">http://www.broadinstitute.org/~ahill</a>. This file will need to decompressed using gunzip
+and placed in <tt class="docutils literal"><span class="pre">/leiden/remapping/resources/</span></tt>. The first time this package is used, two additional files will be generated
+(takes some time). Subsequent runs will not require this process to be repeated.</p>
+</div>
+</div>
+<div class="section" id="installation-for-development">
+<h2>Installation for Development<a class="headerlink" href="#installation-for-development" title="Permalink to this headline">¶</a></h2>
+<p>If you would like to extend or modify the existing code-base or scripts while still having the package installed,
+you can install in editable or development mode. This differs slightly from the default installation mode.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Just as with installation for general use, pygr and hgvs must be installed prior to running the commands below. See
+Installation for General Use section for more information.</p>
+</div>
+<p>The easiest way to do this is to install from cloned source.</p>
+<div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:andrewhill157/leiden.git
+<span class="nb">cd </span>leiden
+python setup.py develop
+</pre></div>
+</div>
+<p>Either of these methods will make the leiden packages accessible by python, but allow you to edit and call the modified
+source without re-installing the package. Note that the dependencies must still be installed according to instructions in
+the Installation for General Use section.</p>
+<p>If you want to contribute to the project via Github, please see the <a class="reference internal" href="contributing.html#contributing"><em>Contributing to Leiden</em></a> page.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installation-for-general-use-no-development">Installation for General Use (No Development)</a></li>
+<li><a class="reference internal" href="#pygr">pygr</a></li>
+<li><a class="reference internal" href="#hgvs">hgvs</a></li>
+<li><a class="reference internal" href="#installation-for-development">Installation for Development</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="contributing.html"
+                        title="next chapter">Contributing to Leiden</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/dependencies.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing to Leiden"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Andrew Hill.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
