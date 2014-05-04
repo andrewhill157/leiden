@@ -203,8 +203,10 @@ class LeidenDatabase:
             link_url = links.get('href')
 
             # Process HGVS notation
-            if links.string and 'c.' in links.string:
-                result.append("".join([self.ref_seq_id, ':', utilities.remove_times_reported(links.string)]))
+            if links.string and ('c.' in links.string or 'p.' in links.string):
+                hgvs_notation = utilities.remove_times_reported(links.string)
+                hgvs_notation = utilities.correct_hgvs_parentheses(hgvs_notation)
+                result.append("".join([self.ref_seq_id, ':', hgvs_notation]))
             elif links.string:
                 result.append(link_url)
 
@@ -374,7 +376,10 @@ class LOVD2Database(LeidenDatabase):
 
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
-                result.append(h.strip())
+                # Normalize headers so all lower-case, no whitespace, no non-alphanumeric characters
+                h = h.lower().strip()
+                h = re.sub(re.compile('[^A-Za-z0-9]'), '_', h)
+                result.append(h)
         return result
 
     def get_table_data_page_n(self, page_number):
@@ -406,9 +411,11 @@ class LOVD2Database(LeidenDatabase):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
                     link_string = self.get_link_urls(columns.find_all('a'))
+                    link_string = link_string.replace(r'\s', '')  # ensure there is no whitespace
                     entries.append(link_string)
                 else:
-                    entries.append(columns.string)
+                    column_string = columns.string.strip().replace(r'\s', ' ')  # ensure there is no whitespace
+                    entries.append(column_string)
             row_entries.append(entries)
         return row_entries
 
@@ -474,7 +481,9 @@ class LOVD3Database(LeidenDatabase):
 
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
-                result.append(h.strip())
+                h = h.lower().strip()
+                h = re.sub(re.compile('[^A-Za-z0-9]'), '_', h)
+                result.append(h)
         return result
 
     def get_table_data_page_n(self, page_number):
@@ -508,8 +517,10 @@ class LOVD3Database(LeidenDatabase):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
                     link_string = self.get_link_urls(columns.find_all('a'))
+                    link_string = link_string.replace(r'\s', '')  # ensure there is no whitespace
                     entries.append(link_string)
                 else:
-                    entries.append(columns.string)
+                    column_string = columns.string.strip().replace(r'\s', ' ')  # ensure there is no non-space whitespace
+                    entries.append(column_string)
             row_entries.append(entries)
         return row_entries
