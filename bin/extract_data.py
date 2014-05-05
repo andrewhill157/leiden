@@ -114,7 +114,7 @@ if __name__ == '__main__':
                     output_file_name = os.path.join(output_directory, gene + '.txt')
 
                     file_io.write_table_to_file(output_file_name, table_data)
-                except ValueError as e:
+                except Exception as e:
                     print '    ---> ' + str(e)
 
             print('---> All genes complete.')

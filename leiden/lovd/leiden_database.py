@@ -411,10 +411,11 @@ class LOVD2Database(LeidenDatabase):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
                     link_string = self.get_link_urls(columns.find_all('a'))
-                    link_string = link_string.replace(r'\s', '')  # ensure there is no whitespace
+                    link_string = re.sub(r'\s', '', link_string)  # ensure there is no whitespace
                     entries.append(link_string)
                 else:
-                    column_string = columns.string.strip().replace(r'\s', ' ')  # ensure there is no whitespace
+                    column_string = columns.string.strip()  # ensure there is no whitespace
+                    column_string = re.sub(r'\s', ' ', column_string)
                     entries.append(column_string)
             row_entries.append(entries)
         return row_entries
@@ -504,6 +505,11 @@ class LOVD3Database(LeidenDatabase):
         # Extract the HTML specific to the table data
         table = database_soup.find_all('tr', class_=table_class)
 
+        if table:
+            pass
+        else:
+            table = database_soup.find_all('tr', class_='marked')  # some LOVD3 pages had a different class
+
         # First row may contain a row of images for some reason. Filter out if present.
         if table[0].find('img') is not None:
             table = table[1:]
@@ -517,10 +523,11 @@ class LOVD3Database(LeidenDatabase):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
                     link_string = self.get_link_urls(columns.find_all('a'))
-                    link_string = link_string.replace(r'\s', '')  # ensure there is no whitespace
+                    link_string = re.sub(r'\s', '', link_string)  # ensure there is no whitespace
                     entries.append(link_string)
                 else:
-                    column_string = columns.string.strip().replace(r'\s', ' ')  # ensure there is no non-space whitespace
+                    column_string = columns.string.strip()
+                    column_string = re.sub(r'\s', ' ', column_string)  # ensure there is no non-space whitespace
                     entries.append(column_string)
             row_entries.append(entries)
         return row_entries
