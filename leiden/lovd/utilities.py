@@ -1,6 +1,27 @@
 import re
 
 
+def correct_hgvs_parentheses(hgvs_notation):
+    """
+    Normalizes all hgvs notation string to the same use of parentheses. End result is c.<variant_notation> with no use
+    of brackets or parentheses to surround the variant such as c.(), c.[], c. (), etc.
+
+    Args:
+        hgvs_notation (str): hgvs notation variant with no transcript (only c. or p. notation)
+
+    Returns:
+        str: hgvs_notation with no parenthesis or whitespace surrounding the variant description.
+
+    """
+    search_pattern = re.compile('([pc]\.)[\s\(\[]+(.+)[\s\)\]]+(?:$|\s)', re.IGNORECASE)
+    match = re.search(search_pattern, hgvs_notation)
+
+    if match:
+        return match.group(1) + match.group(2)
+    else:
+        return hgvs_notation
+
+
 def get_pmid(link_url):
     """
     Given a URL to a publication listed on PUBMED, return a string containing the PUBMED ID of the publication.

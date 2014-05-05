@@ -3,6 +3,41 @@ from nose.tools import assert_raises
 from ..lovd import utilities
 
 
+def test_correct_hgvs_parentheses():
+    # Basic notation with no parentheses
+    input = 'c.4120A>T'
+    result = 'c.4120A>T'
+    assert_equals(utilities.correct_hgvs_parentheses(input), result)
+
+
+def test_correct_hgvs_parentheses_with_parentheses():
+    # Notation with enclosing parentheses
+    input = 'c.(4120A>T)'
+    result = 'c.4120A>T'
+    assert_equals(utilities.correct_hgvs_parentheses(input), result)
+
+
+def test_correct_hgvs_parentheses_with_brackets():
+    # Use of brackets instead of parentheses
+    input = 'c.[4120A>T]'
+    result = 'c.4120A>T'
+    assert_equals(utilities.correct_hgvs_parentheses(input), result)
+
+
+def test_correct_hgvs_parentheses_with_p_dot():
+    input = 'p.(4120A>T)'
+    result = 'p.4120A>T'
+    assert_equals(utilities.correct_hgvs_parentheses(input), result)
+
+
+def test_correct_hgvs_parentheses_with_parentheses_notation():
+    input = 'c.(4120A>T(8_20))'
+    result = 'c.4120A>T(8_20)'
+    assert_equals(utilities.correct_hgvs_parentheses(input), result)
+
+
+
+
 def test_get_pmid():
     # Typical PubMed URL
     input = 'http://www.ncbi.nlm.nih.gov/pubmed/19562689'
