@@ -2,7 +2,7 @@ import re
 import math
 
 from bs4 import BeautifulSoup
-from leiden import web_io, utilities
+from . import web_io, utilities
 
 
 def make_leiden_database(leiden_url):

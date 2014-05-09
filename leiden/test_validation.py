@@ -1,5 +1,5 @@
 from nose.tools import assert_equals, assert_true, assert_false
-from leiden import validation
+from . import validation
 
 
 #######################################################################################################################

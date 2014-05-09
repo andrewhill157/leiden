@@ -1,23 +1,23 @@
 from nose.tools import assert_equals
-from ..leiden.leiden.leiden_database import *
+from . import leiden_database
 
 
 class TestLeidenDatabase():
 
     @classmethod
     def setup_class(cls):
-        cls.database = LeidenDatabase('http://www.dmd.nl/nmdb2/')
+        cls.database = leiden_database.LeidenDatabase('http://www.dmd.nl/nmdb2/')
 
     def test_extract_LOVD_version_number(cls):
         # LOVD2 Installation
         input = 'http://www.dmd.nl/nmdb2/'
         result = 2
-        assert_equals(LeidenDatabase.extract_LOVD_version_number(input), result)
+        assert_equals(leiden_database.LeidenDatabase.extract_LOVD_version_number(input), result)
 
         # LOVD3 Installation
         input = 'http://mseqdr.lumc.edu/GEDI/'
         result = 3
-        assert_equals(LeidenDatabase.extract_LOVD_version_number(input), result)
+        assert_equals(leiden_database.LeidenDatabase.extract_LOVD_version_number(input), result)
 
     def test_get_version_number(cls):
         # Parent class, does not have a version number
@@ -57,8 +57,8 @@ class TestLOVD2Database():
     @classmethod
     def setup_class(cls):
         # Two LOVD2 installations
-        cls.database1 = LOVD2Database('http://www.dmd.nl/nmdb2/')
-        cls.database2 = LOVD2Database('http://grenada.lumc.nl/LOVD2/eye/')
+        cls.database1 = leiden_database.LOVD2Database('http://www.dmd.nl/nmdb2/')
+        cls.database2 = leiden_database.LOVD2Database('http://grenada.lumc.nl/LOVD2/eye/')
 
     def test_get_lovd_version(cls):
         # Static method, not overridden in subclasses
@@ -159,7 +159,7 @@ class TestLOVD3Database():
 
     @classmethod
     def setup_class(cls):
-        cls.database1 = LOVD3Database('http://mseqdr.lumc.edu/GEDI/')
+        cls.database1 = leiden_database.LOVD3Database('http://mseqdr.lumc.edu/GEDI/')
 
     def test_get_lovd_version(cls):
         # Not overridden in this class

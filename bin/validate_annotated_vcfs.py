@@ -1,6 +1,5 @@
 import argparse
-from leiden import vcf
-from leiden import validation
+from ..leiden import vcf, validation
 
 if __name__ == '__main__':
 

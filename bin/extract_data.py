@@ -3,8 +3,8 @@
 
 import argparse
 import os
-from leiden import file_io
-from leiden.leiden_database import make_leiden_database
+from ..leiden import file_io
+from ..leiden.leiden_database import make_leiden_database
 
 def extract_data(leiden_database, gene_id):
     """
