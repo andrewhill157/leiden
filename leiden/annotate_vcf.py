@@ -13,7 +13,6 @@ def annotate_vep(input_file, output_file):
     """
     # TODO - can use a config file to specify parameters, but have not gotten to work yet
     command = ' '.join(['variant_effect_predictor.pl',
-                        '--refseq',
                         '--vcf',
                         '--cache',
                         '--fork 4',

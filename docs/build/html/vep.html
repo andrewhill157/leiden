@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
     <link rel="next" title="Contributing to Leiden" href="contributing.html" />
-    <link rel="prev" title="Installation" href="dependencies.html" /> 
+    <link rel="prev" title="Installation and Dependencies" href="dependencies.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,7 +41,7 @@
           <a href="contributing.html" title="Contributing to Leiden"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="dependencies.html" title="Installation"
+          <a href="dependencies.html" title="Installation and Dependencies"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
       </ul>
@@ -57,20 +57,20 @@
 <p>In order to run the annotation and validation software in leiden, you must have Variant Effect Predictor (VEP) installed and available on your PATH.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Make variant_effect_predictor.pl is on your PATH!</p>
+<p class="last">Make sure variant_effect_predictor.pl is on your PATH!</p>
 </div>
 <p>Currently, the parameters for VEP are hard-coded and as follows:</p>
-<ul class="simple">
-<li>&#8211;refseq</li>
-<li>&#8211;vcf</li>
-<li>&#8211;cache</li>
-<li>&#8211;fork 4</li>
-<li>&#8211;host useastdb.ensembl.org</li>
-<li>&#8211;format vcf</li>
-<li>&#8211;force_overwrite</li>
-<li>&#8211;everything</li>
-<li>&#8211;compress &#8220;gunzip -c&#8221;</li>
-</ul>
+<div class="highlight-bash"><div class="highlight"><pre>--vcf
+--cache
+--fork 4
+--host useastdb.ensembl.org
+--format vcf
+--force_overwrite
+--everything
+--compress <span class="s2">&quot;gunzip -c&quot;</span>
+</pre></div>
+</div>
+<p>This means that you will also need the human cache and reference sequence available. See <a class="reference external" href="http://useast.ensembl.org/info/docs/">VEP Documentation</a> for more info.</p>
 <p>Future improvements may seek to allow tweaking of parameters using a config file. If you wish to modify this function to
 in the meantime, please ensure that &#8211;hgvs is used, as this is used for validation purposes in the scripts that are
 provided with this package.</p>
@@ -80,13 +80,13 @@ provided with this package.</p>
 VEP annotation. These changes can make an enormous different in the runtime.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Download relevant local caches (27 and 28) and a .fasta file to use &#8211;cache</li>
-<li>Use &#8211;host useastdb.ensembl.org (USA users)</li>
-<li>use &#8211;fork 4</li>
-<li>Convert the cache using tabix (see <a class="reference external" href="http://useast.ensembl.org/info/docs/tools/vep/script/vep_cache.html">VEP Documentation</a> for more info)</li>
+<li>Download relevant cache (27) and a .fasta file to use <tt class="docutils literal"><span class="pre">--cache</span></tt></li>
+<li>Use <tt class="docutils literal"><span class="pre">--host</span> <span class="pre">useastdb.ensembl.org</span></tt> (USA users)</li>
+<li>use <tt class="docutils literal"><span class="pre">--fork</span> <span class="pre">4</span></tt></li>
+<li>Convert the cache using tabix (see <a class="reference external" href="http://useast.ensembl.org/info/docs/tools/vep/script/vep_cache.html">Databases and Caches</a> for more info)</li>
 </ul>
 </div></blockquote>
-<p>Unfortunately &#8211;hgvs (required for validation) requires internet access, so some database connection must be made. Specifying
+<p>Unfortunately <tt class="docutils literal"><span class="pre">--hgvs</span></tt> (required for validation) requires internet access, so some database connection must be made. Specifying
 the US mirror as the host (as specified above) greatly speeds up runtime because of this.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -96,8 +96,10 @@ the US mirror as the host (as specified above) greatly speeds up runtime because
 <div class="section" id="remapping-hgvs-with-vep">
 <h2>Remapping HGVS with VEP<a class="headerlink" href="#remapping-hgvs-with-vep" title="Permalink to this headline">¶</a></h2>
 <p>Note that it is possible to use HGVS formatted variants as input to VEP. At the time this package was developed, this was
-incredibly slow. For this reason, I have used the third-party python module (<a class="reference external" href="https://github.com/counsyl/hgvs">HGVS</a>).</p>
-<p>This package is very fast and produced very comparable results to those of VEP and other available tools.</p>
+incredibly slow. For this reason, I have used the third-party python module (<a class="reference external" href="https://github.com/counsyl/hgvs">HGVS</a>) to
+convert variants to VCF format prior to annotation.</p>
+<p>This package is very fast and produced very comparable results to those of VEP and other available tools. This tool is also
+useful for stand-alone HGVS to VCF (or vice versa) conversion. The leiden.remapping module provides functions for remapping.</p>
 </div>
 </div>
 
@@ -118,7 +120,7 @@ incredibly slow. For this reason, I have used the third-party python module (<a 
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="dependencies.html"
-                        title="previous chapter">Installation</a></p>
+                        title="previous chapter">Installation and Dependencies</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="contributing.html"
                         title="next chapter">Contributing to Leiden</a></p>
@@ -157,7 +159,7 @@ incredibly slow. For this reason, I have used the third-party python module (<a 
           <a href="contributing.html" title="Contributing to Leiden"
              >next</a> |</li>
         <li class="right" >
-          <a href="dependencies.html" title="Installation"
+          <a href="dependencies.html" title="Installation and Dependencies"
              >previous</a> |</li>
         <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
       </ul>

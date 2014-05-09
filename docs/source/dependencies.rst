@@ -1,11 +1,11 @@
 .. _dependencies:
 
-Installation
-============
+Installation and Dependencies
+=============================
 
 Installation for General Use (No Development)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-While this project ideally could be installed using a default installation, two dependencies (pygr and hgvs) do not always install correctly.
+While this project ideally could be installed using a default installation, some dependencies do not always install correctly.
 
 In the next sections I will step through the installation process for the two finicky dependencies.
 
@@ -92,6 +92,16 @@ with PostgreSQL, which can be downloaded with homebrew, etc.:
 
     brew install postgresql
 
+Variant Effect Predictor
+++++++++++++++++++++++++
+
+Variant Effect Predictor (VEP) is required to use generate_annotated_vcf.py and the annotate_vcf module. The downstream script validate_annotated_vcfs.py
+depends on the annotations that VEP provides to perform validation. Since run_all.py calls these scripts, it also requires VEP. See :ref:`vep` for more info.
+
+The extract_data.py and the other packages in leiden can be used without VEP.
+
+.. important::
+    VEP must be installed and on your path to generate and validate annotated VCF files.
 
 Development Installation
 ^^^^^^^^^^^^^^^^^^^^^^^^
