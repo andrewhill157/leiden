@@ -12,39 +12,40 @@ many voluntarily curated mutations implicated in a variety of disease areas.
 * LOVD platform: http://www.lovd.nl/3.0/home
 
 Unfortunately these variants are in HGVS format (popular in clinical settings) and in coordinates relative to specific
-cDNA transcripts. Perhaps more concerning is that the standard for submission of disease causing mutations was has become much
-stricter in the time since LOVDs inception. This implies that there are many false positives within this data set. Voluntary
-curation of these databases is completely voluntary, making many variants completely unreliable or unusable. Despite these
-challenges, there are likely many true positives amongst the noise, many of which may not be in HGMD. Locating and reporting
-these true positives is an important goal for the research community.
+cDNA transcripts, which makes further analysis difficult informatically. Perhaps more concerning is that the standard
+for submission of disease causing mutations was has become much stricter in the time since LOVDs inception.
+This implies that there are many false positives within this data set. Curation of these databases is completely voluntary,
+making many variants completely unreliable or unusable. Despite these challenges, there are likely many true positives
+amongst the noise, many of which may not be in other variant databases. Locating and reporting these true positives is
+an important goal for the research community.
 
-A technical barrier to this effort is that bioinformatics researchers need these variants to be in VCF format because these
-coordinates are in genomic space and compatible with popular tools such as VEP. While LOVD Version 3 is currently seeking
-to address this problem, many databases have not been migrated. Furthermore, LOVD Version 3 lists variants in HGVS genomic coordinates, not VCF format.
-Lastly, much of the variants (or important fields from their entries) are not easily accessible publicly.
+While LOVD is public access and has provided reST APIs for querying for variants at specific genomic positions or
+retrieving some information about LOVD variants in specific genes, none of the available services allow the actual
+variant descriptions (or other submitted information) to be downloaded. This package fills that gap and also facilitates
+some degree of validation of the data.
 
 The goals of this project are to provide tools for:
 
 * Extracting variants from these databases
 * Remapping these variants to VCF format
-* Cross-checking of information about these variants to infer concordance of entries
-* Augmenting existing data with allele frequency data to allow filtering of common variants
+* Cross-checking of information about these variants to infer concordance of submissions
 
-This is a good first step towards finding true variants. Actually implicating variants as being pathogenic will require
-manual curation by examining any publication references included with the extracted data. This is a future goal and not
-within the scope of the tools provided here.
+
+.. important::
+    Actually implicating variants as being pathogenic requires thorough manual curation by examining the full set of information
+    (including, but not limited to publication references) for validated variants.  "Validation" as described here
+    simply implies correctness and consistency of submitted variants, it does not prove true positive implication in any disease.
 
 General Workflow
 ^^^^^^^^^^^^^^^^
 In general, the workflow is as follows:
 
-1. Extract raw variants from LOVD
-2. Remap raw variants to VCF format
-3. Annotate VCF files
-4. Validate annotated variants by cross-checking submitted data with annotation
+1. Extract raw variants from LOVD, saving one tab-delimited file per gene.
+2. Annotate variants with VEP (must have VEP on path) and combine with original data in a single VCF file per gene.
+3. Validate annotated variants by cross-checking submitted data with annotation and output a single VCF for all variants.
 
-The scripts I have included make it easy to carry out this workflow. Custom scripts can also be written for modified
-workflows using the functionality in the leiden package.
+The scripts I have included (see ::ref::driver_scripts_ and ::ref::other_scripts_) make it easy to carry out this workflow.
+Custom scripts can also be written for modified workflows using the functionality in the leiden package.
 
 Project Structure
 ^^^^^^^^^^^^^^^^^

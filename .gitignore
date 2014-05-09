@@ -11,5 +11,5 @@
 .idea/
 leiden.egg-info
 .metadata/
-leiden/remapping/resources/
+leiden/resources/
 hgvs-master/

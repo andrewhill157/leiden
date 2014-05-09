@@ -1,11 +1,9 @@
 from setuptools import setup
 setup(
     name='leiden',
-    version='1.0.3',
-    packages=['leiden', 'leiden.broad_cluster', 'leiden.input_output',
-              'leiden.lovd', 'leiden.remapping', 'leiden.validation'],
-    scripts=['bin/extract_data.py', 'bin/generate_vcf_files.py', 'bin/annotate_vcfs.py',
-             'bin/validate_annotated_vcfs.py', 'bin/run_all.py'],
+    version='1.0.0',
+    packages=['leiden'],
+    scripts=['bin/extract_data.py', 'bin/generate_annotated_vcf.py', 'bin/validate_annotated_vcfs.py'],
     url='https://github.com/andrewhill157/leiden',
     license='MIT License',
     author='Andrew Hill',

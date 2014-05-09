@@ -1,16 +1,10 @@
-"""
-Andrew Hill 
-MacArthur Lab - 2014
-
-Script that makes use of core LOVD module to extract variant data for different genes on any LOVD 2 or 3 database.
-
-For help, execute: python extract_data.py --help
-"""
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 
 import argparse
 import os
-from leiden.input_output import file_io
-from leiden.lovd.leiden_database import make_leiden_database
+from leiden import file_io
+from leiden.leiden_database import make_leiden_database
 
 def extract_data(leiden_database, gene_id):
     """
@@ -24,7 +18,7 @@ def extract_data(leiden_database, gene_id):
     @rtype: tuple containing 2D list and list respectively
     @raise: IOError if could not get data
     """
-    
+
     try:
         leiden_database.set_gene_id(gene_id)
         column_labels = leiden_database.get_table_headers()
@@ -36,7 +30,7 @@ def extract_data(leiden_database, gene_id):
     return table_entries, column_labels
 
 if __name__ == '__main__':
-    # Command line interface definition
+
     parser = argparse.ArgumentParser(description='Given URL to the base URL of any LOVD 2 or 3 database installation, '
                                                  'such as http://www.dmd.nl/nmdb2/, extract variant entries associated with '
                                                  'specified genes. Can specify either a space-separated list of gene names '
@@ -79,14 +73,14 @@ if __name__ == '__main__':
 
     else:
         # Get database object and print the lovd version number
-        print("---> DETECTING LOVD VERSION: IN PROGRESS...")
+        print "---> DETECTING LOVD VERSION: IN PROGRESS..."
 
         # Use factory method to get LeidenDatabase object
         database = make_leiden_database(args.leiden_url)
         version_number = database.get_version_number()
 
-        print("---> DETECTING LOVD VERSION: COMPLETE")
-        print("    ---> VERSION " + str(version_number) + " DETECTED")
+        print "---> DETECTING LOVD VERSION: COMPLETE"
+        print "    ---> VERSION " + str(version_number) + " DETECTED"
 
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
@@ -117,4 +111,4 @@ if __name__ == '__main__':
                 except Exception as e:
                     print '    ---> ' + str(e)
 
-            print('---> All genes complete.')
+            print '---> All genes complete.'

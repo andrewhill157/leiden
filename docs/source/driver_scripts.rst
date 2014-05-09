@@ -3,35 +3,32 @@
 Driver Scripts
 ==============
 
-The packages described above provide the main functionality of the project. However, I have also developed a set of
-scripts that are specific to my project needs. These simply act as driver scripts to provide a command-line interface
-for the protocols I used for this project.
+In addition to the individual scripts installed with this package, I have also included an example driver script to run
+the entire analysis pipeline I have been running.
 
-Note that all scripts are implemented using argparse and have built-in help, which accessible via:
+.. important::
+    This script runs annotations serially with Variant Effect Predictor, which can take a long time to execute. If you
+    have access to a distributed computing cluster, you may want to develop your own driver script that runs the
+    annotation portion of the pipeline in parallel.
 
-.. code-block:: bash
+.. tip::
+    All scripts are implemented using argparse and have built-in help, which accessible via:
 
-    python <script_name>.py --help
+    .. code-block:: bash
+
+        python <script_name>.py --help
 
 run_all.py
 ^^^^^^^^^^
-run_all.py is the driver script that replicates exactly what I used to produce the set of annotated VCF files that are ready
-for validation.
+run_all.py runs the full data extraction and validation process, producing a VCF file with only validated variants.
+Discordnant variants are saved a separate VCF and variants that failed to remap to genomic coordinates entirely (due to
+missing refseq transcripts or HGVS syntax errors) are saved to a .log file. See :ref:data_ for more information.
 
-.. warning::
-    This script depends on resources on the Broad Institute distributed computing cluster, making it somewhat fragile
-    and only usable in this context. This decision was made because some of the annotation tools and resources are very large
-    and inconvenient to install elsewhere.
-
-.. important::
-    Note that because annotation is performed via bsub on the Broad Institute distributed computing cluster, the actual validation is not run
-    by this script. This decision was made because I have very low priority on the cluster, so it was not feasible to block
-    execution until the annotation step was complete. Future improvements could seek to eliminate this intermediate step.
 
 Example Usage
 -------------
 
-There are two use-cases for run_all.py:
+There are a few use-cases for run_all.py:
 
 1. You are starting completely from scratch (no data has been downloaded from LOVD)
 
@@ -40,11 +37,11 @@ There are two use-cases for run_all.py:
     python run_all.py -u http://www.dmd.nl/nmdb2/ -output_directory my_output_directory
 
 This will download data from all genes on the specifed LOVD URL, saving one .txt file (``<gene_name>.txt``) with raw data as
-well as two VCF files per gene - one that contains remapped variants in VCF format along with data from LOVD as tags in
-the INFO field (``<gene_name>.vcf``) and one that has been annotated with HGMD/26K/DBSNP (``<gene_name>_ANNOTATED.vcf``).
+well as one VCF file per gene (``<gene_name>_ANNOTATED.vcf``) with variants in VCF format and annotations (Variant Effect Predictor
+along with original data from LOVD table).
 
-Note that files are not saved for genes with no entries on LOVD. Variants that fail to remap to VCF format are save along
-with any information about their failure in ``remapping_errors.log``.
+Note that files are not saved for genes with no listed variants at the specified URL. Variants that fail to remap to VCF
+format are saved to ``<gene_name>_remapping_errors.log`` in their original LOVD table format.
 
 2. You already have the txt files containing raw data from LOVD, but want to re-run the rest of the process. Note that
 this was primarily useful during development, but may still have some utility for others.
@@ -53,28 +50,14 @@ this was primarily useful during development, but may still have some utility fo
 
     python run_all.py --no_download -output_directory my_output_directory
 
+.. note::
+    This assumes that the .txt files containing data extracted from LOVD are located in the specified output directory.
 
-Note that this assumes that the .txt files containing data extracted from LOVD are located in the specified output directory.
-
-validate_annotated_vcfs.py
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-validate_annotated_vcfs.py takes a list of annotated VCFs (such as those output by run_all.py or annotate_vcfs.py (see :ref:`other_scripts`)
-and produces a single VCF file containing all variants that were confirmed to be concordant. This script tries to cross
-reference information from the annotation with information provided in the entries from LOVD.
-
-All variants are saved to a single output file as specified by the user.
-
-* Enough information must be provided to perform validation
-* Mutations that cause amino acid change: REF and ALT much match annotation
-* Synonymous: annotation must also predict synonymous mutations.
-* Other:
-    - Splice: Mutation must match annotation. Must also be in conserved splice region at beginning or end of exon and match expectation based on conserved patterns.
-    - Frameshift: ensembl API is used to confirm original amino acid, alternate amino acid, and location of any stop codons.
-    - Codon Loss: ensembl API is used to confirm original amino acid and alternate amino acid.
-
-Example Usage
--------------
+3. By default, run_all will not overwrite any existing annotated VCF files. This can be useful if annotation partially completed
+and you want to resume, etc. To force an overwrite:
 
 .. code-block:: bash
 
-    python validate_annotated_vcfs.py -f input_file_list.list -o output_file.vcf
+    python run_all.py --force_overwrite -output_directory my_output_directory
+    # OR
+    python run_all.py --no_download -output_directory my_output_directory
