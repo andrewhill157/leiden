@@ -1,30 +1,52 @@
 import re
 
 
-def is_concordant(variant):
-    try:
-        lovd_protein_change = variant['INFO']['LOVD']['PROTEIN_CHANGE'].lower()
-        vep_transcripts = variant['INFO']['CSQ']
-    except KeyError:
+def is_concordant(protein_change_1, protein_change_2):
+    """
+    Compares two protein change values to determine whether or not they are equivalent. Inputs are converted using
+    normalized to a common representation before comparison. Returns False if either argument is an empty string.
+
+    Args:
+        protein_change_1 (str): HGVS protein change notation
+        protein_change_2 (str): HGVS protein change notation
+
+    Returns:
+        True if HGVS protein change notations are equivalent; False if either notation is an empty string or if the
+            two notations are not equivalent.
+
+    """
+
+    protein_change_1 = normalize_protein_notation(protein_change_1)
+    protein_change_2 = normalize_protein_notation(protein_change_2)
+
+    if protein_change_1 == '' or protein_change_2 == '':
         return False
 
-    for transcript_id in vep_transcripts:
+    return protein_change_1 == protein_change_2
 
-        lovd_protein_change = re.sub('xaa', '*', lovd_protein_change)
-        lovd_protein_change = re.sub('x', '*', lovd_protein_change)
-        lovd_protein_change = remove_p_dot_notation(lovd_protein_change)
 
-        vep_hgvs_protein_change = vep_transcripts[transcript_id]['HGVSP']
+def normalize_protein_notation(protein_change_notation):
+    """
+    Tries to convert protein notations to a uniform format for equality comparison. Converts to lower-case, removes
+    reference protein ID, removes p. notation, and converts all common stop-codon notations to *.
 
-        if lovd_protein_change and vep_hgvs_protein_change:
-            vep_hgvs_protein_change = vep_hgvs_protein_change.split(':')[1].lower()
-            vep_hgvs_protein_change = re.sub('ter', '*', vep_hgvs_protein_change)
-            vep_hgvs_protein_change = remove_p_dot_notation(vep_hgvs_protein_change)
+    Args:
+        protein_change_notation (str): HGVS protein change notation
 
-            if lovd_protein_change == vep_hgvs_protein_change:
-                return True
+    Returns:
+        protein change notation normalized to uniform format.
 
-    return False
+    """
+    if ':' in protein_change_notation:
+        protein_change_notation = protein_change_notation.split(':')[1]
+
+    protein_change_notation = protein_change_notation.lower()
+    protein_change_notation = re.sub('xaa', '*', protein_change_notation)
+    protein_change_notation = re.sub('x', '*', protein_change_notation)
+    protein_change_notation = re.sub('ter', '*', protein_change_notation)
+    protein_change_notation = remove_p_dot_notation(protein_change_notation)
+
+    return protein_change_notation
 
 
 def get_ucsc_location_link(chromosome_number, start_coordinate, end_coordinate):

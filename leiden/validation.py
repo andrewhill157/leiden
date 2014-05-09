@@ -2,6 +2,19 @@ import re
 
 
 def is_concordant(protein_change_1, protein_change_2):
+    """
+    Compares two protein change values to determine whether or not they are equivalent. Inputs are converted using
+    normalized to a common representation before comparison. Returns False if either argument is an empty string.
+
+    Args:
+        protein_change_1 (str): HGVS protein change notation
+        protein_change_2 (str): HGVS protein change notation
+
+    Returns:
+        True if HGVS protein change notations are equivalent; False if either notation is an empty string or if the
+            two notations are not equivalent.
+
+    """
 
     protein_change_1 = normalize_protein_notation(protein_change_1)
     protein_change_2 = normalize_protein_notation(protein_change_2)
@@ -13,6 +26,17 @@ def is_concordant(protein_change_1, protein_change_2):
 
 
 def normalize_protein_notation(protein_change_notation):
+    """
+    Tries to convert protein notations to a uniform format for equality comparison. Converts to lower-case, removes
+    reference protein ID, removes p. notation, and converts all common stop-codon notations to *.
+
+    Args:
+        protein_change_notation (str): HGVS protein change notation
+
+    Returns:
+        protein change notation normalized to uniform format.
+
+    """
     if ':' in protein_change_notation:
         protein_change_notation = protein_change_notation.split(':')[1]
 
@@ -23,6 +47,7 @@ def normalize_protein_notation(protein_change_notation):
     protein_change_notation = remove_p_dot_notation(protein_change_notation)
 
     return protein_change_notation
+
 
 def get_ucsc_location_link(chromosome_number, start_coordinate, end_coordinate):
     """
