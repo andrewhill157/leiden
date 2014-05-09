@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
-    <link rel="next" title="Contributing to Leiden" href="contributing.html" />
+    <link rel="next" title="Variant Effect Predictor" href="vep.html" />
     <link rel="prev" title="Overview" href="overview.html" /> 
   </head>
   <body>
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="contributing.html" title="Contributing to Leiden"
+          <a href="vep.html" title="Variant Effect Predictor"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="overview.html" title="Overview"
@@ -56,14 +56,13 @@
 <span id="dependencies"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="installation-for-general-use-no-development">
 <h2>Installation for General Use (No Development)<a class="headerlink" href="#installation-for-general-use-no-development" title="Permalink to this headline">¶</a></h2>
-<p>While this project is registered in PyPI and ideally could be installed using <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">leiden</span></tt>, two dependencies
-(pygr and hgvs) do not always install correctly with pip.</p>
+<p>While this project ideally could be installed using a default installation, two dependencies (pygr and hgvs) do not always install correctly.</p>
 <p>In the next sections I will step through the installation process for the two finicky dependencies.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">Install the dependencies below first and then install leiden.</p>
 </div>
-<p>Once these two initial dependencies have been installed, you can do any of the following:</p>
+<p>Once these dependencies are installed, you can do any of the following:</p>
 <p>Clone:</p>
 <div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:andrewhill157/leiden.git
 </pre></div>
@@ -74,30 +73,21 @@
 python setup.py install leiden
 </pre></div>
 </div>
-<p>Install using pip:</p>
-<div class="highlight-bash"><div class="highlight"><pre>pip install leiden
-</pre></div>
-</div>
-<p>All project dependencies are listed in requirements.txt. If you find that you are missing any requirements after the
-installation you can install them using:</p>
+<p>All project dependencies are listed in requirements.txt. If you simply want to install the dependencies for the project
+without installing the package itself run the command from the package root directory:</p>
 <div class="highlight-bash"><div class="highlight"><pre>pip install -r requirements.txt
 </pre></div>
 </div>
-</div>
+<p>If you want to contribute to the project via Github, please see the <a class="reference internal" href="contributing.html#contributing"><em>Contributing to Leiden</em></a> page.</p>
 <div class="section" id="pygr">
-<h2>pygr<a class="headerlink" href="#pygr" title="Permalink to this headline">¶</a></h2>
+<h3>pygr<a class="headerlink" href="#pygr" title="Permalink to this headline">¶</a></h3>
 <p>pygr requires that you have bsddb3 and Berkeley DB installed. This can be installed using homebrew:</p>
 <div class="highlight-bash"><div class="highlight"><pre>brew install berkeley-db --without-java
-
-<span class="c"># Note prefix to pip not required on Broad cluster</span>
-sudo <span class="nv">BERKELEYDB_DIR</span><span class="o">=</span>/usr/local/Cellar/berkeley-db/5.3.15/ pip install bsddb3
 </pre></div>
 </div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">bsddb3 and Berkeley DB should already be installed on the Broad cluster!</p>
-</div>
-<p>Once bbd3 and Berkeley DB are installed, you should be able to install pygr with <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pygr</span></tt>. If there are still errors,
+<p># Note prefix to pip not required on Broad cluster
+sudo BERKELEYDB_DIR=/usr/local/Cellar/berkeley-db/5.3.15/ pip install bsddb3</p>
+<p>Once bbd3 and Berkeley DB are installed, you should be able to install pygr with pip install pygr. If there are still errors,
 the following may correct the problem.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">CFLAGS</span><span class="o">=</span>-Qunused-arguments
 <span class="nb">export </span><span class="nv">CPPFLAGS</span><span class="o">=</span>-Qunused-arguments
@@ -107,33 +97,38 @@ pip install pygr
 <p>I have not encountered any additional problems installing pygr.</p>
 </div>
 <div class="section" id="hgvs">
-<h2>hgvs<a class="headerlink" href="#hgvs" title="Permalink to this headline">¶</a></h2>
-<p>I have had no luck installing hgvs with pip. I am not sure exactly what is causing the problem, so I advise cloning
-the Github repository and installing from source:</p>
+<h3>hgvs<a class="headerlink" href="#hgvs" title="Permalink to this headline">¶</a></h3>
+<p>HGVS must be installed by cloning the Github repository and installing from source:</p>
 <div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:counsyl/hgvs.git
-python hgvs setup.py install
+<span class="nb">cd </span>hgvs
+python setup.py install
+<span class="nb">cd</span> ..
 rm -rf hgvs
 </pre></div>
 </div>
 <p>I have not encountered any additional problems installing hgvs.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Unfortunately, this tool depends on a relatively large file that I cannot easily host on Github.
-This is normally housed in the folder <tt class="docutils literal"><span class="pre">/leiden/remapping/resources/</span></tt>. It is a human genome reference sequence (<tt class="docutils literal"><span class="pre">hg19.fa</span></tt>)
-I have temporarily hosted a copy at at: <a class="reference external" href="http://www.broadinstitute.org/~ahill">http://www.broadinstitute.org/~ahill</a>. This file will need to decompressed using gunzip
-and placed in <tt class="docutils literal"><span class="pre">/leiden/remapping/resources/</span></tt>. The first time this package is used, two additional files will be generated
-(takes some time). Subsequent runs will not require this process to be repeated.</p>
+<p class="last">Unfortunately, this tool depends on a relatively large file that I cannot easily host on Github. This is normally housed
+in the folder /leiden/remapping/resources/. It is a human genome reference sequence (hg19.fa) I have temporarily hosted a
+copy at at: <a class="reference external" href="http://www.broadinstitute.org/~ahill">http://www.broadinstitute.org/~ahill</a>. This file will need to decompressed using gunzip and placed in
+/leiden/remapping/resources/. The first time this package is used, two additional files will be generated (takes some time).
+Subsequent runs will not require this process to be repeated.</p>
 </div>
 </div>
-<div class="section" id="installation-for-development">
-<h2>Installation for Development<a class="headerlink" href="#installation-for-development" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="other-errors">
+<h3>Other Errors<a class="headerlink" href="#other-errors" title="Permalink to this headline">¶</a></h3>
+<p>I have also seen an error stating that pg_config executable could not be found. This seems to be an executable included
+with PostgreSQL, which can be downloaded with homebrew, etc.:</p>
+<div class="highlight-bash"><div class="highlight"><pre>brew install postgresql
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="development-installation">
+<h2>Development Installation<a class="headerlink" href="#development-installation" title="Permalink to this headline">¶</a></h2>
 <p>If you would like to extend or modify the existing code-base or scripts while still having the package installed,
 you can install in editable or development mode. This differs slightly from the default installation mode.</p>
-<div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Just as with installation for general use, pygr and hgvs must be installed prior to running the commands below. See
-Installation for General Use section for more information.</p>
-</div>
 <p>The easiest way to do this is to install from cloned source.</p>
 <div class="highlight-bash"><div class="highlight"><pre>git clone git@github.com:andrewhill157/leiden.git
 <span class="nb">cd </span>leiden
@@ -156,10 +151,13 @@ the Installation for General Use section.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#installation-for-general-use-no-development">Installation for General Use (No Development)</a></li>
+<li><a class="reference internal" href="#installation-for-general-use-no-development">Installation for General Use (No Development)</a><ul>
 <li><a class="reference internal" href="#pygr">pygr</a></li>
 <li><a class="reference internal" href="#hgvs">hgvs</a></li>
-<li><a class="reference internal" href="#installation-for-development">Installation for Development</a></li>
+<li><a class="reference internal" href="#other-errors">Other Errors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#development-installation">Development Installation</a></li>
 </ul>
 </li>
 </ul>
@@ -168,8 +166,8 @@ the Installation for General Use section.</p>
   <p class="topless"><a href="overview.html"
                         title="previous chapter">Overview</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="contributing.html"
-                        title="next chapter">Contributing to Leiden</a></p>
+  <p class="topless"><a href="vep.html"
+                        title="next chapter">Variant Effect Predictor</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/dependencies.txt"
@@ -202,7 +200,7 @@ the Installation for General Use section.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="contributing.html" title="Contributing to Leiden"
+          <a href="vep.html" title="Variant Effect Predictor"
              >next</a> |</li>
         <li class="right" >
           <a href="overview.html" title="Overview"

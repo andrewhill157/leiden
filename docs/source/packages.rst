@@ -5,18 +5,21 @@ Modules
 This project contains a number of distinct python modules.
 
 Note that there are tests for most modules that are not simple wrappers for other scripts or libraries. These tests are
-included alongside modules in files called ``test_<module_name>.py``. These tests are not 100% comprehensive.
+included alongside modules in files named ``test_<module_name>.py``. These tests are not 100% comprehensive.
 
 Tests are compatible with the nose unit testing platform. This is an extension of the default unittest platform that makes
 tests very easy to develop and run. To run all unit tests for this project run the following from the root directory.
-Note that the nose python package must be installed to run tests.
 
 .. code-block:: python
 
     nosetests
 
 
-Tests for specific individual modules can also be run. Please see nose documentation for more information.
+Note that the nose python package must be installed to run tests. Tests for specific individual modules can also be run.
+Please see nose documentation for more information.
+
+.. tip::
+    The scripts included with this package provide example usage of the functions in these modules.
 
 leiden_database
 ^^^^^^^^^^^^^^^
@@ -85,13 +88,10 @@ Member Descriptions
 .. automodule:: leiden.web_io
    :members:
 
-This package contains wrappers for command-line annotation tools, such as VEP and vcf-annotate. These executables must
-be on your PATH to utilize these functions.
 
 annotate_vcf
 ^^^^^^^^^^^^
-This module contains functions that run annotation on VCF files. These include VEP and VCF-Annotate using HGMD/26K/DBSNP.
-These are essentially wrappers to call scripts on the broad cluster from the command-line.
+This module provides a function to run Variant Effect Predictor annotation on VCF files.
 
 Member Descriptions
 +++++++++++++++++++
@@ -102,19 +102,17 @@ Member Descriptions
 
 validation
 ^^^^^^^^^^
-This module contains functions that are used to help with validation of the annotated VCF files produced by a driver
-script like run_all.py that formats data from LOVD as a VCF and runs specific annotations. These functions rely heavily
-on the presence of specific tags in the INFO field of the VCF.
+This module contains functions that are used to help with validation of annotated variants.
 
 .. automodule:: leiden.validation
     :members:
 
 
-vcf_parsing
-^^^^^^^^^^^
-This module contains functions for parsing VCF files or providing data structures that provide easier access to information
-in annotated VCF files.
+vcf
+^^^
+This module contains functions for parsing VCF files, providing data structures that provide easier access to information
+in annotated VCF files, and converting pandas dataframes with HGVS notation variants and associated data to VCF format.
 
-.. automodule:: leiden.vcf_parsing
+.. automodule:: leiden.vcf
     :members:
 

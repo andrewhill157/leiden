@@ -15,6 +15,7 @@ Documentation Contents:
 
    overview
    dependencies
+   vep
    contributing
    packages
    driver_scripts

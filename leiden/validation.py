@@ -11,7 +11,7 @@ def is_concordant(protein_change_1, protein_change_2):
         protein_change_2 (str): HGVS protein change notation
 
     Returns:
-        True if HGVS protein change notations are equivalent; False if either notation is an empty string or if the
+        bool: True if HGVS protein change notations are equivalent; False if either notation is an empty string or if the
             two notations are not equivalent.
 
     """
@@ -28,13 +28,13 @@ def is_concordant(protein_change_1, protein_change_2):
 def normalize_protein_notation(protein_change_notation):
     """
     Tries to convert protein notations to a uniform format for equality comparison. Converts to lower-case, removes
-    reference protein ID, removes p. notation, and converts all common stop-codon notations to *.
+    reference protein ID, removes p. notation, and converts all common stop-codon notations to a '*'.
 
     Args:
         protein_change_notation (str): HGVS protein change notation
 
     Returns:
-        protein change notation normalized to uniform format.
+        str: protein change notation normalized to uniform format.
 
     """
     if ':' in protein_change_notation:

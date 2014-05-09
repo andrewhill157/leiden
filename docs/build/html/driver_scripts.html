@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="leiden_cleanup 1.0.3 documentation" href="index.html" />
     <link rel="next" title="Other Scripts" href="other_scripts.html" />
-    <link rel="prev" title="Packages" href="packages.html" /> 
+    <link rel="prev" title="Modules" href="packages.html" /> 
   </head>
   <body>
     <div class="related">
@@ -41,7 +41,7 @@
           <a href="other_scripts.html" title="Other Scripts"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="packages.html" title="Packages"
+          <a href="packages.html" title="Modules"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
       </ul>
@@ -54,51 +54,56 @@
             
   <div class="section" id="driver-scripts">
 <span id="id1"></span><h1>Driver Scripts<a class="headerlink" href="#driver-scripts" title="Permalink to this headline">¶</a></h1>
-<p>The packages described above provide the main functionality of the project. However, I have also developed a set of
-scripts that are specific to my project needs. These simply act as driver scripts to provide a command-line interface
-for the protocols I used for this project.</p>
-<p>Note that all scripts are implemented using argparse and have built-in help, which accessible via:</p>
-<div class="highlight-bash"><div class="highlight"><pre>python &lt;script_name&gt;.py --help
+<p>In addition to the individual scripts installed with this package, I have also included an example driver script to run
+the entire pipeline.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This script runs annotations serially with Variant Effect Predictor, which can take some time to execute. If you
+have access to a distributed computing cluster, you may want to develop your own driver script that runs the
+annotation portion of the pipeline in parallel.</p>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>All scripts are implemented using argparse and have built-in help, which accessible via:</p>
+<div class="last highlight-bash"><div class="highlight"><pre>python &lt;script_name&gt;.py --help
 </pre></div>
+</div>
 </div>
 <div class="section" id="run-all-py">
 <h2>run_all.py<a class="headerlink" href="#run-all-py" title="Permalink to this headline">¶</a></h2>
-<p>Run all is the driver script that replicates exactly what I did to produce the set of annotated VCF files that are ready
-for validation.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This script depends on resources on the Broad Institute distributed computing cluster, making it somewhat fragile
-and only usable in this context. This decision was made because some of the annotation tools and resources are very large
-and inconvenient to install elsewhere.</p>
-</div>
-<div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Note that because annotation is performed via bsub on the Broad Institute distributed computing cluster, the actual validation is not run
-by this script. This decision was made because I have very low priority on the cluster, so it was not feasible to block
-execution until the annotation step was complete. Future improvements could seek to eliminate this intermediate step.</p>
-</div>
-<p>There are two use-cases for run_all.py:</p>
+<p>run_all.py runs the full data extraction and validation process, producing a VCF file with only validated variants.
+Discordant variants are saved a separate VCF. See <a class="reference internal" href="data.html#data"><em>Data</em></a> for more information.</p>
+<div class="section" id="example-usage">
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h3>
+<p>There are a few use-cases for run_all.py:</p>
 <ol class="arabic simple">
 <li>You are starting completely from scratch (no data has been downloaded from LOVD)</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="n">run_all</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">u</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">dmd</span><span class="o">.</span><span class="n">nl</span><span class="o">/</span><span class="n">nmdb2</span><span class="o">/</span> <span class="o">-</span><span class="n">output_directory</span> <span class="n">my_output_directory</span>
+<div class="highlight-bash"><div class="highlight"><pre>python run_all.py -u http://www.dmd.nl/nmdb2/ -output_directory my_output_directory
 </pre></div>
 </div>
 <p>This will download data from all genes on the specifed LOVD URL, saving one .txt file (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;.txt</span></tt>) with raw data as
-well as two VCF files per gene - one that contains remapped variants in VCF format along with data from LOVD as tags in
-the INFO field (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;.vcf</span></tt>) and one that has been annotated with HGMD/26K/DBSNP (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;_ANNOTATED.vcf</span></tt>).</p>
-<p>Note that files are not saved for genes with no entries on LOVD. Variants that fail to remap to VCF format are save along
-with any information about their failure in <tt class="docutils literal"><span class="pre">remapping_errors.log</span></tt>.</p>
+well as one VCF file per gene (<tt class="docutils literal"><span class="pre">&lt;gene_name&gt;_ANNOTATED.vcf</span></tt>) with variants in VCF format and annotations (Variant Effect Predictor
+along with original data from LOVD table).</p>
+<p>Note that files are not saved for genes with no listed variants at the specified URL. Variants that fail to remap to VCF
+format are saved to <tt class="docutils literal"><span class="pre">&lt;gene_name&gt;_remapping_errors.log</span></tt> in their original LOVD table format.</p>
 <p>2. You already have the txt files containing raw data from LOVD, but want to re-run the rest of the process. Note that
 this was primarily useful during development, but may still have some utility for others.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">python</span> <span class="n">run_all</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">no_download</span> <span class="o">-</span><span class="n">output_directory</span> <span class="n">my_output_directory</span>
+<div class="highlight-bash"><div class="highlight"><pre>python run_all.py --no_download -output_directory my_output_directory
 </pre></div>
 </div>
-<p>Note that this assumes that the .txt files containing data extracted from LOVD are located in the specified output directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This assumes that the .txt files containing data extracted from LOVD are located in the specified output directory.</p>
 </div>
-<div class="section" id="validate-annotated-vcfs-py">
-<h2>validate_annotated_vcfs.py<a class="headerlink" href="#validate-annotated-vcfs-py" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<p>3. By default, run_all will not overwrite any existing annotated VCF files. This can be useful if annotation partially completed
+and you want to resume, etc. To force an overwrite:</p>
+<div class="highlight-bash"><div class="highlight"><pre>python run_all.py --force_overwrite -output_directory my_output_directory
+<span class="c"># OR</span>
+python run_all.py --no_download -output_directory my_output_directory
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -111,15 +116,17 @@ this was primarily useful during development, but may still have some utility fo
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Driver Scripts</a><ul>
-<li><a class="reference internal" href="#run-all-py">run_all.py</a></li>
-<li><a class="reference internal" href="#validate-annotated-vcfs-py">validate_annotated_vcfs.py</a></li>
+<li><a class="reference internal" href="#run-all-py">run_all.py</a><ul>
+<li><a class="reference internal" href="#example-usage">Example Usage</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="packages.html"
-                        title="previous chapter">Packages</a></p>
+                        title="previous chapter">Modules</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="other_scripts.html"
                         title="next chapter">Other Scripts</a></p>
@@ -158,7 +165,7 @@ this was primarily useful during development, but may still have some utility fo
           <a href="other_scripts.html" title="Other Scripts"
              >next</a> |</li>
         <li class="right" >
-          <a href="packages.html" title="Packages"
+          <a href="packages.html" title="Modules"
              >previous</a> |</li>
         <li><a href="index.html">leiden_cleanup 1.0.3 documentation</a> &raquo;</li> 
       </ul>

@@ -4,10 +4,10 @@ Driver Scripts
 ==============
 
 In addition to the individual scripts installed with this package, I have also included an example driver script to run
-the entire analysis pipeline I have been running.
+the entire pipeline.
 
 .. important::
-    This script runs annotations serially with Variant Effect Predictor, which can take a long time to execute. If you
+    This script runs annotations serially with Variant Effect Predictor, which can take some time to execute. If you
     have access to a distributed computing cluster, you may want to develop your own driver script that runs the
     annotation portion of the pipeline in parallel.
 
@@ -21,8 +21,7 @@ the entire analysis pipeline I have been running.
 run_all.py
 ^^^^^^^^^^
 run_all.py runs the full data extraction and validation process, producing a VCF file with only validated variants.
-Discordnant variants are saved a separate VCF and variants that failed to remap to genomic coordinates entirely (due to
-missing refseq transcripts or HGVS syntax errors) are saved to a .log file. See :ref:data_ for more information.
+Discordant variants are saved a separate VCF. See :ref:`data` for more information.
 
 
 Example Usage

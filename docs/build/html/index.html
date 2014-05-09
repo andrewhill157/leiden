@@ -51,13 +51,9 @@
   <div class="section" id="leiden-open-variation-database-lovd-cleanup">
 <h1>Leiden Open Variation Database (LOVD) Cleanup<a class="headerlink" href="#leiden-open-variation-database-lovd-cleanup" title="Permalink to this headline">¶</a></h1>
 <p>These are the documentation pages for Andrew Hill&#8217;s project to clean up and validate variants from Leiden Open
-Variation Databases (LOVD) installations - a set of databases housing voluntarily curated mutations associated with
+Variation Database (LOVD) installations - a set of databases housing voluntarily curated mutations associated with
 specific disease areas as muscular dystrophy.</p>
-<p>For more information on the LOVD platform see:
-- <a class="reference external" href="http://en.wikipedia.org/wiki/Leiden_Open_Variation_Database">http://en.wikipedia.org/wiki/Leiden_Open_Variation_Database</a>
-- <a class="reference external" href="http://www.lovd.nl/3.0/home">http://www.lovd.nl/3.0/home</a></p>
-<p>For a list of all current LOVD installations see:
-- <a class="reference external" href="http://www.lovd.nl/2.0/index_list.php">http://www.lovd.nl/2.0/index_list.php</a></p>
+<p>For more information, see <a class="reference internal" href="overview.html#overview"><em>Overview</em></a>.</p>
 <p>Documentation Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -69,70 +65,39 @@ specific disease areas as muscular dystrophy.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dependencies.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dependencies.html#installation-for-general-use-no-development">Installation for General Use (No Development)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dependencies.html#pygr">pygr</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dependencies.html#hgvs">hgvs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dependencies.html#installation-for-development">Installation for Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dependencies.html#development-installation">Development Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vep.html">Variant Effect Predictor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vep.html#optimizing-vep">Optimizing VEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vep.html#remapping-hgvs-with-vep">Remapping HGVS with VEP</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to Leiden</a></li>
-<li class="toctree-l1"><a class="reference internal" href="packages.html">Packages</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="packages.html#lovd">lovd</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#leiden-database">leiden_database</a></li>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#utilities">utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="packages.html#remapping">remapping</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#id3">remapping</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="packages.html#input-output">input_output</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#file-io">file_io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#web-io">web_io</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="packages.html#broad-cluster">broad_cluster</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#lsf-commands">lsf_commands</a></li>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#annotate-vcf">annotate_vcf</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="packages.html#validation">validation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="packages.html#id9">validation</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="packages.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#leiden-database">leiden_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#utilities">utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#file-io">file_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#web-io">web_io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#annotate-vcf">annotate_vcf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#validation">validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packages.html#vcf">vcf</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="driver_scripts.html">Driver Scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="driver_scripts.html#run-all-py">run_all.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="driver_scripts.html#validate-annotated-vcfs-py">validate_annotated_vcfs.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="other_scripts.html">Other Scripts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="other_scripts.html#extract-data-py">extract_data.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="other_scripts.html#example-usage">Example Usage</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="other_scripts.html#generate-vcf-files-py">generate_vcf_files.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="other_scripts.html#id2">Example Usage</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="other_scripts.html#annotate-vcfs-py">annotate_vcfs.py</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="other_scripts.html#id3">Example Usage</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="other_scripts.html#extract-data-py">extract_data.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_scripts.html#generate-annotated-vcf-py">generate_annotated_vcf.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="other_scripts.html#validate-annotated-vcfs-py">validate_annotated_vcfs.py</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="data.html#extracted-data">Extracted Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data.html#raw-vcf-files">Raw VCF Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data.html#annotated-vcf-files">Annotated VCF Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data.html#final-vcf-files">Final VCF Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data.html#log-files">Log Files</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data.html#remapping-errors-log">remapping_errors.log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#validation-errors-log">validation_errors.log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data.html#discordant-annotations-log">discordant_annotations.log</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

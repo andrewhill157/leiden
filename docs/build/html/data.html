@@ -50,45 +50,21 @@
             
   <div class="section" id="data">
 <span id="id1"></span><h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
-<p>If you install from source or clone from GitHub, there will be examples of the major data formats used in this project;
-variants from the LOVD muscular dystrophy pages.</p>
-<p>I have (at the time of this writing) placed a copy of all data extracted from the LOVD muscular dystrophy pages at: <a class="reference external" href="http://www.broadinstitute.org/~ahill/lovd_muscle/">http://www.broadinstitute.org/~ahill/lovd_muscle/</a></p>
+<p>I have included examples of the major data formats output from the scripts in this package.</p>
 <div class="section" id="extracted-data">
 <h2>Extracted Data<a class="headerlink" href="#extracted-data" title="Permalink to this headline">¶</a></h2>
 <p>The naming convention is &lt;gene_name&gt;.txt.</p>
-<p>Contains original variant data as found on LOVD. Files are saved per gene by extract_data.py.</p>
-</div>
-<div class="section" id="raw-vcf-files">
-<h2>Raw VCF Files<a class="headerlink" href="#raw-vcf-files" title="Permalink to this headline">¶</a></h2>
-<p>Naming convention is &lt;gene_name&gt;.vcf.</p>
-<p>Contains entries from extracted data that successfully remapped to VCF format. Files are save per input file by generate_vcf_files.py.</p>
+<p>Contains original variant data as found on LOVD. Files are saved per gene by extract_data.py. See /data/ACTA1.txt</p>
 </div>
 <div class="section" id="annotated-vcf-files">
 <h2>Annotated VCF Files<a class="headerlink" href="#annotated-vcf-files" title="Permalink to this headline">¶</a></h2>
-<p>Naming convention is &lt;gene_name&gt;_ANNOTATED.vcf.</p>
-<p>Contains entries from original VCF files with annotations added. Files are saved per input file annotate_vcfs.py.</p>
+<p>Naming convention is &lt;gene_name&gt;.vcf.</p>
+<p>Contains original data in VCF format with Variant Effect Predictor annotation. Files are saved per input file by generate_annotated_vcf.py. See /data/ACTA1.vcf</p>
 </div>
 <div class="section" id="final-vcf-files">
 <h2>Final VCF Files<a class="headerlink" href="#final-vcf-files" title="Permalink to this headline">¶</a></h2>
-<p>File is always named validated.vcf and contains variants from all input files.</p>
-<p>This is the file format output by validate_annotated_vcf.py. It is a VCF file that contains only validated (in terms of concordance)
-variants.</p>
-</div>
-<div class="section" id="log-files">
-<h2>Log Files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h2>
-<p>Log files containing information about errors are also saved by some scripts.</p>
-<div class="section" id="remapping-errors-log">
-<h3>remapping_errors.log<a class="headerlink" href="#remapping-errors-log" title="Permalink to this headline">¶</a></h3>
-<p>Contained variants that failed to remap to VCF format and any information about why they failed.</p>
-</div>
-<div class="section" id="validation-errors-log">
-<h3>validation_errors.log<a class="headerlink" href="#validation-errors-log" title="Permalink to this headline">¶</a></h3>
-<p>Contains variants that caused errors during validation and any information about why they failed.</p>
-</div>
-<div class="section" id="discordant-annotations-log">
-<h3>discordant_annotations.log<a class="headerlink" href="#discordant-annotations-log" title="Permalink to this headline">¶</a></h3>
-<p>Contains VCF formatted entries (with annotations) that were found to be discordant during validation.</p>
-</div>
+<p>This is the file format output by validate_annotated_vcfs.py. They are the VCF files that contains discordant and concordant variants respectively. See /data/lovd_discordant_variants.vcf
+and /data/lovd_validated_variants.vcf.</p>
 </div>
 </div>
 
@@ -102,15 +78,8 @@ variants.</p>
   <ul>
 <li><a class="reference internal" href="#">Data</a><ul>
 <li><a class="reference internal" href="#extracted-data">Extracted Data</a></li>
-<li><a class="reference internal" href="#raw-vcf-files">Raw VCF Files</a></li>
 <li><a class="reference internal" href="#annotated-vcf-files">Annotated VCF Files</a></li>
 <li><a class="reference internal" href="#final-vcf-files">Final VCF Files</a></li>
-<li><a class="reference internal" href="#log-files">Log Files</a><ul>
-<li><a class="reference internal" href="#remapping-errors-log">remapping_errors.log</a></li>
-<li><a class="reference internal" href="#validation-errors-log">validation_errors.log</a></li>
-<li><a class="reference internal" href="#discordant-annotations-log">discordant_annotations.log</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

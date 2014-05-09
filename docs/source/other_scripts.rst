@@ -5,15 +5,13 @@ Other Scripts
 
 These scripts are called in sequence by the example driver script - ``run_all.py``. However, they are also callable
 individually. Note that the python packages included with this project can also be used to write
-entirely new scripts if needed. Furthermore, the leiden package itself can be used to develop entirely new scripts.
-Feel free to expand and write your own tools!
+entirely new scripts if needed. Feel free to expand and write your own tools!
 
 .. tip::
     Note all scripts are made with argsparse, so contain built-in help. To access help simply execute: ``python <script_name>.py --help``
 
 .. important::
-    These scripts are located alongside the leiden package that contains the packages in this project. In order to use
-    packages in scripts elsewhere, the leiden package must be installed or on your PYTHONPATH.
+    The leiden package must be installed or on your PYTHONPATH to run these scripts.
 
 extract_data.py
 ^^^^^^^^^^^^^^^
@@ -46,18 +44,32 @@ Print a list of available genes at a specified URL:
 
     python extract_data.py --genes_available --leiden_url http://www.dmd.nl/nmdb2/
 
-generate_annotated_files.py
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This script utilizes VEP to annotate variants and output a VCF file. The original data from tables of data downloaded from
+generate_annotated_vcf.py
+^^^^^^^^^^^^^^^^^^^^^^^^^
+This script utilizes VEP to annotate variants and output a VCF file (<original_file_name>.vcf). The original data from tables of data downloaded from
 LOVD are also added to the VCF in a format similar to VEP's CSQ tag in VCF annotation. Variants that could not be converted
-to VCF format are saved to remapping_errors.log.
+to VCF format are not saved to output file.
 
 Example Usage
 -------------
 
+Run on one file:
+
 .. code-block:: bash
 
-    python annotate_vcfs.py -f input_data.txt -o output_vcf.vcf
+    python generate_annotated_vcfs.py -i input_data.txt
+
+Run on multiple files (improved efficiency over multiple script calls):
+
+.. code-block:: bash
+
+    python generate_annotated_vcfs.py -i input_data.txt input_data2.txt
+
+Run on list of files contained in a file (improved efficiency over multiple script calls):
+
+.. code-block:: bash
+
+    cat file_names.txt | python generate_annotated_vcfs.py -i
 
 
 validate_annotated_vcfs.py
@@ -69,7 +81,7 @@ all concordant variants from all input files. Variants that are not concordant a
 How is concordance determined?
 
 VEP provides a HGVS protein change prediction, which is compared to the protein change reported in LOVD. If neither
-LOVD or VEP report a protein change (intronic variants, splice variants, etc.), we instead compare... TODO
+LOVD or VEP report a protein change (intronic variants, splice variants, etc.), we instead... TODO
 
 Example Usage
 -------------
