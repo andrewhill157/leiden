@@ -94,7 +94,7 @@ def remove_malformed_fields(data_frame):
     return data_frame.replace('^-$', '', regex=True)  # entries with only dashes
 
 
-def convert_to_vcf_friendly_text(data_frame):
+def _convert_to_vcf_friendly_text(data_frame):
     """
     Replace characters that are not VCF-friendly in individual fields like commas, spaces, and equal signs.
     """
@@ -119,6 +119,9 @@ def map_to_genomic_coordinates(hgvs_variant, remapper):
 
 
 def convert_to_vcf_format(data_frame, remapper, hgvs_column, info_tag):
+
+    data_frame = _convert_to_vcf_friendly_text(data_frame)
+
     vcf_format = data_frame[hgvs_column].apply(map_to_genomic_coordinates, args=[remapper])
     info = info_tag + '=' + data_frame.apply(lambda row: '|'.join(map(str, row)), axis=1)
     vcf_format['INFO'] = info
@@ -145,20 +148,27 @@ def _get_info_column_dict(info_text, info_formats):
 
     info_dict = dict([x.split('=') for x in info_text.split(';')])
 
-    info_dict['CSQ'] = _get_csq_dict(info_dict['CSQ'], info_formats)
-    info_dict['LOVD'] = _get_lovd_dict(info_dict['LOVD'], info_formats)
+    for format in info_formats:
+        # Further parse tags that define lists of entries like VEP
+        if len(info_formats[format]) > 1:
+            if format == 'CSQ':
+                # VEP requires different parsing -- per transcript listing
+                info_dict[format] = _get_csq_dict(info_dict['CSQ'], info_formats[format])
+            else:
+                # All other tags with such lists
+                info_dict[format] = _get_vcf_tag_dict(info_dict[format], info_formats[format])
 
     return info_dict
 
 
-def _get_csq_dict(csq_text, info_formats):
+def _get_csq_dict(csq_text, info_format):
     """
     Returns nested dict containing information from the CSQ tag (from VEP) in info column of VCF. See get_vcf_dict for
     more info. This is helper function to construct the dict nested at vcf_dict['INFO']['CSQ']
 
     Args:
         csq_text (str): text from CSQ field in INFO column of VCF
-        info_formats (dict): dict mapping INFO column tag IDs to respective column names
+        info_formats (dict): list of column names for list of entries in CSQ field
 
     Returns:
         Returns nested dict containing information from the CSQ tag (from VEP) in info column of VCF.
@@ -168,31 +178,31 @@ def _get_csq_dict(csq_text, info_formats):
 
     csq_dict = {}
     for transcript in csq_values:
-        transcript_dict = dict(zip(info_formats['CSQ'], transcript))
+        transcript_dict = dict(zip(info_format, transcript))
         key = transcript_dict['FEATURE']
         csq_dict[key] = transcript_dict
 
     return csq_dict
 
 
-def _get_lovd_dict(lovd_text, info_formats):
+def _get_vcf_tag_dict(tag_text, info_formats):
     """
-    Returns nested dict containing information from the LOVD tag (from LOVD) in info column of VCF. See get_vcf_dict for
-    more info. This is helper function to construct the dict nested at vcf_dict['INFO']['LOVD']
+    Returns nested dict containing information from the given tag in info column of VCF. See get_vcf_dict for
+    more info. This is helper function to construct the dict nested at vcf_dict['INFO']['TAG_NAME']
 
     Args:
-        lovd_text (str): text from LOVD field in INFO column of VCF
-        info_formats (dict): dict mapping INFO column tag IDs to respective column names
+        lovd_text (str): text from respective tag in INFO column of VCF
+        info_formats (dict): list of column names for list of entries in text
 
     Returns:
         Returns nested dict containing information from the LOVD tag (from LOVD) in info column of VCF.
 
     """
 
-    lovd_values = lovd_text.split('|')
-    lovd_dict = dict(zip(info_formats['LOVD'], lovd_values))
+    column_names = tag_text.split('|')
+    tag_dict = dict(zip(info_formats, column_names))
 
-    return lovd_dict
+    return tag_dict
 
 
 def _get_info_formats(vcf_file_lines):

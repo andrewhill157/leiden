@@ -29,7 +29,6 @@ if __name__ == '__main__':
         # Clean LOVD data for VCF
         lovd_file = pd.read_csv(file, sep=COLUMN_DELIMITER)
         lovd_file = vcf.remove_malformed_fields(lovd_file)
-        lovd_file = vcf.convert_to_vcf_friendly_text(lovd_file)
 
         # Output VCF variants for annotation
         column_list = ['dna_change', 'protein_change', 'var_pub_as', 'rna_change', 'db_id', 'variant_remarks', 'reference', 'frequency']
