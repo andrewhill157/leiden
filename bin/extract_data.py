@@ -6,7 +6,7 @@ import os
 from leiden import file_io
 from leiden import leiden_database
 
-def extract_data(leiden_url, gene_id):
+def extract_data(database, gene_id):
     """
     Extracts variant table data for given gene in leiden_database.
 
@@ -20,9 +20,9 @@ def extract_data(leiden_url, gene_id):
     """
 
     try:
-        database = leiden_database.make_leiden_database(leiden_url, gene_id)
-        column_labels = database.columns()
-        table_entries = database.variants()
+        gene = database.get_gene_data(gene_id)
+        column_labels = gene.columns()
+        table_entries = gene.variants()
 
     except Exception as e:
         raise e
@@ -82,6 +82,8 @@ if __name__ == '__main__':
                 print('Must specify at least one gene_list.')
 
         if genes:
+            print '---> Setting things up... '
+            database = leiden_database.make_leiden_database(args.leiden_url)
 
             for gene in genes:
                 print '---> ' + gene + ': IN PROGRESS...'
@@ -89,7 +91,7 @@ if __name__ == '__main__':
 
                 # Extract table data and save to file
                 try:
-                    table_data, column_labels = extract_data(args.leiden_url, gene)
+                    table_data, column_labels = extract_data(database, gene)
 
                     print '    ---> Saving raw data...'
                     table_data.insert(0, column_labels)
