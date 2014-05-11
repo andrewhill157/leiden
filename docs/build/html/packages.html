@@ -97,6 +97,113 @@ version of LOVD). This method ensures that the correct subclass is chosen for th
 would be replaced with Mock Objects where we have canned HTML responses saved on disk.</p>
 <div class="section" id="module-leiden.leiden_database">
 <span id="member-descriptions"></span><h3>Member Descriptions<a class="headerlink" href="#module-leiden.leiden_database" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="leiden.leiden_database.GeneData">
+<em class="property">class </em><tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">GeneData</tt><big>(</big><em>leiden_url</em>, <em>gene_id</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.GeneData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
+to construct.</p>
+<p>Class for interfacing with data provided on genes on LOVD installations.</p>
+<dl class="method">
+<dt id="leiden.leiden_database.GeneData.columns">
+<tt class="descname">columns</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.GeneData.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the column labels from the table of variants in the Leiden Database for the set gene.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list of str: column labels from the table of variants in the Leiden Database variant listing for the object&#8217;s gene_id.</dt>
+<dd>Returned in left to right order as they appear on the Leiden Database. Empty list returned if no labels are found.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.leiden_database.GeneData.transcript_refseqid">
+<tt class="descname">transcript_refseqid</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.GeneData.transcript_refseqid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transcript refSeq ID for gene (denoted by NM_&lt;ID&gt; on the gene homepage on the given gene_id).
+For example, the ACTA1 homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a> and the RefSeq ID is &#8220;NM_001100.3&#8221;.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>string: transcript refSeqID for set gene. Returns an empty string if no refSeq ID is found.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.leiden_database.GeneData.variant_count">
+<tt class="descname">variant_count</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.GeneData.variant_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total number of variants for gene. This is the total number of variant entries in table of variants,
+not the number of unique entries.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>int: Number of variants listed for current gene</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if the number of entries could not be found on web page</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.leiden_database.GeneData.variants">
+<tt class="descname">variants</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.GeneData.variants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the table of variants for gene.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>list of list of str: table of variants from the gene</dt>
+<dd>1st dimension is rows, 2nd is columns</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="leiden.leiden_database.LeidenDatabase">
+<em class="property">class </em><tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">LeidenDatabase</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
+<p>Class providing functions to extract information about a variants listed under a specified gene on a specified lovd
+Leiden Database installation. For example, <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>, is a particular installation for
+variants in genes associated with Muscular Dystrophy. A list of all known installations of lovd databases can be
+found at <a class="reference external" href="http://www.lovd.nl/2.0/index_list.php">http://www.lovd.nl/2.0/index_list.php</a>.</p>
+<dl class="method">
+<dt id="leiden.leiden_database.LeidenDatabase.genes">
+<tt class="descname">genes</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of gene IDs available on this database.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>list of str: list of gene IDs available on this database.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.leiden_database.LeidenDatabase.get_gene_data">
+<tt class="descname">get_gene_data</tt><big>(</big><em>gene_id</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_gene_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a _GeneData object that provides a interface to data on the specified gene. Available functions allow
+access to variants, column labels, reference transcript, etc. See _GeneData for documentation.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>gene_id (str): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for</dt>
+<dd>actin, as specified on the Leiden Muscular Dystrophy Pages at <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a>?</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>_GeneData: _GeneData object for specified gene ID.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="leiden.leiden_database.LeidenDatabase.version_number">
+<tt class="descname">version_number</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.version_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return version number of lovd in use for lovd.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>float: version number of lovd in use for lovd</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="leiden.leiden_database.make_leiden_database">
 <tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">make_leiden_database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.make_leiden_database" title="Permalink to this definition">¶</a></dt>

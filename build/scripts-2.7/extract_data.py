@@ -11,7 +11,7 @@ def extract_data(leiden_database, gene_id):
     Extracts variant table data for given gene in leiden_database.
 
     @param leiden_database: database containing tables of variant data for specified gene_id
-    @type leiden_database: _LeidenDatabase
+    @type leiden_database: LeidenDatabase
     @param gene_id: a string with the Gene ID of the gene to be extracted.
     @type gene_id: string
     @return: tuple containing table entries, column labels.

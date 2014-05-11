@@ -67,7 +67,7 @@ def _extract_lovd_version_number(leiden_url):
     return float(version_number)
 
 
-class _LeidenDatabase:
+class LeidenDatabase:
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
@@ -141,7 +141,7 @@ class _LeidenDatabase:
         raise NotImplementedError('Abstract method')
 
 
-class _LOVD2Database(_LeidenDatabase):
+class _LOVD2Database(LeidenDatabase):
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
@@ -151,7 +151,7 @@ class _LOVD2Database(_LeidenDatabase):
     def __init__(self, leiden_url):
 
         # Call to the super class constructor
-        _LeidenDatabase.__init__(self, leiden_url)
+        LeidenDatabase.__init__(self, leiden_url)
         self._version_number = 2
         self._available_genes = self._genes()
 
@@ -179,7 +179,7 @@ class _LOVD2Database(_LeidenDatabase):
             raise ValueError('Specified gene ID not found on database: %s' % gene_id)
 
 
-class _LOVD3Database(_LeidenDatabase):
+class _LOVD3Database(LeidenDatabase):
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
@@ -189,7 +189,7 @@ class _LOVD3Database(_LeidenDatabase):
     def __init__(self, leiden_url):
 
         # Call to the super class constructor
-        _LeidenDatabase.__init__(self, leiden_url)
+        LeidenDatabase.__init__(self, leiden_url)
         self._version_number = 3
         self._available_genes = self._genes()
 
@@ -218,7 +218,7 @@ class _LOVD3Database(_LeidenDatabase):
             raise ValueError('Specified gene ID not found on database: %s' % gene_id)
 
 
-class _GeneData:
+class GeneData:
     """
     Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
     to construct.
@@ -441,7 +441,7 @@ class _GeneData:
             raise ValueError('No entries found at given URL')
 
 
-class _LOVD2GeneData(_GeneData):
+class _LOVD2GeneData(GeneData):
     """
     Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
     to construct.
@@ -450,7 +450,7 @@ class _LOVD2GeneData(_GeneData):
     """
 
     def __init__(self, leiden_url, gene_id):
-        _GeneData.__init__(self, leiden_url, gene_id)
+        GeneData.__init__(self, leiden_url, gene_id)
 
     def _get_variant_database_url(self):
 
@@ -473,7 +473,7 @@ class _LOVD2GeneData(_GeneData):
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
                 # Normalize headers so all lower-case, no whitespace, no non-alphanumeric characters
-                h = _GeneData._normalize_label(h)
+                h = GeneData._normalize_label(h)
                 result.append(h)
 
         return result
@@ -517,7 +517,7 @@ class _LOVD2GeneData(_GeneData):
         return row_entries
 
 
-class _LOVD3GeneData(_GeneData):
+class _LOVD3GeneData(GeneData):
     """
     Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
     to construct.
@@ -526,7 +526,7 @@ class _LOVD3GeneData(_GeneData):
     """
 
     def __init__(self, leiden_url, gene_id):
-        _GeneData.__init__(self, leiden_url, gene_id)
+        GeneData.__init__(self, leiden_url, gene_id)
 
     def _get_variant_database_url(self):
 
@@ -547,7 +547,7 @@ class _LOVD3GeneData(_GeneData):
 
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
-                h = _GeneData._normalize_label(h)
+                h = GeneData._normalize_label(h)
                 result.append(h)
 
         return result
