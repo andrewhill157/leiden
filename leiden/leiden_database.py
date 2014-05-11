@@ -379,7 +379,7 @@ class GeneData:
         """
 
         # Search for sequences of digits that are four digits or longer in length.
-        m = re.compile('(\d+)\sentries')
+        m = re.compile('(\d+)\s(?:entries|entry)')
         results = m.search(self.database_soup.get_text())
 
         # Return entire matched sequence (PMID)
