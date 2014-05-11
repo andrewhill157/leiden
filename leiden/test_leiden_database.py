@@ -27,12 +27,6 @@ def test_extract_lovd_version_number_with_lovd_3():
     web_io.get_page_html = Mock(return_value=responses.GEDI_HOMEPAGE_HTML)
     assert_equals(result, leiden_database._extract_lovd_version_number(input))
 
-def test_get_available_genes_with_lovd2():
-    raise NotImplementedError()
-
-
-def test_get_available_genes_with_lovd3():
-    raise NotImplementedError()
 
 class TestLOVD2DatabaseACTA1():
 

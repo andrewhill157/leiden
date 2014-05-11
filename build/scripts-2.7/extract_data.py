@@ -69,7 +69,7 @@ if __name__ == '__main__':
         # Print list of available genes to the user
         database = make_leiden_database(args.leiden_url)
 
-        print("\n".join(database.genes()))
+        print("\n".join(database._genes()))
 
     else:
         # Get database object and print the lovd version number
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = database.genes()
+            genes = database._genes()
 
         else:
             if len(args.gene_list) > 0:

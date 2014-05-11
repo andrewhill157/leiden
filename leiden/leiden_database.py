@@ -92,6 +92,7 @@ class _LeidenDatabase:
         """
         self.leiden_url = leiden_url
         self.version_number = None
+        self.available_genes = None
 
     def version_number(self):
         """
@@ -107,6 +108,16 @@ class _LeidenDatabase:
     def genes(self):
         """
         Returns a list of gene IDs available on this database.
+
+        Returns:
+            list of str: list of gene IDs available on this database.
+
+        """
+        return self.available_genes
+
+    def _genes(self):
+        """
+        Helper function to get a list of available genes. Returns a list of gene IDs available on this database.
 
         Returns:
             list of str: list of gene IDs available on this database.
@@ -142,8 +153,9 @@ class _LOVD2Database(_LeidenDatabase):
         # Call to the super class constructor
         _LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 2
+        self.available_genes = self._genes()
 
-    def genes(self):
+    def _genes(self):
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_url, '?action=switch_db'])
 
@@ -161,7 +173,10 @@ class _LOVD2Database(_LeidenDatabase):
         return available_genes
 
     def get_gene_data(self, gene_id):
-        return _LOVD2GeneData(self.leiden_url, gene_id)
+        if gene_id in self.available_genes:
+            return _LOVD2GeneData(self.leiden_url, gene_id)
+        else:
+            raise ValueError('Specified gene ID not found on database: %s' % gene_id)
 
 
 class _LOVD3Database(_LeidenDatabase):
@@ -176,8 +191,9 @@ class _LOVD3Database(_LeidenDatabase):
         # Call to the super class constructor
         _LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 3
+        self.available_genes = self._genes()
 
-    def genes(self):
+    def _genes(self):
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_url, 'genes/', '?page_size=1000&page=1'])
 
@@ -196,7 +212,10 @@ class _LOVD3Database(_LeidenDatabase):
         return available_genes
 
     def get_gene_data(self, gene_id):
-        return _LOVD3GeneData(self.leiden_url, gene_id)
+        if gene_id in self.available_genes:
+            return _LOVD3GeneData(self.leiden_url, gene_id)
+        else:
+            raise ValueError('Specified gene ID not found on database: %s' % gene_id)
 
 
 class _GeneData:

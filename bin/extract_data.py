@@ -67,13 +67,13 @@ if __name__ == '__main__':
 
     if args.genes_available:
         # Print list of available genes to the user
-        print("\n".join(leiden_database.genes(args.leiden_url)))
+        print("\n".join(leiden_database._genes(args.leiden_url)))
 
     else:
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = leiden_database.genes(args.leiden_url)
+            genes = leiden_database._genes(args.leiden_url)
 
         else:
             if len(args.gene_list) > 0:
