@@ -39,8 +39,8 @@ class TestLOVD2DatabaseACTA1():
     @classmethod
     def setup_class(cls):
         web_io.get_page_html = Mock(return_value=responses.NMDB2_HOMEPAGE_HTML)
-        leiden_database.LOVD2Database = mock_html_response(leiden_database.LOVD2Database, responses.ACTA1_GENE_HOMEPAGE_HTML, responses.ACTA1_VARIANT_DATABASE_HTML)
-        cls.database = leiden_database.LOVD2Database('http://www.dmd.nl/nmdb2/', 'ACTA1')
+        leiden_database._LOVD2Database = mock_html_response(leiden_database._LOVD2Database, responses.ACTA1_GENE_HOMEPAGE_HTML, responses.ACTA1_VARIANT_DATABASE_HTML)
+        cls.database = leiden_database._LOVD2Database('http://www.dmd.nl/nmdb2/', 'ACTA1')
 
     def test_get_lovd_version(cls):
         # Static method, not overridden in subclasses
@@ -48,7 +48,7 @@ class TestLOVD2DatabaseACTA1():
 
     def test_get_version_number(cls):
         result = 2
-        assert_equals(cls.database.get_version_number(), result)
+        assert_equals(cls.database.version_number(), result)
 
     def test_get_variant_database_url_with_acta1(cls):
         result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=ACTA1&limit=1000'
@@ -78,8 +78,8 @@ class TestLOVD2DatabaseCAPN3():
     @classmethod
     def setup_class(cls):
         web_io.get_page_html = Mock(return_value=responses.NMDB2_HOMEPAGE_HTML)
-        leiden_database.LOVD2Database = mock_html_response(leiden_database.LOVD2Database, responses.CAPN3_GENE_HOMEPAGE_HTML, responses.CAPN3_VARIANT_DATABASE_HTML)
-        cls.database = leiden_database.LOVD2Database('http://www.dmd.nl/nmdb2/', 'CAPN3')
+        leiden_database._LOVD2Database = mock_html_response(leiden_database._LOVD2Database, responses.CAPN3_GENE_HOMEPAGE_HTML, responses.CAPN3_VARIANT_DATABASE_HTML)
+        cls.database = leiden_database._LOVD2Database('http://www.dmd.nl/nmdb2/', 'CAPN3')
 
     def test_get_lovd_version(cls):
         # Static method, not overridden in subclasses
@@ -87,7 +87,7 @@ class TestLOVD2DatabaseCAPN3():
 
     def test_get_version_number(cls):
         result = 2
-        assert_equals(cls.database.get_version_number(), result)
+        assert_equals(cls.database.version_number(), result)
 
     def test_get_variant_database_url_with_capn3(cls):
         result = 'http://www.dmd.nl/nmdb2/variants.php?action=search_unique&select_db=CAPN3&limit=1000'
@@ -121,12 +121,12 @@ class TestLOVD3DatabaseBBS1():
     @classmethod
     def setup_class(cls):
         web_io.get_page_html = Mock(return_value=responses.GEDI_HOMEPAGE_HTML)
-        leiden_database.LOVD3Database = mock_html_response(leiden_database.LOVD3Database, responses.BBS1_GENE_HOMEPAGE_HTML, responses.BBS1_VARIANT_DATABASE_HTML)
-        cls.database = leiden_database.LOVD3Database('http://mseqdr.lumc.edu/GEDI/', 'BBS1')
+        leiden_database._LOVD3Database = mock_html_response(leiden_database._LOVD3Database, responses.BBS1_GENE_HOMEPAGE_HTML, responses.BBS1_VARIANT_DATABASE_HTML)
+        cls.database = leiden_database._LOVD3Database('http://mseqdr.lumc.edu/GEDI/', 'BBS1')
 
     def test_get_version_number_with_bbs1(cls):
         result = 3
-        assert_equals(cls.database.get_version_number(), result)
+        assert_equals(cls.database.version_number(), result)
 
     def test_get_variant_database_url(cls):
         result = 'http://mseqdr.lumc.edu/GEDI/variants/BBS1?page_size=1000&page=1'
@@ -158,12 +158,12 @@ class TestLOVD3DatabaseCTC1():
     @classmethod
     def setup_class(cls):
         web_io.get_page_html = Mock(return_value=responses.GEDI_HOMEPAGE_HTML)
-        leiden_database.LOVD3Database = mock_html_response(leiden_database.LOVD3Database, responses.CTC1_GENE_HOMEPAGE_HTML, responses.CTC1_VARIANT_DATABASE_HTML)
-        cls.database = leiden_database.LOVD3Database('http://mseqdr.lumc.edu/GEDI/', 'CTC1')
+        leiden_database._LOVD3Database = mock_html_response(leiden_database._LOVD3Database, responses.CTC1_GENE_HOMEPAGE_HTML, responses.CTC1_VARIANT_DATABASE_HTML)
+        cls.database = leiden_database._LOVD3Database('http://mseqdr.lumc.edu/GEDI/', 'CTC1')
 
     def test_get_version_number(cls):
         result = 3
-        assert_equals(cls.database.get_version_number(), result)
+        assert_equals(cls.database.version_number(), result)
 
     def test_get_variant_database_url(cls):
         result = 'http://mseqdr.lumc.edu/GEDI/variants/CTC1?page_size=1000&page=1'

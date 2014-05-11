@@ -80,11 +80,15 @@ for HTML parsing.</p>
 <span class="n">gene_id</span> <span class="o">=</span> <span class="s">&#39;ACTA1&#39;</span>  <span class="c"># External name for Gene</span>
 
 <span class="n">database</span> <span class="o">=</span> <span class="n">make_leiden_database</span><span class="p">(</span><span class="n">leiden_url</span><span class="p">)</span>  <span class="c"># factory method automatically chooses right database version</span>
-<span class="n">database</span><span class="o">.</span><span class="n">set_gene_id</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span>  <span class="c"># set_gene_id must be called before using the database object</span>
+<span class="n">database</span><span class="o">.</span><span class="n">genes</span><span class="p">()</span>  <span class="c"># get a list of available genes</span>
+<span class="n">database</span><span class="o">.</span><span class="n">version</span><span class="p">()</span>  <span class="c"># get LOVD version</span>
 
-<span class="c"># Get data about the gene</span>
-<span class="n">column_labels</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">columns</span><span class="p">()</span>
-<span class="n">table_entries</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">variants</span><span class="p">()</span>
+<span class="c"># Get data about a gene</span>
+<span class="n">acta1</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_gene_data</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span>
+<span class="n">reference_transcript</span> <span class="o">=</span> <span class="n">acta1</span><span class="o">.</span><span class="n">transcript_refseqid</span><span class="p">()</span>
+<span class="n">number_of_variants</span> <span class="o">=</span> <span class="n">acta1</span><span class="o">.</span><span class="n">variant_count</span><span class="p">()</span>
+<span class="n">column_labels</span> <span class="o">=</span> <span class="n">acta1</span><span class="o">.</span><span class="n">columns</span><span class="p">()</span>  <span class="c"># get column labels</span>
+<span class="n">variants</span> <span class="o">=</span> <span class="n">acta1</span><span class="o">.</span><span class="n">variants</span><span class="p">()</span>  <span class="c"># get table of all variants</span>
 </pre></div>
 </div>
 <p>Note that make_leiden_database returns a LeidenDatabase object. There are two subclasses of this type (one for each
@@ -93,206 +97,6 @@ version of LOVD). This method ensures that the correct subclass is chosen for th
 would be replaced with Mock Objects where we have canned HTML responses saved on disk.</p>
 <div class="section" id="module-leiden.leiden_database">
 <span id="member-descriptions"></span><h3>Member Descriptions<a class="headerlink" href="#module-leiden.leiden_database" title="Permalink to this headline">¶</a></h3>
-<dl class="class">
-<dt id="leiden.leiden_database.LOVD2Database">
-<em class="property">class </em><tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">LOVD2Database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LOVD2Database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
-<p>Provides LeidenDatabse interface specific to LOVF version 2. See LeidenDatabase super class for function documentation.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="leiden.leiden_database.LOVD3Database">
-<em class="property">class </em><tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">LOVD3Database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LOVD3Database" title="Permalink to this definition">¶</a></dt>
-<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
-<p>Provides LeidenDatabse interface specific to lovd version 3. See LeidenDatabase super class for function documentation.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="leiden.leiden_database.LeidenDatabase">
-<em class="property">class </em><tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">LeidenDatabase</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.</p>
-<p>Class providing functions to extract information about a variants listed under a specified gene on a specified lovd
-Leiden Database installation. For example, <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>, is a particular installation for
-variants in genes associated with Muscular Dystrophy. A list of all known installations of lovd databases can be
-found at <a class="reference external" href="http://www.lovd.nl/2.0/index_list.php">http://www.lovd.nl/2.0/index_list.php</a>.</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd>version_number (float): LOVD version number
-leiden_home_url (str): url to homepage for specified gene ID
-gene_id (str): the current gene ID
-ref_seq_id (str): ID of the reference transcript used for the current reference transcript
-variant_database_url: url to the table data for current gene ID
-database_soup (BeautifulSoup): BeautifulSoup object for HTML on variant_database_url
-gene_homepage_soup (BeautifulSoup): BeautifulSoup object for HTML on gene homepage</dd>
-</dl>
-<dl class="staticmethod">
-<dt id="leiden.leiden_database.LeidenDatabase._extract_lovd_version_number">
-<em class="property">static </em><tt class="descname">_extract_lovd_version_number</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._extract_lovd_version_number" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract the version number of the lovd installation at the specified URL.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>leiden_url (str): the base URL of the particular Leiden lovd to be used.</dt>
-<dd>For example, the Leiden muscular dystrophy pages homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/">http://www.dmd.nl/nmdb2/</a>. This must be a
-valid URL to base page of lovd.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>float: lovd version number</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_available_genes">
-<tt class="descname">get_available_genes</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_available_genes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of all genes available in the Leiden Database.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>list of str: list of all genes available in the LeidenDatabase.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase._get_gene_homepage_url">
-<tt class="descname">_get_gene_homepage_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_gene_homepage_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>str: URL linking to the homepage for the specified gene on the Leiden Database site.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase._get_link_urls">
-<tt class="descname">_get_link_urls</tt><big>(</big><em>link_result_set</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_link_urls" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a BeautifulSoup ResultSet object containing only link tags, return the URLs as a list.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>link_result_set (BeautifulSoup ResultSet): a collection of links.</dt>
-<dd>All tags must be passed as a BeautifulSoup ResultSet object. This is the type of object returned by
-methods such as find_all in BeautifulSoup. See <a class="reference external" href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all">http://www.crummy.com/software/BeautifulSoup/bs4/doc/#find-all</a>
-for more information.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>list of str: list of URLs from link_result_set</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.variants">
-<tt class="descname">variants</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.variants" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Returns the table of variants from the set gene on the lovd.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>list of list of str: table of variants from the set gene on the Leiden Database.</dt>
-<dd>1st dimension is rows, 2nd is columns</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase._variants_page_n">
-<tt class="descname">_variants_page_n</tt><big>(</big><em>page_number</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._variants_page_n" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Returns the table data from a specified page of the table of variant entries. Each page number (positive integer)
-has 1000 variants at most. The requested page number should not exceed the number of pages required to display
-the total number of variants.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>page_number (int): page number containing the desired table data.</dd>
-<dt>Returns:</dt>
-<dd>list of list of str: table of variants from the set gene on the Leiden Database from the nth page.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.columns">
-<tt class="descname">columns</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Returns the column labels from the table of variants in the Leiden Database for the set gene.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>list of str: column labels from the table of variants in the Leiden Database variant listing for the object&#8217;s gene_id.</dt>
-<dd>Returned in left to right order as they appear on the Leiden Database. Empty list returned if no labels are found.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.variant_count">
-<tt class="descname">variant_count</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.variant_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Get the total number of variants in the lovd associated with the current gene. This is the total
-number of variant entries in table of variants, not the number of unique entries.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>int: Number of variants listed for current gene</dd>
-<dt>Raises:</dt>
-<dd>ValueError: if the number of entries could not be found on web page</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.transcript_refseqid">
-<tt class="descname">transcript_refseqid</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.transcript_refseqid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Returns the transcript refSeq ID (denoted by NM_&lt;ID&gt; on the gene homepage on the given gene_id).
-For example, the ACTA1 homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a> and the RefSeq ID for the reference
-transcript is &#8220;NM_001100.3&#8221;.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>string: transcript refSeqID for set gene. Returns an empty string if no refSeq ID is found.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase._get_variant_database_url">
-<tt class="descname">_get_variant_database_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_variant_database_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must call set_gene_id prior to use.
-Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>str: URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_version_number">
-<tt class="descname">get_version_number</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_version_number" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return version number of lovd in use for lovd.</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>float: version number of lovd in use for lovd</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.set_gene_id">
-<tt class="descname">set_gene_id</tt><big>(</big><em>gene_id</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.set_gene_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Must be called before using any non-static functions. Initializes all necessary data sources for data extraction,
-resulting in long wait times for data to download over network.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>param gene_id (string): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for</dt>
-<dd>actin, as specified on the Leiden Muscular Dystrophy Pages at U(<a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a>?)</dd>
-</dl>
-</dd>
-<dt>Raises:</dt>
-<dd>ValueError: if gene does not exist in the specified Leiden Database</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="function">
 <dt id="leiden.leiden_database.make_leiden_database">
 <tt class="descclassname">leiden.leiden_database.</tt><tt class="descname">make_leiden_database</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.make_leiden_database" title="Permalink to this definition">¶</a></dt>
@@ -306,10 +110,12 @@ Only LOVD2 and LOVD3 installations are supported.</p>
 valid URL to base page of lovd. For LOVD3 installations, such as the Genetic Eye Disorder (GEI) Variation
 Database, the base url will be similar to <a class="reference external" href="http://mseqdr.lumc.edu/GEDI/">http://mseqdr.lumc.edu/GEDI/</a>. Extensions of this URL, such as
 <a class="reference external" href="http://mseqdr.lumc.edu/GEDI/genes">http://mseqdr.lumc.edu/GEDI/genes</a> or <a class="reference external" href="http://mseqdr.lumc.edu/GEDI/variants">http://mseqdr.lumc.edu/GEDI/variants</a> should not be used.</dd>
+<dt>gene_id (str): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for</dt>
+<dd>actin, as specified on the Leiden Muscular Dystrophy Pages at <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a>?</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd>LeidenDatabase: LeidenDatabase object for specified URL.</dd>
+<dd>LeidenDatabase: LeidenDatabase object for specified URL and gene.</dd>
 <dt>Raises:</dt>
 <dd>Exception: If the lovd version installed at specified URL is unsupported (anything other than version 2 or 3)</dd>
 </dl>
@@ -513,13 +319,8 @@ make HTML requests to make it easier to change if needed.</p>
 <dt>Returns:</dt>
 <dd>str: HTML describing the specified page</dd>
 <dt>Raises:</dt>
-<dd><dl class="first last docutils">
-<dt>IOError:</dt>
-<dd>if an error code is returned</dd>
-<dt>ValueError:</dt>
-<dd>if requested URL not found</dd>
-</dl>
-</dd>
+<dd>ValueError: if requested URL not found
+IOError: if page could not be reached</dd>
 </dl>
 </dd></dl>
 

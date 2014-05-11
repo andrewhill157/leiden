@@ -37,11 +37,16 @@ The usage for these classes is as follows:
     gene_id = 'ACTA1'  # External name for Gene
 
     database = make_leiden_database(leiden_url)  # factory method automatically chooses right database version
-    database.set_gene_id(gene_id)  # set_gene_id must be called before using the database object
+    database.genes()  # get a list of available genes
+    database.version()  # get LOVD version
 
-    # Get data about the gene
-    column_labels = leiden_database.columns()
-    table_entries = leiden_database.variants()
+    # Get data about a gene
+    acta1 = database.get_gene_data(gene_id)
+    reference_transcript = acta1.transcript_refseqid()
+    number_of_variants = acta1.variant_count()
+    column_labels = acta1.columns()  # get column labels
+    variants = acta1.variants()  # get table of all variants
+
 
 Note that make_leiden_database returns a LeidenDatabase object. There are two subclasses of this type (one for each
 version of LOVD). This method ensures that the correct subclass is chosen for the provided URL.

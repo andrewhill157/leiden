@@ -11,7 +11,7 @@ def extract_data(leiden_url, gene_id):
     Extracts variant table data for given gene in leiden_database.
 
     @param leiden_database: database containing tables of variant data for specified gene_id
-    @type leiden_database: LeidenDatabase
+    @type leiden_database: _LeidenDatabase
     @param gene_id: a string with the Gene ID of the gene to be extracted.
     @type gene_id: string
     @return: tuple containing table entries, column labels.
@@ -67,13 +67,13 @@ if __name__ == '__main__':
 
     if args.genes_available:
         # Print list of available genes to the user
-        print("\n".join(leiden_database.get_available_genes(args.leiden_url)))
+        print("\n".join(leiden_database.genes(args.leiden_url)))
 
     else:
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = leiden_database.get_available_genes(args.leiden_url)
+            genes = leiden_database.genes(args.leiden_url)
 
         else:
             if len(args.gene_list) > 0:

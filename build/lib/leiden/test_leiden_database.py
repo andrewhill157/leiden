@@ -21,7 +21,7 @@ class TestLeidenDatabase():
 
     def test_get_version_number(cls):
         # Parent class, does not have a version number
-        assert_equals(cls.database.get_version_number(), '')
+        assert_equals(cls.database.version_number(), '')
 
     def test_set_gene_id(cls):
         # TODO not sure what test would be appropriate here
@@ -67,7 +67,7 @@ class TestLOVD2Database():
     def test_get_version_number(cls):
         # LOVD2 is version 2
         result = 2
-        assert_equals(cls.database1.get_version_number(), result)
+        assert_equals(cls.database1.version_number(), result)
 
     def test_set_gene_id(cls):
         # Not overridden in this class
@@ -168,7 +168,7 @@ class TestLOVD3Database():
     def test_get_version_number(cls):
         # LOVD3 is version 3
         result = 3
-        assert_equals(cls.database1.get_version_number(), result)
+        assert_equals(cls.database1.version_number(), result)
 
     def test_set_gene_id(cls):
         # Not overridden in this class

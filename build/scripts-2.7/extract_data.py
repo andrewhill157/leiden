@@ -11,7 +11,7 @@ def extract_data(leiden_database, gene_id):
     Extracts variant table data for given gene in leiden_database.
 
     @param leiden_database: database containing tables of variant data for specified gene_id
-    @type leiden_database: LeidenDatabase
+    @type leiden_database: _LeidenDatabase
     @param gene_id: a string with the Gene ID of the gene to be extracted.
     @type gene_id: string
     @return: tuple containing table entries, column labels.
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         # Print list of available genes to the user
         database = make_leiden_database(args.leiden_url)
 
-        print("\n".join(database.get_available_genes()))
+        print("\n".join(database.genes()))
 
     else:
         # Get database object and print the lovd version number
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
         # Use factory method to get LeidenDatabase object
         database = make_leiden_database(args.leiden_url)
-        version_number = database.get_version_number()
+        version_number = database.version_number()
 
         print "---> DETECTING LOVD VERSION: COMPLETE"
         print "    ---> VERSION " + str(version_number) + " DETECTED"
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = database.get_available_genes()
+            genes = database.genes()
 
         else:
             if len(args.gene_list) > 0:

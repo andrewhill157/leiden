@@ -31,9 +31,9 @@ def make_leiden_database(leiden_url):
 
     # Generate instance of appropriate _LeidenDatabase subclass for installed version
     if version == 2:
-        database = LOVD2Database(leiden_url)
+        database = _LOVD2Database(leiden_url)
     elif version == 3:
-        database = LOVD3Database(leiden_url)
+        database = _LOVD3Database(leiden_url)
     else:
         raise Exception("Unrecognized LOVD version number: " + str(version) + "!")
 
@@ -67,7 +67,7 @@ def _extract_lovd_version_number(leiden_url):
     return float(version_number)
 
 
-class LeidenDatabase:
+class _LeidenDatabase:
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
@@ -75,15 +75,6 @@ class LeidenDatabase:
     Leiden Database installation. For example, http://www.dmd.nl/nmdb2/, is a particular installation for
     variants in genes associated with Muscular Dystrophy. A list of all known installations of lovd databases can be
     found at http://www.lovd.nl/2.0/index_list.php.
-
-    Attributes:
-        version_number (float): LOVD version number
-        leiden_home_url (str): url to homepage for specified gene ID
-        gene_id (str): the current gene ID
-        ref_seq_id (str): ID of the reference transcript used for the current reference transcript
-        variant_database_url: url to the table data for current gene ID
-        database_soup (BeautifulSoup): BeautifulSoup object for HTML on variant_database_url
-        gene_homepage_soup (BeautifulSoup): BeautifulSoup object for HTML on gene homepage
 
     """
 
@@ -94,8 +85,6 @@ class LeidenDatabase:
         Args:
             leiden_url (str): the base URL of the particular Leiden lovd to be used.
                 For example, the Leiden muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of lovd.
-            gene_id (str): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for
-                actin, as specified on the Leiden Muscular Dystrophy Pages at http://www.dmd.nl/nmdb2/home.php?
 
         Raises:
             ValueError: if gene does not exist in the specified Leiden Database
@@ -104,7 +93,7 @@ class LeidenDatabase:
         self.leiden_url = leiden_url
         self.version_number = None
 
-    def get_version_number(self):
+    def version_number(self):
         """
         Return version number of lovd in use for lovd.
 
@@ -115,14 +104,33 @@ class LeidenDatabase:
 
         return self.version_number
 
-    def get_available_genes(self):
+    def genes(self):
+        """
+        Returns a list of gene IDs available on this database.
+
+        Returns:
+            list of str: list of gene IDs available on this database.
+
+        """
         raise NotImplementedError('Abstract method')
 
     def get_gene_data(self, gene_id):
+        """
+        Returns a _GeneData object that provides a interface to data on the specified gene. Available functions allow
+        access to variants, column labels, reference transcript, etc. See _GeneData for documentation.
+
+        Args:
+            gene_id (str): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for
+                actin, as specified on the Leiden Muscular Dystrophy Pages at http://www.dmd.nl/nmdb2/home.php?
+
+        Returns:
+            _GeneData: _GeneData object for specified gene ID.
+
+        """
         raise NotImplementedError('Abstract method')
 
 
-class LOVD2Database(LeidenDatabase):
+class _LOVD2Database(_LeidenDatabase):
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
@@ -132,14 +140,10 @@ class LOVD2Database(LeidenDatabase):
     def __init__(self, leiden_url):
 
         # Call to the super class constructor
-        LeidenDatabase.__init__(self, leiden_url)
+        _LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 2
 
-    def get_available_genes(self):
-        """
-        TODO document
-        """
-
+    def genes(self):
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_url, '?action=switch_db'])
 
@@ -157,27 +161,23 @@ class LOVD2Database(LeidenDatabase):
         return available_genes
 
     def get_gene_data(self, gene_id):
-        return LOVD2GeneData(self.leiden_url, gene_id)
+        return _LOVD2GeneData(self.leiden_url, gene_id)
 
 
-class LOVD3Database(LeidenDatabase):
+class _LOVD3Database(_LeidenDatabase):
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
 
-    Provides LeidenDatabse interface specific to lovd version 3. See LeidenDatabase super class for function documentation.
+    Provides LeidenDatabase interface specific to lovd version 3. See LeidenDatabase super class for function documentation.
     """
 
     def __init__(self, leiden_url):
 
         # Call to the super class constructor
-        LeidenDatabase.__init__(self, leiden_url)
+        _LeidenDatabase.__init__(self, leiden_url)
         self.version_number = 3
 
-    def get_available_genes(self):
-        """
-        TODO document
-        """
-
+    def genes(self):
         # Construct URL of page containing the drop-down to select various genes
         start_url = "".join([self.leiden_url, 'genes/', '?page_size=1000&page=1'])
 
@@ -196,12 +196,29 @@ class LOVD3Database(LeidenDatabase):
         return available_genes
 
     def get_gene_data(self, gene_id):
-        return LOVD3GeneData(self.leiden_url, gene_id)
+        return _LOVD3GeneData(self.leiden_url, gene_id)
 
 
-class GeneData:
+class _GeneData:
+    """
+    Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
+    to construct.
+
+    Class for interfacing with data provided on genes on LOVD installations.
+    """
 
     def __init__(self, leiden_url, gene_id):
+        """
+        Constructor for _GeneData. Should not construct directly. Use get_gene_data method of LeidenDatabase objects
+        constructed with make_leiden_database to construct.
+
+        leiden_url (str): the base URL of the particular Leiden lovd to be used.
+            For example, the Leiden muscular dystrophy pages homepage is http://www.dmd.nl/nmdb2/. This must be a valid URL to base page of lovd.
+        gene_id (str): a string with the Gene ID of the gene of interest. For example, ACTA1 is the gene ID for
+            actin, as specified on the Leiden Muscular Dystrophy Pages at http://www.dmd.nl/nmdb2/home.php?
+
+        """
+
         self.leiden_home_url = leiden_url
         self.gene_id = gene_id
 
@@ -212,12 +229,9 @@ class GeneData:
         html = self._get_gene_homepage_html()
         self.gene_homepage_soup = BeautifulSoup(html)
 
-        # Extract RefSeq ID for gene_id's reference transcript
-        self.ref_seq_id = self.transcript_refseqid()
-
     def _get_variant_database_url(self):
         """
-        Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
+        Constructs URL linking to the table of variant entries for this gene.
 
         Returns:
             str: URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
@@ -228,17 +242,21 @@ class GeneData:
 
     def _get_variant_database_html(self):
         """
-        TODO document
+        Returns the page html from the table of variant entries for this gene.
+
+        Returns:
+            str: html from the table of variant entries for this gene.
+
         """
         url = self._get_variant_database_url()
         return web_io.get_page_html(url)
 
     def _get_gene_homepage_url(self):
         """
-        Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
+        Constructs the URL linking to the homepage for this gene.
 
         Returns:
-            str: URL linking to the homepage for the specified gene on the Leiden Database site.
+            str: URL linking to the homepage for this gene.
 
         """
 
@@ -246,7 +264,11 @@ class GeneData:
 
     def _get_gene_homepage_html(self):
         """
-        TODO document
+        Returns the page html from the homepage for this gene.
+
+        Returns:
+            str: html from the homepage for this gene.
+
         """
         url = self._get_gene_homepage_url()
         return web_io.get_page_html(url)
@@ -267,6 +289,7 @@ class GeneData:
         """
         link_delimiter = ','
         result = []
+        transcript_id = self.transcript_refseqid()
         for links in link_result_set:
             link_url = links.get('href')
 
@@ -274,32 +297,42 @@ class GeneData:
             if links.string and ('c.' in links.string or 'p.' in links.string):
                 hgvs_notation = utilities.remove_times_reported(links.string)
                 hgvs_notation = utilities.correct_hgvs_parentheses(hgvs_notation)
-                result.append("".join([self.ref_seq_id, ':', hgvs_notation]))
+                result.append("".join([transcript_id, ':', hgvs_notation]))
             elif links.string:
                 result.append(link_url)
 
         return link_delimiter.join(result)
 
     @staticmethod
-    def _normalize_header(h):
-        h = h.lower().strip()
-        h = re.sub(re.compile('[^A-Za-z0-9]'), '_', h)
+    def _normalize_label(label):
+        """
+        Normalizes column labels to ensure they are in as consistent a format as possible.
+
+        Args:
+            label (str): column label
+
+        Returns:
+            label in all lowercase, all non-alphaneumeric characters converted to '_', and common variations of dna_change,
+            protein_change, and dna_change_genomic converted to consistent naming.
+
+        """
+        label = label.lower().strip()
+        label = re.sub(re.compile('[^A-Za-z0-9]'), '_', label)
 
         # Some databases do not have consistent headers
-        if 'protein' in h:
-            h = 'protein_change'
-        elif 'genomic' in h:
-            h = 'dna_change_genomic'
-        elif 'dna' in h:
-            h = 'dna_change'
+        if 'protein' in label:
+            label = 'protein_change'
+        elif 'genomic' in label:
+            label = 'dna_change_genomic'
+        elif 'dna' in label:
+            label = 'dna_change'
 
-        return h
+        return label
 
     def transcript_refseqid(self):
         """
-        Returns the transcript refSeq ID (denoted by NM_<ID> on the gene homepage on the given gene_id).
-        For example, the ACTA1 homepage is http://www.dmd.nl/nmdb2/home.php and the RefSeq ID for the reference
-        transcript is "NM_001100.3".
+        Returns the transcript refSeq ID for gene (denoted by NM_<ID> on the gene homepage on the given gene_id).
+        For example, the ACTA1 homepage is http://www.dmd.nl/nmdb2/home.php and the RefSeq ID is "NM_001100.3".
 
         Returns:
             string: transcript refSeqID for set gene. Returns an empty string if no refSeq ID is found.
@@ -328,10 +361,10 @@ class GeneData:
 
     def variants(self):
         """
-        Returns the table of variants from the set gene on the lovd.
+        Returns the table of variants for gene.
 
         Returns:
-            list of list of str: table of variants from the set gene on the Leiden Database.
+            list of list of str: table of variants from the gene
                 1st dimension is rows, 2nd is columns
 
         """
@@ -367,8 +400,8 @@ class GeneData:
 
     def variant_count(self):
         """
-        Get the total number of variants in the lovd associated with the current gene. This is the total
-        number of variant entries in table of variants, not the number of unique entries.
+        Get the total number of variants for gene. This is the total number of variant entries in table of variants,
+        not the number of unique entries.
 
         Returns:
             int: Number of variants listed for current gene
@@ -389,11 +422,16 @@ class GeneData:
             raise ValueError('No entries found at given URL')
 
 
-class LOVD2GeneData(GeneData):
+class _LOVD2GeneData(_GeneData):
+    """
+    Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
+    to construct.
+
+    Provides GeneData interface specific to lovd version 2. See GeneData super class for function documentation.
+    """
 
     def __init__(self, leiden_url, gene_id):
-        GeneData.__init__(self, leiden_url, gene_id)
-
+        _GeneData.__init__(self, leiden_url, gene_id)
 
     def _get_variant_database_url(self):
 
@@ -416,7 +454,7 @@ class LOVD2GeneData(GeneData):
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
                 # Normalize headers so all lower-case, no whitespace, no non-alphanumeric characters
-                h = GeneData._normalize_header(h)
+                h = _GeneData._normalize_label(h)
                 result.append(h)
 
         return result
@@ -460,10 +498,16 @@ class LOVD2GeneData(GeneData):
         return row_entries
 
 
-class LOVD3GeneData(GeneData):
+class _LOVD3GeneData(_GeneData):
+    """
+    Should not construct directly. Use get_gene_data method of LeidenDatabase objects constructed with make_leiden_database
+    to construct.
+
+    Provides GeneData interface specific to lovd version 3. See GeneData super class for function documentation.
+    """
 
     def __init__(self, leiden_url, gene_id):
-        GeneData.__init__(self, leiden_url, gene_id)
+        _GeneData.__init__(self, leiden_url, gene_id)
 
     def _get_variant_database_url(self):
 
@@ -484,7 +528,7 @@ class LOVD3GeneData(GeneData):
 
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
-                h = GeneData._normalize_header(h)
+                h = _GeneData._normalize_label(h)
                 result.append(h)
 
         return result
