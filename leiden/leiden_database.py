@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from . import web_io, utilities
 
 
-def make_leiden_database(leiden_url, gene_id):
+def make_leiden_database(leiden_url):
     """
     Factory method that returns appropriate LeidenDatabase object for lovd version installed at specified URL.
     Only LOVD2 and LOVD3 installations are supported.
@@ -27,20 +27,20 @@ def make_leiden_database(leiden_url, gene_id):
 
     """
 
-    version = extract_lovd_version_number(leiden_url)
+    version = _extract_lovd_version_number(leiden_url)
 
     # Generate instance of appropriate _LeidenDatabase subclass for installed version
     if version == 2:
-        database = LOVD2Database(leiden_url, gene_id)
+        database = LOVD2Database(leiden_url)
     elif version == 3:
-        database = LOVD3Database(leiden_url, gene_id)
+        database = LOVD3Database(leiden_url)
     else:
         raise Exception("Unrecognized LOVD version number: " + str(version) + "!")
 
     return database
 
 
-def extract_lovd_version_number(leiden_url):
+def _extract_lovd_version_number(leiden_url):
     """
     Extract the version number of the lovd installation at the specified URL.
 
@@ -67,47 +67,6 @@ def extract_lovd_version_number(leiden_url):
     return float(version_number)
 
 
-def get_available_genes(leiden_url):
-    """
-    TODO document
-    """
-    lovd_version = extract_lovd_version_number(leiden_url)
-
-    if lovd_version == 2:
-        # Construct URL of page containing the drop-down to select various genes
-        start_url = "".join([leiden_url, '?action=switch_db'])
-
-        # Download and parse HTML from base URL
-        html = web_io.get_page_html(start_url)
-        url_soup = BeautifulSoup(html)
-
-        # Extract all options from the SelectGeneDB drop-down control
-        options = url_soup.find(id='SelectGeneDB').find_all('option')
-
-        # Return all options in the drop-down
-        available_genes = []
-        for genes in options:
-            available_genes.append(genes['value'])
-        return available_genes
-    else:
-        # Construct URL of page containing the drop-down to select various genes
-        start_url = "".join([leiden_url, 'genes/', '?page_size=1000&page=1'])
-
-        # Download and parse HTML from base URL
-        html = web_io.get_page_html(start_url)
-        url_soup = BeautifulSoup(html)
-
-        # Extract all gene entries from the lovd homepage
-        table_class = 'data'
-        options = url_soup.find_all('tr', class_=table_class)
-
-        available_genes = []
-        for genes in options:
-            gene_string = genes.find_all('td')[0].find('a').string
-            available_genes.append(gene_string)
-        return available_genes
-
-
 class LeidenDatabase:
     """
     Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
@@ -128,7 +87,7 @@ class LeidenDatabase:
 
     """
 
-    def __init__(self, leiden_url, gene_id):
+    def __init__(self, leiden_url):
         """
         Initializes a LeidenDatabase object for the specified Leiden Database URL and gene.
 
@@ -142,22 +101,8 @@ class LeidenDatabase:
             ValueError: if gene does not exist in the specified Leiden Database
 
         """
-        self.leiden_home_url = leiden_url
-        self.gene_id = gene_id
+        self.leiden_url = leiden_url
         self.version_number = None
-
-        if gene_id in get_available_genes(leiden_url):
-            # Extract HTML and create BeautifulSoup objects for gene_id pages
-            html = self.get_variant_database_html()
-            self.database_soup = BeautifulSoup(html)
-
-            html = self.get_gene_homepage_html()
-            self.gene_homepage_soup = BeautifulSoup(html)
-
-            # Extract RefSeq ID for gene_id's reference transcript
-            self.ref_seq_id = self.get_transcript_refseqid()
-        else:
-            raise ValueError('Specified gene not available in Leiden Database.')
 
     def get_version_number(self):
         """
@@ -170,7 +115,107 @@ class LeidenDatabase:
 
         return self.version_number
 
-    def get_variant_database_url(self):
+    def get_available_genes(self):
+        raise NotImplementedError('Abstract method')
+
+    def get_gene_data(self, gene_id):
+        raise NotImplementedError('Abstract method')
+
+
+class LOVD2Database(LeidenDatabase):
+    """
+    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
+
+    Provides LeidenDatabse interface specific to LOVF version 2. See LeidenDatabase super class for function documentation.
+    """
+
+    def __init__(self, leiden_url):
+
+        # Call to the super class constructor
+        LeidenDatabase.__init__(self, leiden_url)
+        self.version_number = 2
+
+    def get_available_genes(self):
+        """
+        TODO document
+        """
+
+        # Construct URL of page containing the drop-down to select various genes
+        start_url = "".join([self.leiden_url, '?action=switch_db'])
+
+        # Download and parse HTML from base URL
+        html = web_io.get_page_html(start_url)
+        url_soup = BeautifulSoup(html)
+
+        # Extract all options from the SelectGeneDB drop-down control
+        options = url_soup.find(id='SelectGeneDB').find_all('option')
+
+        # Return all options in the drop-down
+        available_genes = []
+        for genes in options:
+            available_genes.append(genes['value'])
+        return available_genes
+
+    def get_gene_data(self, gene_id):
+        return LOVD2GeneData(self.leiden_url, gene_id)
+
+
+class LOVD3Database(LeidenDatabase):
+    """
+    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
+
+    Provides LeidenDatabse interface specific to lovd version 3. See LeidenDatabase super class for function documentation.
+    """
+
+    def __init__(self, leiden_url):
+
+        # Call to the super class constructor
+        LeidenDatabase.__init__(self, leiden_url)
+        self.version_number = 3
+
+    def get_available_genes(self):
+        """
+        TODO document
+        """
+
+        # Construct URL of page containing the drop-down to select various genes
+        start_url = "".join([self.leiden_url, 'genes/', '?page_size=1000&page=1'])
+
+        # Download and parse HTML from base URL
+        html = web_io.get_page_html(start_url)
+        url_soup = BeautifulSoup(html)
+
+        # Extract all gene entries from the lovd homepage
+        table_class = 'data'
+        options = url_soup.find_all('tr', class_=table_class)
+
+        available_genes = []
+        for genes in options:
+            gene_string = genes.find_all('td')[0].find('a').string
+            available_genes.append(gene_string)
+        return available_genes
+
+    def get_gene_data(self, gene_id):
+        return LOVD3GeneData(self.leiden_url, gene_id)
+
+
+class GeneData:
+
+    def __init__(self, leiden_url, gene_id):
+        self.leiden_home_url = leiden_url
+        self.gene_id = gene_id
+
+        # Extract HTML and create BeautifulSoup objects for gene_id pages
+        html = self._get_variant_database_html()
+        self.database_soup = BeautifulSoup(html)
+
+        html = self._get_gene_homepage_html()
+        self.gene_homepage_soup = BeautifulSoup(html)
+
+        # Extract RefSeq ID for gene_id's reference transcript
+        self.ref_seq_id = self.transcript_refseqid()
+
+    def _get_variant_database_url(self):
         """
         Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.
 
@@ -179,16 +224,16 @@ class LeidenDatabase:
 
         """
 
-        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
+        raise NotImplementedError('Abstract method')
 
-    def get_variant_database_html(self):
+    def _get_variant_database_html(self):
         """
         TODO document
         """
-        url = self.get_variant_database_url()
+        url = self._get_variant_database_url()
         return web_io.get_page_html(url)
 
-    def get_gene_homepage_url(self):
+    def _get_gene_homepage_url(self):
         """
         Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.
 
@@ -197,16 +242,16 @@ class LeidenDatabase:
 
         """
 
-        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
+        raise NotImplementedError('Abstract method')
 
-    def get_gene_homepage_html(self):
+    def _get_gene_homepage_html(self):
         """
         TODO document
         """
-        url = self.get_gene_homepage_url()
+        url = self._get_gene_homepage_url()
         return web_io.get_page_html(url)
 
-    def get_link_urls(self, link_result_set):
+    def _get_link_urls(self, link_result_set):
         """
         Given a BeautifulSoup ResultSet object containing only link tags, return the URLs as a list.
 
@@ -235,7 +280,22 @@ class LeidenDatabase:
 
         return link_delimiter.join(result)
 
-    def get_transcript_refseqid(self):
+    @staticmethod
+    def _normalize_header(h):
+        h = h.lower().strip()
+        h = re.sub(re.compile('[^A-Za-z0-9]'), '_', h)
+
+        # Some databases do not have consistent headers
+        if 'protein' in h:
+            h = 'protein_change'
+        elif 'genomic' in h:
+            h = 'dna_change_genomic'
+        elif 'dna' in h:
+            h = 'dna_change'
+
+        return h
+
+    def transcript_refseqid(self):
         """
         Returns the transcript refSeq ID (denoted by NM_<ID> on the gene homepage on the given gene_id).
         For example, the ACTA1 homepage is http://www.dmd.nl/nmdb2/home.php and the RefSeq ID for the reference
@@ -254,7 +314,7 @@ class LeidenDatabase:
                 return tags.get_text()
         return ''
 
-    def get_table_headers(self):
+    def columns(self):
         """
         Returns the column labels from the table of variants in the Leiden Database for the set gene.
 
@@ -264,22 +324,9 @@ class LeidenDatabase:
 
         """
 
-        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
+        raise NotImplementedError('Abstract method')
 
-    @staticmethod
-    def _normalize_header(h):
-        h = h.lower().strip()
-        h = re.sub(re.compile('[^A-Za-z0-9]'), '_', h)
-
-        # Some databases do not have consistent headers
-        if 'protein' in h:
-            h = 'protein_change'
-        elif 'dna' in h:
-            h = 'dna_change'
-
-        return h
-
-    def get_table_data(self):
+    def variants(self):
         """
         Returns the table of variants from the set gene on the lovd.
 
@@ -289,7 +336,7 @@ class LeidenDatabase:
 
         """
 
-        total_variant_count = self.get_total_variant_count()
+        total_variant_count = self.variant_count()
 
         # Calculate the number of pages website will use to present data
         variants_per_page = 1000  # max allowed value
@@ -298,11 +345,11 @@ class LeidenDatabase:
         # Get table data from all pages
         table_data = []
         for page_number in range(1, total_pages + 1):
-            table_data.extend(self.get_table_data_page_n(page_number))
+            table_data.extend(self._variants_page_n(page_number))
 
         return table_data
 
-    def get_table_data_page_n(self, page_number):
+    def _variants_page_n(self, page_number):
         """
         Returns the table data from a specified page of the table of variant entries. Each page number (positive integer)
         has 1000 variants at most. The requested page number should not exceed the number of pages required to display
@@ -316,9 +363,9 @@ class LeidenDatabase:
 
         """
 
-        raise Exception("ABSTRACT METHOD NOT IMPLEMENTED")
+        raise NotImplementedError('Abstract method')
 
-    def get_total_variant_count(self):
+    def variant_count(self):
         """
         Get the total number of variants in the lovd associated with the current gene. This is the total
         number of variant entries in table of variants, not the number of unique entries.
@@ -342,29 +389,22 @@ class LeidenDatabase:
             raise ValueError('No entries found at given URL')
 
 
-class LOVD2Database(LeidenDatabase):
-    """
-    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
-
-    Provides LeidenDatabse interface specific to LOVF version 2. See LeidenDatabase super class for function documentation.
-    """
+class LOVD2GeneData(GeneData):
 
     def __init__(self, leiden_url, gene_id):
+        GeneData.__init__(self, leiden_url, gene_id)
 
-        # Call to the super class constructor
-        LeidenDatabase.__init__(self, leiden_url, gene_id)
-        self.version_number = 2
 
-    def get_variant_database_url(self):
+    def _get_variant_database_url(self):
 
         return "".join([self.leiden_home_url, 'variants.php?action=search_unique&select_db=', self.gene_id,
                         '&limit=1000'])
 
-    def get_gene_homepage_url(self):
+    def _get_gene_homepage_url(self):
 
         return "".join([self.leiden_home_url, 'home.php?select_db=', self.gene_id])
 
-    def get_table_headers(self):
+    def columns(self):
 
         # Find all th tags on the table of variants (column labels)
         headers = self.database_soup.find_all('th')
@@ -376,17 +416,17 @@ class LOVD2Database(LeidenDatabase):
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
                 # Normalize headers so all lower-case, no whitespace, no non-alphanumeric characters
-                h = LeidenDatabase._normalize_header(h)
+                h = GeneData._normalize_header(h)
                 result.append(h)
 
         return result
 
-    def get_table_data_page_n(self, page_number):
+    def _variants_page_n(self, page_number):
 
-        # TODO can this redundancy in LOVD2/LOVD3 be eliminated?
+        # TODO this is somewhat redundant w/ other subclass
         if page_number is not 1:
 
-            page_url = self.get_variant_database_url() + '&page=' + str(page_number)
+            page_url = self._get_variant_database_url() + '&page=' + str(page_number)
 
             html = web_io.get_page_html(page_url)
             database_soup = BeautifulSoup(html)
@@ -409,7 +449,7 @@ class LOVD2Database(LeidenDatabase):
             for columns in rows.find_all('td'):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
-                    link_string = self.get_link_urls(columns.find_all('a'))
+                    link_string = self._get_link_urls(columns.find_all('a'))
                     link_string = re.sub(r'\s', '', link_string)  # ensure there is no whitespace
                     entries.append(link_string)
                 else:
@@ -420,28 +460,20 @@ class LOVD2Database(LeidenDatabase):
         return row_entries
 
 
-class LOVD3Database(LeidenDatabase):
-    """
-    Should not construct directly. Use make_leiden_database factory method to obtain instances of LeidenDatabase objects.
-
-    Provides LeidenDatabse interface specific to lovd version 3. See LeidenDatabase super class for function documentation.
-    """
+class LOVD3GeneData(GeneData):
 
     def __init__(self, leiden_url, gene_id):
+        GeneData.__init__(self, leiden_url, gene_id)
 
-        # Call to the super class constructor
-        LeidenDatabase.__init__(self, leiden_url, gene_id)
-        self.version_number = 3
-
-    def get_variant_database_url(self):
+    def _get_variant_database_url(self):
 
         return "".join([self.leiden_home_url, 'variants/', self.gene_id, '?page_size=1000&page=1'])
 
-    def get_gene_homepage_url(self):
+    def _get_gene_homepage_url(self):
 
         return "".join([self.leiden_home_url, 'genes/', self.gene_id, '?page_size=1000&page=1'])
 
-    def get_table_headers(self):
+    def columns(self):
 
         # Find all th tags on the table of variants (column labels)
         headers = self.database_soup.find_all('th')
@@ -452,17 +484,17 @@ class LOVD3Database(LeidenDatabase):
 
             # For all entries with a string value, add them to the results (filters out extraneous th tags)
             if h is not None:
-                h = LeidenDatabase._normalize_header(h)
+                h = GeneData._normalize_header(h)
                 result.append(h)
 
         return result
 
-    def get_table_data_page_n(self, page_number):
+    def _variants_page_n(self, page_number):
 
-        # TODO can this redundancy in LOVD2/LOVD3 be eliminated?
+        # TODO this is somewhat redundant w/ other subclass
         if page_number is not 1:
 
-            page_url = self.get_variant_database_url() + '&page=' + str(page_number)
+            page_url = self._get_variant_database_url() + '&page=' + str(page_number)
 
             html = web_io.get_page_html(page_url)
             database_soup = BeautifulSoup(html)
@@ -492,7 +524,7 @@ class LOVD3Database(LeidenDatabase):
             for columns in rows.find_all('td'):
                 # If there are any links in the cell, process them with get_link_info
                 if columns.find('a') is not None:
-                    link_string = self.get_link_urls(columns.find_all('a'))
+                    link_string = self._get_link_urls(columns.find_all('a'))
                     link_string = re.sub(r'\s', '', link_string)  # ensure there is no whitespace
                     entries.append(link_string)
                 else:

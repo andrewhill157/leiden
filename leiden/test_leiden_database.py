@@ -9,8 +9,8 @@ def mock_html_response(database, gene_homepage_response, variant_database_respon
     """
     Helper function to mock the HTML responses for given database
     """
-    database.get_gene_homepage_html = Mock(return_value=gene_homepage_response)
-    database.get_variant_database_html = Mock(return_value=variant_database_response)
+    database._get_gene_homepage_html = Mock(return_value=gene_homepage_response)
+    database._get_variant_database_html = Mock(return_value=variant_database_response)
     return database
 
 
@@ -18,14 +18,14 @@ def test_extract_lovd_version_number_with_lovd_2():
     input = 'http://www.dmd.nl/nmdb2/'
     result = 2.0
     web_io.get_page_html = Mock(return_value=responses.NMDB2_HOMEPAGE_HTML)
-    assert_equals(result, leiden_database.extract_lovd_version_number(input))
+    assert_equals(result, leiden_database._extract_lovd_version_number(input))
 
 
 def test_extract_lovd_version_number_with_lovd_3():
     input = 'http://mseqdr.lumc.edu/GEDI/'
     result = 3.0
     web_io.get_page_html = Mock(return_value=responses.GEDI_HOMEPAGE_HTML)
-    assert_equals(result, leiden_database.extract_lovd_version_number(input))
+    assert_equals(result, leiden_database._extract_lovd_version_number(input))
 
 def test_get_available_genes_with_lovd2():
     raise NotImplementedError()
@@ -69,7 +69,7 @@ class TestLOVD2DatabaseACTA1():
 
     def test_get_table_data(cls):
         result = responses.ACTA1_TABLE_DATA
-        #assert_equals(cls.database.get_table_data(), result)   # very slow -- must be accessing network
+        #assert_equals(cls.database.variants(), result)   # very slow -- must be accessing network
         raise NotImplementedError()
 
 
@@ -113,7 +113,7 @@ class TestLOVD2DatabaseCAPN3():
 
     def test_get_table_data(cls):
         result = responses.CAPN3_TABLE_DATA
-        #assert_equals(cls.database.get_table_data(), result)  # very slow -- must be accessing network
+        #assert_equals(cls.database.variants(), result)  # very slow -- must be accessing network
         raise NotImplementedError()
 
 class TestLOVD3DatabaseBBS1():

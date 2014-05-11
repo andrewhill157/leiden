@@ -40,8 +40,8 @@ The usage for these classes is as follows:
     database.set_gene_id(gene_id)  # set_gene_id must be called before using the database object
 
     # Get data about the gene
-    column_labels = leiden_database.get_table_headers()
-    table_entries = leiden_database.get_table_data()
+    column_labels = leiden_database.columns()
+    table_entries = leiden_database.variants()
 
 Note that make_leiden_database returns a LeidenDatabase object. There are two subclasses of this type (one for each
 version of LOVD). This method ensures that the correct subclass is chosen for the provided URL.

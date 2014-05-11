@@ -21,8 +21,8 @@ def extract_data(leiden_url, gene_id):
 
     try:
         database = leiden_database.make_leiden_database(leiden_url, gene_id)
-        column_labels = database.get_table_headers()
-        table_entries = database.get_table_data()
+        column_labels = database.columns()
+        table_entries = database.variants()
 
     except Exception as e:
         raise e

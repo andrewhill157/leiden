@@ -83,8 +83,8 @@ for HTML parsing.</p>
 <span class="n">database</span><span class="o">.</span><span class="n">set_gene_id</span><span class="p">(</span><span class="n">gene_id</span><span class="p">)</span>  <span class="c"># set_gene_id must be called before using the database object</span>
 
 <span class="c"># Get data about the gene</span>
-<span class="n">column_labels</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">get_table_headers</span><span class="p">()</span>
-<span class="n">table_entries</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">get_table_data</span><span class="p">()</span>
+<span class="n">column_labels</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">columns</span><span class="p">()</span>
+<span class="n">table_entries</span> <span class="o">=</span> <span class="n">leiden_database</span><span class="o">.</span><span class="n">variants</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Note that make_leiden_database returns a LeidenDatabase object. There are two subclasses of this type (one for each
@@ -126,8 +126,8 @@ database_soup (BeautifulSoup): BeautifulSoup object for HTML on variant_database
 gene_homepage_soup (BeautifulSoup): BeautifulSoup object for HTML on gene homepage</dd>
 </dl>
 <dl class="staticmethod">
-<dt id="leiden.leiden_database.LeidenDatabase.extract_lovd_version_number">
-<em class="property">static </em><tt class="descname">extract_lovd_version_number</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.extract_lovd_version_number" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase._extract_lovd_version_number">
+<em class="property">static </em><tt class="descname">_extract_lovd_version_number</tt><big>(</big><em>leiden_url</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._extract_lovd_version_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the version number of the lovd installation at the specified URL.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -153,8 +153,8 @@ valid URL to base page of lovd.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_gene_homepage_url">
-<tt class="descname">get_gene_homepage_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_gene_homepage_url" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase._get_gene_homepage_url">
+<tt class="descname">_get_gene_homepage_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_gene_homepage_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Constructs the URL linking to the homepage for the specified gene on the Leiden Database site.</p>
 <dl class="docutils">
@@ -164,8 +164,8 @@ Constructs the URL linking to the homepage for the specified gene on the Leiden 
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_link_urls">
-<tt class="descname">get_link_urls</tt><big>(</big><em>link_result_set</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_link_urls" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase._get_link_urls">
+<tt class="descname">_get_link_urls</tt><big>(</big><em>link_result_set</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_link_urls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a BeautifulSoup ResultSet object containing only link tags, return the URLs as a list.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -182,8 +182,8 @@ for more information.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_table_data">
-<tt class="descname">get_table_data</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_table_data" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase.variants">
+<tt class="descname">variants</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.variants" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Returns the table of variants from the set gene on the lovd.</p>
 <dl class="docutils">
@@ -197,8 +197,8 @@ Returns the table of variants from the set gene on the lovd.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_table_data_page_n">
-<tt class="descname">get_table_data_page_n</tt><big>(</big><em>page_number</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_table_data_page_n" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase._variants_page_n">
+<tt class="descname">_variants_page_n</tt><big>(</big><em>page_number</em><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._variants_page_n" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Returns the table data from a specified page of the table of variant entries. Each page number (positive integer)
 has 1000 variants at most. The requested page number should not exceed the number of pages required to display
@@ -212,8 +212,8 @@ the total number of variants.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_table_headers">
-<tt class="descname">get_table_headers</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_table_headers" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase.columns">
+<tt class="descname">columns</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Returns the column labels from the table of variants in the Leiden Database for the set gene.</p>
 <dl class="docutils">
@@ -227,8 +227,8 @@ Returns the column labels from the table of variants in the Leiden Database for 
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_total_variant_count">
-<tt class="descname">get_total_variant_count</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_total_variant_count" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase.variant_count">
+<tt class="descname">variant_count</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.variant_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Get the total number of variants in the lovd associated with the current gene. This is the total
 number of variant entries in table of variants, not the number of unique entries.</p>
@@ -241,8 +241,8 @@ number of variant entries in table of variants, not the number of unique entries
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_transcript_refseqid">
-<tt class="descname">get_transcript_refseqid</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_transcript_refseqid" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase.transcript_refseqid">
+<tt class="descname">transcript_refseqid</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.transcript_refseqid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Returns the transcript refSeq ID (denoted by NM_&lt;ID&gt; on the gene homepage on the given gene_id).
 For example, the ACTA1 homepage is <a class="reference external" href="http://www.dmd.nl/nmdb2/home.php">http://www.dmd.nl/nmdb2/home.php</a> and the RefSeq ID for the reference
@@ -254,8 +254,8 @@ transcript is &#8220;NM_001100.3&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="leiden.leiden_database.LeidenDatabase.get_variant_database_url">
-<tt class="descname">get_variant_database_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase.get_variant_database_url" title="Permalink to this definition">¶</a></dt>
+<dt id="leiden.leiden_database.LeidenDatabase._get_variant_database_url">
+<tt class="descname">_get_variant_database_url</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.leiden_database.LeidenDatabase._get_variant_database_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Must call set_gene_id prior to use.
 Constructs URL linking to the table of variant entries for the specified gene_id on the Leiden Database site.</p>
 <dl class="docutils">
