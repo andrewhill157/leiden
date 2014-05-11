@@ -3,10 +3,10 @@
 
 import argparse
 import os
-from ..leiden import file_io
-from ..leiden.leiden_database import make_leiden_database
+from leiden import file_io
+from leiden import leiden_database
 
-def extract_data(leiden_database, gene_id):
+def extract_data(leiden_url, gene_id):
     """
     Extracts variant table data for given gene in leiden_database.
 
@@ -20,9 +20,9 @@ def extract_data(leiden_database, gene_id):
     """
 
     try:
-        leiden_database.set_gene_id(gene_id)
-        column_labels = leiden_database.get_table_headers()
-        table_entries = leiden_database.get_table_data()
+        database = leiden_database.make_leiden_database(leiden_url, gene_id)
+        column_labels = database.get_table_headers()
+        table_entries = database.get_table_data()
 
     except Exception as e:
         raise e
@@ -67,25 +67,13 @@ if __name__ == '__main__':
 
     if args.genes_available:
         # Print list of available genes to the user
-        database = make_leiden_database(args.leiden_url)
-
-        print("\n".join(database.get_available_genes()))
+        print("\n".join(leiden_database.get_available_genes(args.leiden_url)))
 
     else:
-        # Get database object and print the lovd version number
-        print "---> DETECTING LOVD VERSION: IN PROGRESS..."
-
-        # Use factory method to get LeidenDatabase object
-        database = make_leiden_database(args.leiden_url)
-        version_number = database.get_version_number()
-
-        print "---> DETECTING LOVD VERSION: COMPLETE"
-        print "    ---> VERSION " + str(version_number) + " DETECTED"
-
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = database.get_available_genes()
+            genes = leiden_database.get_available_genes(args.leiden_url)
 
         else:
             if len(args.gene_list) > 0:
@@ -101,7 +89,7 @@ if __name__ == '__main__':
 
                 # Extract table data and save to file
                 try:
-                    table_data, column_labels = extract_data(database, gene)
+                    table_data, column_labels = extract_data(args.leiden_url, gene)
 
                     print '    ---> Saving raw data...'
                     table_data.insert(0, column_labels)
