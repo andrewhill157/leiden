@@ -3,7 +3,7 @@ setup(
     name='leiden',
     version='1.0.0',
     packages=['leiden'],
-    scripts=['bin/extract_data.py', 'bin/generate_annotated_vcf.py', 'bin/validate_annotated_vcfs.py'],
+    scripts=['bin/extract_data.py', 'bin/generate_annotated_vcf.py', 'bin/validate_annotated_vcfs.py', 'bin/run_all.py'],
     url='https://github.com/andrewhill157/leiden',
     license='MIT License',
     author='Andrew Hill',

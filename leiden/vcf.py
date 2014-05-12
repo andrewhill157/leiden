@@ -1,97 +1,10 @@
 import re
 import pandas as pd
+from _ordereddict import ordereddict
 
 VCF_HEADER_PREFIX = '#'
-VCF_DELIMTER = '\t'
+VCF_DELIMITER = '\t'
 FORMAT_DELIMITER = '|'
-
-
-def get_vcf_dict_from_file(vcf_file):
-    """
-    Returns a list, where each each element is a nested dictionary providing access to progressively lower-level
-    information from a VCF file.
-
-    The first level is the VCF column name (all caps). The info column is a nested dictionary where tag names can be
-    accessed. Entries with lists of entries (like VEP) can be accessed in the following order:
-    vcf_dict['INFO']['CSQ']['<Transcript_ID>']['<VEP_COLUMN_NAME>' (defined by format in header)]
-
-    Args:
-        vcf_file (str): path to VCF file
-
-    Returns:
-        list of dict: nested dictionary containing information from each VCF line
-
-    Examples:
-        vcf_dict = get_vcf_dict(vcf_file_lines)
-        vcf_dict['REF']  # Get REF field
-        vcf_dict['INFO']['MY_TAG']  # get tag from INFO field
-        vcf_dict['INFO']['CSQ']['NM_0000353.3']['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
-
-        Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-        by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.
-    """
-
-    vcf_file_lines = [x.strip() for x in open(vcf_file, 'r')]
-    return get_vcf_dict(vcf_file_lines)
-
-
-def get_vcf_dict(vcf_file_lines):
-    """
-    Returns a list, where each each element is a nested dictionary providing access to progressively lower-level
-    information from a VCF file.
-
-    The first level is the VCF column name (all caps). The info column is a nested dictionary where tag names can be
-    accessed. Entries with lists of entries (like VEP) can be accessed in the following order:
-    vcf_dict['INFO']['CSQ']['<Transcript_ID>']['<VEP_COLUMN_NAME>' (defined by format in header)]
-
-    Args:
-        vcf_file_lines (list of str): list of lines from VCF file in original order
-
-    Returns:
-        list of dict: nested dictionary containing information from each VCF line
-
-    Examples:
-        vcf_dict = get_vcf_dict(vcf_file_lines)
-        vcf_dict['REF']  # Get REF field
-        vcf_dict['INFO']['MY_TAG']  # get tag from INFO field
-        vcf_dict['INFO']['CSQ']['NM_0000353.3']['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
-
-        Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-        by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.
-
-    """
-
-    info_formats = _get_info_formats(vcf_file_lines)
-
-    result = []
-    for line in vcf_file_lines:
-        line.strip()
-        if not line.startswith(VCF_HEADER_PREFIX):
-            columns = line.split(VCF_DELIMTER)
-            column_names = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
-            vcf_dict = dict(zip(column_names, columns))
-
-            vcf_dict['INFO'] = _get_info_column_dict(vcf_dict['INFO'], info_formats)
-            result.append(vcf_dict)
-    return result
-
-
-def get_vcf_header_lines(vcf_file):
-    """
-    Return a list with the header lines from a VCF file.
-
-    Args:
-        vcf_file: path to VCF file
-
-    Returns:
-        list of str: list of header lines from VCF file
-
-    """
-
-    def stop_loop():
-        raise StopIteration
-
-    return list(x.strip("\n") if x.startswith(VCF_HEADER_PREFIX) else stop_loop() for x in open(vcf_file, 'r'))
 
 
 def remove_malformed_fields(data_frame):
@@ -113,14 +26,14 @@ def remove_malformed_fields(data_frame):
 
 def _convert_to_vcf_friendly_text(data_frame):
     """
-    Replace characters that are not VCF-friendly in individual fields like ',', '|', '=', ';', etc. in pandas dataframe.
+    Replace characters that are not VCF-friendly in individual fields like ',', FORMAT_DELIMITER, '=', ';', etc. in pandas dataframe.
     Idended to pre-process table before converting to VCF format to ensure quality of output.
 
     Args:
         data_frame: pandas dataframe
 
     Returns:
-        data_frame with ',', ';', and '|' replaced with '&'. Non-vcf-friendly characters are converted to ''.
+        data_frame with ',', ';', and FORMAT_DELIMITER replaced with '&'. Non-vcf-friendly characters are converted to ''.
 
     """
     data_frame = data_frame.replace('[=\s]', '', regex=True)
@@ -144,7 +57,7 @@ def get_vcf_info_header(data_frame, tag_id, description):
 
     """
 
-    format_string = '|'.join(data_frame.columns).upper()
+    format_string = FORMAT_DELIMITER.join(data_frame.columns).upper()
     return '##INFO=<ID=' + tag_id + ',Number=.,TYPE=String,Description="' + description + ' Format: ' + format_string + '">'
 
 
@@ -187,7 +100,7 @@ def convert_to_vcf_format(data_frame, remapper, hgvs_column, info_tag):
     data_frame = _convert_to_vcf_friendly_text(data_frame)
 
     vcf_format = data_frame[hgvs_column].apply(_map_to_genomic_coordinates, args=[remapper])
-    info = info_tag + '=' + data_frame.apply(lambda row: '|'.join(map(str, row)), axis=1)
+    info = info_tag + '=' + data_frame.apply(lambda row: FORMAT_DELIMITER.join(map(str, row)), axis=1)
     vcf_format['INFO'] = info
     vcf_format['FILTER'] = '.'
     vcf_format['QUAL'] = '.'
@@ -196,138 +109,76 @@ def convert_to_vcf_format(data_frame, remapper, hgvs_column, info_tag):
     return vcf_format
 
 
-def _get_info_column_dict(info_text, info_formats):
+def get_vcf_header_lines(vcf_file):
     """
-    Returns nested dict containing information from the INFO column of VCF. See get_vcf_dict for more info. This is helper
-    function to construct the dict nested at vcf_dict['INFO']
+    Return a list with the header lines from a VCF file.
 
     Args:
-        info_text (str): text from INFO column of VCF
-        info_formats (dict): dict mapping INFO column tag IDs to respective column names
+        vcf_file: path to VCF file
 
     Returns:
-        Returns nested dict containing information from the INFO tag (from VEP) in info column of VCF.
+        list of str: list of header lines from VCF file
 
     """
 
-    info_dict = dict([x.split('=') for x in info_text.split(';')])
+    def stop_loop():
+        raise StopIteration
 
-    for format in info_formats:
-        # Further parse tags that define lists of entries like VEP
-        if len(info_formats[format]) > 1:
-            if format == 'CSQ':
-                # VEP requires different parsing -- per transcript listing
-                info_dict[format] = _get_csq_dict(info_dict['CSQ'], info_formats[format])
-            else:
-                # All other tags with such lists
-                info_dict[format] = _get_vcf_tag_dict(info_dict[format], info_formats[format])
-
-    return info_dict
+    return list(x.strip("\n") if x.startswith(VCF_HEADER_PREFIX) else stop_loop() for x in vcf_file)
 
 
-def _get_csq_dict(csq_text, info_format):
-    """
-    Returns nested dict containing information from the CSQ tag (from VEP) in info column of VCF. See get_vcf_dict for
-    more info. This is helper function to construct the dict nested at vcf_dict['INFO']['CSQ']
+class VCFReader():
+    def __init__(self, file_object):
+        self.file_object = file_object
+        self.columns = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
+        self.header_lines = get_vcf_header_lines(self.file_object)
+        self.vcf_format, self.infos = self.parse_vcf_header(self.header_lines)
 
-    Args:
-        csq_text (str): text from CSQ field in INFO column of VCF
-        info_formats (dict): list of column names for list of entries in CSQ field
+    def parse_vcf_header(self, vcf_header_lines):
+        infos = {}
+        for line in vcf_header_lines:
+            if '##fileformat' in line:
+                file_format = line
+            elif '##INFO' in line:
+                id = re.search('ID=([^,]+)\,', line).group(1)
+                number = re.search('Number=([^,]+),', line).group(1)
+                data_type = re.search('Type=([^,]+),', line).group(1)
+                description = re.search('Description="(.+)"', line).group(1)
+                infos[id] = {'number': number, 'type': data_type, 'description': description}
 
-    Returns:
-        Returns nested dict containing information from the CSQ tag (from VEP) in info column of VCF.
+                if 'Format' in description:
+                    tag_format = re.search('Format: (.+)', description).group(1)
+                    tag_format = _normalize_format_string(tag_format)
+                    infos[id]['format'] = tag_format.split(FORMAT_DELIMITER)
 
-    """
-    csq_values = [x.split('|') for x in csq_text.split(',')]
+        return file_format, infos
 
-    csq_dict = {}
-    for transcript in csq_values:
-        transcript_dict = dict(zip(info_format, transcript))
-        key = transcript_dict['FEATURE']
-        csq_dict[key] = transcript_dict
+    def __iter__(self):
+        return self
 
-    return csq_dict
+    def __next__(self):
+        return self.next()
 
+    def next(self):
+        line = self.file_object.next()
+        line = line.strip()
+        columns = line.split(VCF_DELIMITER)
+        vcf_dict = ordereddict(zip(self.columns, columns))
 
-def _get_vcf_tag_dict(tag_text, info_formats):
-    """
-    Returns nested dict containing information from the given tag in info column of VCF. See get_vcf_dict for
-    more info. This is helper function to construct the dict nested at vcf_dict['INFO']['TAG_NAME']
+        vcf_dict['INFO'] = self.get_info_dict(vcf_dict['INFO'])
+        return VCFLine(vcf_dict)
 
-    Args:
-        lovd_text (str): text from respective tag in INFO column of VCF
-        info_formats (dict): list of column names for list of entries in text
+    def get_info_dict(self, info_text):
+        tags = [x.split('=') for x in info_text.split(';')]
+        info_dict = ordereddict(tags)
 
-    Returns:
-        Returns nested dict containing information from the LOVD tag (from LOVD) in info column of VCF.
-
-    """
-
-    column_names = tag_text.split('|')
-    tag_dict = dict(zip(info_formats, column_names))
-
-    return tag_dict
-
-
-def _get_info_formats(vcf_file_lines):
-    """
-    Returns a dictionary of INFO column tag IDs to their respective column names from format string.
-
-    Args:
-        vcf_file_lines (str): list of lines from VCF file in original order
-
-    Returns:
-        dict: a nested dictionary of INFO column tag IDs to their respective column names from format string.
-
-    """
-    tag_pattern = re.compile('ID=(.+),')
-    format_pattern = re.compile('FORMAT: (.+)"')
-    format_dict = {}
-
-    for line in vcf_file_lines:
-
-        if not line.startswith(VCF_HEADER_PREFIX):  # only process header lines
-            break
-
-        if '##INFO' in line:
-            id = _get_id_string(line)
-            format = _get_format_string(line)
-            format = _normalize_format_string(format)
-
-            format_dict[id] = format.split('|')
-    return format_dict
-
-
-def _get_id_string(info_header_line):
-    """
-    Returns ID string from tag INFO entry in VCF header
-
-    Args:
-        info_header_line (str): tag INFO entry in VCF header
-
-    Returns:
-        str: ID string for tag
-
-    """
-    pattern = re.compile('id=(.+),number', re.IGNORECASE)
-    match = re.search(pattern, info_header_line)
-    return match.group(1)
-
-
-def _get_format_string(info_header_line):
-    """
-    Returns format string from tag INFO entry in VCF header
-
-    Args:
-        info_header_line (str): tag INFO entry in VCF header
-
-    Returns:
-        str: format string for tag
-
-    """
-    pattern = re.compile('format: (.+)"', re.IGNORECASE)
-    match = re.search(pattern, info_header_line)
-    return match.group(1)
+        for tag in info_dict:
+            if 'format' in self.infos[tag]:
+                result = []
+                for entry in info_dict[tag].split(','):
+                    result.append(ordereddict(zip(self.infos[tag]['format'], entry.split(FORMAT_DELIMITER))))
+                info_dict[tag] = result
+        return info_dict
 
 
 def _normalize_format_string(format_string):
@@ -344,4 +195,34 @@ def _normalize_format_string(format_string):
     format_string = format_string.upper()
     pattern = re.compile('[^A-Za-z|]')
     return re.sub(pattern, '_', format_string)
+
+
+class VCFLine:
+
+    def __init__(self, vcf_line):
+        self.variant = vcf_line
+
+    def __getitem__(self, var, **args):
+        return self.variant[var]
+
+    def __str__(self):
+        info_column = self.variant['INFO']
+
+        values = info_column.values()
+
+        for i,tag_value in enumerate(values):
+
+            if isinstance(tag_value, list):
+
+                inner_entries = []
+                for item in tag_value:
+                    inner_entries.append(FORMAT_DELIMITER.join(item.values()))
+
+                values[i] = ','.join(inner_entries)
+
+        keys = info_column.keys()
+        info = ';'.join(['%s=%s' % (keys[i], value) for i,value in enumerate(values)])
+        output_string = self.variant.values()
+        output_string[-1] = info
+        return '\t'.join(output_string)
 

@@ -1,4 +1,4 @@
-import urllib
+import requests
 
 
 def get_page_html(page_url):
@@ -12,18 +12,15 @@ def get_page_html(page_url):
         str: HTML describing the specified page
 
     Raises:
-        IOError:
-            if an error code is returned
-        ValueError:
-            if requested URL not found
+        ValueError: if requested URL not found
+        IOError: if page could not be reached
 
     """
-    try:
-        response_code = urllib.urlopen(page_url).code
-    except IOError as e:
-        raise ValueError('Requested URL not found. Please ensure http:// is included.')
 
-    if response_code >= 400:
-        raise IOError('Requested URL could not be reached. Response code: ' + response_code)
+    response = requests.get(page_url)
 
-    return urllib.urlopen(page_url).read()
+    if response.status_code == 404:
+        raise ValueError('Requested URL not found.')
+    if response.status_code > 404:
+        raise IOError('Requested URL not found. Status code: %d' % response.status_code)
+    return response.text
