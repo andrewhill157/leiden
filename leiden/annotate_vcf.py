@@ -1,5 +1,5 @@
-import os
 import subprocess
+import platform
 
 
 def annotate_vep(input_file, output_file):
@@ -12,17 +12,22 @@ def annotate_vep(input_file, output_file):
 
     """
     # TODO - can use a config file to specify parameters, but have not gotten to work yet
-    command = ' '.join(['variant_effect_predictor.pl',
-                        '--vcf',
-                        '--cache',
-                        '--fork 4',
-                        '--host useastdb.ensembl.org',
-                        '--format vcf',
-                        '--force_overwrite',
-                        '--everything',
-                        '--compress "gunzip -c"',
-                        '--input_file', input_file,
-                        '--output_file', output_file])
+    command = ['variant_effect_predictor.pl',
+               '--vcf',
+               '--cache',
+               '--fork 4',
+               '--host useastdb.ensembl.org',
+               '--format vcf',
+               '--force_overwrite',
+               '--everything',
+               '--input_file', input_file,
+               '--output_file', output_file]
+
+    if platform.system() == 'Darwin':
+        command.append("--compress")
+        command.append("gunzip -c")
+
+    command = ' '.join(command)
 
     pipe = subprocess.Popen(command, shell=True)
     pipe.communicate()[0]
