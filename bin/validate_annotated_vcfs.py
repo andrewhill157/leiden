@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
             concordant_mutation_found = False
             for transcript in variant['INFO']['CSQ']:
-                if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD']['PROTEIN_CHANGE'], variant['INFO']['CSQ'][transcript]['HGVSP']):
+                if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD'][0]['PROTEIN_CHANGE'], transcript['HGVSP']):
                     total_concordant_mutation_count += 1
                     gene_concordant_mutation_count += 1
                     concordant_mutations.append(vcf_file_lines[variant_index])
