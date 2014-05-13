@@ -128,18 +128,60 @@ def get_vcf_header_lines(vcf_file):
 
 
 class VCFReader():
-    def __init__(self, file_object):
-        self.file_object = file_object
-        self.columns = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
-        self.header_lines = get_vcf_header_lines(self.file_object)
-        self.vcf_format, self.infos = self.parse_vcf_header(self.header_lines)
+    """
+    Simple VCF parser that allows dictionary-style parsing of VCF fields and INFO column annotations -- including VEP-like annotations that
+    contain a delimited list as their value.
 
+    VCFReaders act as generators and provide one parsed line of output at a time as a VCFLine object.
+
+    Examples:
+        vcf = VCFReader(open('file.vcf', 'r'))
+        vcf_line = vcf.next()
+        vcf_line['REF']  # access REF
+        vcf_line['INFO']['CSQ'][1]['Feature']  # access feature of second listing in a VEP-like INFO field
+        print str(vcf_line)  # VCFLine objects convert as strings to original format.
+
+    Attributes:
+        columns (list of str): list of column names
+        header_lines (list of str): list of all header lines from the VCF
+        
+        infos (dict): dictionary containing IDs from INFO field as primary key
+            secondary keys are the Number, Type, description, and format (VEP-like entries only) for INFO field tags.
+
+    """
+    def __init__(self, file_object):
+        """
+        Constructor for VCFReader
+
+        Args:
+            file_object (file object): pre-opened file-like object
+
+        """
+        self._file_object = file_object
+        self.columns = ['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
+        self.header_lines = get_vcf_header_lines(self._file_object)
+        self.infos = self.parse_vcf_header(self.header_lines)
+
+    @staticmethod
     def parse_vcf_header(self, vcf_header_lines):
+        """
+        Given lines from a VCF header, parse out information from the INFO tags.
+
+        Args:
+            vcf_header_lines (list of str): list of header lines from a VCF file.
+
+        Returns:
+            dict: a dictionary where each tag is a key and each component (number, type, description, and format
+                (only for VEP-like entries with a nested list of fields) of the tag is a secondary key.
+
+        Examples:
+            info_dict['MY_TAG']['number']
+
+
+        """
         infos = {}
         for line in vcf_header_lines:
-            if '##fileformat' in line:
-                file_format = line
-            elif '##INFO' in line:
+            if '##INFO' in line:
                 id = re.search('ID=([^,]+)\,', line).group(1)
                 number = re.search('Number=([^,]+),', line).group(1)
                 data_type = re.search('Type=([^,]+),', line).group(1)
@@ -151,24 +193,64 @@ class VCFReader():
                     tag_format = _normalize_format_string(tag_format)
                     infos[id]['format'] = tag_format.split(FORMAT_DELIMITER)
 
-        return file_format, infos
+        return infos
+
+    @staticmethod
+    def _normalize_format_string(format_string):
+        """
+        Returns copy of format_string converted to all uppercase and all non-alphaneumeric characters replaced with underscore
+
+        Args:
+            info_header_line (str): format string from tag INFO entry in VCF header
+
+        Returns:
+            str: copy of format_string converted to all uppercase and all non-alphaneumeric characters replaced with underscore
+
+        """
+        format_string = format_string.upper()
+        pattern = re.compile('[^A-Za-z|]')
+        return re.sub(pattern, '_', format_string)
 
     def __iter__(self):
+        """
+        Allows VCFReaders to be interated over
+        """
         return self
 
     def __next__(self):
+        """
+        Allows for use as a generator.
+        """
         return self.next()
 
     def next(self):
-        line = self.file_object.next()
+        """
+        Parses the next line of output from the VCF file into a dictionary as described in class description.
+
+        Returns:
+            dict: dictionary containing parsed VCF data
+
+        """
+        line = self._file_object.next()
         line = line.strip()
         columns = line.split(VCF_DELIMITER)
         vcf_dict = ordereddict(zip(self.columns, columns))
 
-        vcf_dict['INFO'] = self.get_info_dict(vcf_dict['INFO'])
+        vcf_dict['INFO'] = self._get_info_dict(vcf_dict['INFO'])
         return VCFLine(vcf_dict)
 
-    def get_info_dict(self, info_text):
+    def _get_info_dict(self, info_text):
+        """
+        Helper function to parse the INFO field of a VCF into a dict. VEP-like entries are included as a list of nested
+        dictionaries.
+
+        Args:
+            info_text (str): text from the INFO column of the VCF
+
+        Returns:
+            dict: dict containing parsed data from info_text.
+
+        """
         tags = [x.split('=') for x in info_text.split(';')]
         info_dict = ordereddict(tags)
 
@@ -181,32 +263,33 @@ class VCFReader():
         return info_dict
 
 
-def _normalize_format_string(format_string):
-    """
-    Returns copy of format_string converted to all uppercase and all non-alphaneumeric characters replaced with underscore
-
-    Args:
-        info_header_line (str): format string from tag INFO entry in VCF header
-
-    Returns:
-        str: copy of format_string converted to all uppercase and all non-alphaneumeric characters replaced with underscore
-
-    """
-    format_string = format_string.upper()
-    pattern = re.compile('[^A-Za-z|]')
-    return re.sub(pattern, '_', format_string)
-
-
 class VCFLine:
+    """
+    Class containing information from a single line of a VCF file in a parsed dictionary-style access format.
+    This is the type returned by each .next call of the VCFReader generator.
+
+    Examples:
+        vcf_line['REF']  # access REF
+        vcf_line['INFO']['CSQ'][1]['Feature']  # access feature of second listing in a VEP-like INFO field
+        print str(vcf_line)  # VCFLine objects convert as strings to original format.
+
+    """
 
     def __init__(self, vcf_line):
-        self.variant = vcf_line
+        self._variant = vcf_line
 
     def __getitem__(self, var, **args):
-        return self.variant[var]
+        """
+        Allows the class to be indexed like dictionary.
+        """
+        return self._variant[var]
 
     def __str__(self):
-        info_column = self.variant['INFO']
+        """
+        Custom string conversion for object. Returns line to its initial format.
+        """
+
+        info_column = self._variant['INFO']
 
         values = info_column.values()
 
@@ -222,7 +305,7 @@ class VCFLine:
 
         keys = info_column.keys()
         info = ';'.join(['%s=%s' % (keys[i], value) for i,value in enumerate(values)])
-        output_string = self.variant.values()
+        output_string = self._variant.values()
         output_string[-1] = info
         return '\t'.join(output_string)
 

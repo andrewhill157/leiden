@@ -519,7 +519,72 @@ or p.[change], where change is returned and is the description of the protein ch
 <h2>vcf<a class="headerlink" href="#vcf" title="Permalink to this headline">¶</a></h2>
 <p>This module contains functions for parsing VCF files, providing data structures that provide easier access to information
 in annotated VCF files, and converting pandas dataframes with HGVS notation variants and associated data to VCF format.</p>
-<span class="target" id="module-leiden.vcf"></span><dl class="function">
+<span class="target" id="module-leiden.vcf"></span><dl class="class">
+<dt id="leiden.vcf.VCFLine">
+<em class="property">class </em><tt class="descclassname">leiden.vcf.</tt><tt class="descname">VCFLine</tt><big>(</big><em>vcf_line</em><big>)</big><a class="headerlink" href="#leiden.vcf.VCFLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing information from a single line of a VCF file in a parsed dictionary-style access format.
+This is the type returned by each .next call of the VCFReader generator.</p>
+<dl class="docutils">
+<dt>Examples:</dt>
+<dd>vcf_line[&#8216;REF&#8217;]  # access REF
+vcf_line[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][1][&#8216;Feature&#8217;]  # access feature of second listing in a VEP-like INFO field
+print str(vcf_line)  # VCFLine objects convert as strings to original format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="leiden.vcf.VCFReader">
+<em class="property">class </em><tt class="descclassname">leiden.vcf.</tt><tt class="descname">VCFReader</tt><big>(</big><em>file_object</em><big>)</big><a class="headerlink" href="#leiden.vcf.VCFReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple VCF parser that allows dictionary-style parsing of VCF fields and INFO column annotations &#8211; including VEP-like annotations that
+contain a delimited list as their value.</p>
+<p>VCFReaders act as generators and provide one parsed line of output at a time as a VCFLine object.</p>
+<dl class="docutils">
+<dt>Examples:</dt>
+<dd>vcf = VCFReader(open(&#8216;file.vcf&#8217;, &#8216;r&#8217;))
+vcf_line = vcf.next()
+vcf_line[&#8216;REF&#8217;]  # access REF
+vcf_line[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][1][&#8216;Feature&#8217;]  # access feature of second listing in a VEP-like INFO field
+print str(vcf_line)  # VCFLine objects convert as strings to original format.</dd>
+<dt>Attributes:</dt>
+<dd><p class="first">columns (list of str): list of column names
+header_lines (list of str): list of all header lines from the VCF</p>
+<dl class="last docutils">
+<dt>infos (dict): dictionary containing IDs from INFO field as primary key</dt>
+<dd>secondary keys are the Number, Type, description, and format (VEP-like entries only) for INFO field tags.</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="leiden.vcf.VCFReader.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#leiden.vcf.VCFReader.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the next line of output from the VCF file into a dictionary as described in class description.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>dict: dictionary containing parsed VCF data</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="leiden.vcf.VCFReader.parse_vcf_header">
+<em class="property">static </em><tt class="descname">parse_vcf_header</tt><big>(</big><em>vcf_header_lines</em><big>)</big><a class="headerlink" href="#leiden.vcf.VCFReader.parse_vcf_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given lines from a VCF header, parse out information from the INFO tags.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>vcf_header_lines (list of str): list of header lines from a VCF file.</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>dict: a dictionary where each tag is a key and each component (number, type, description, and format</dt>
+<dd>(only for VEP-like entries with a nested list of fields) of the tag is a secondary key.</dd>
+</dl>
+</dd>
+<dt>Examples:</dt>
+<dd>info_dict[&#8216;MY_TAG&#8217;][&#8216;number&#8217;]</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
 <dt id="leiden.vcf.convert_to_vcf_format">
 <tt class="descclassname">leiden.vcf.</tt><tt class="descname">convert_to_vcf_format</tt><big>(</big><em>data_frame</em>, <em>remapper</em>, <em>hgvs_column</em>, <em>info_tag</em><big>)</big><a class="headerlink" href="#leiden.vcf.convert_to_vcf_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a pandas dataframe that contains HGVS variants along with other data about the variants to a VCF representation.
@@ -535,54 +600,6 @@ info_tag (str): name of the tag to place in the INFO column</dd>
 <dt>pandas.DataFrame: new dataframe containing variants in VCF format.</dt>
 <dd>Other columns are included in INFO column as described above.</dd>
 </dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="leiden.vcf.get_vcf_dict">
-<tt class="descclassname">leiden.vcf.</tt><tt class="descname">get_vcf_dict</tt><big>(</big><em>vcf_file_lines</em><big>)</big><a class="headerlink" href="#leiden.vcf.get_vcf_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list, where each each element is a nested dictionary providing access to progressively lower-level
-information from a VCF file.</p>
-<p>The first level is the VCF column name (all caps). The info column is a nested dictionary where tag names can be
-accessed. Entries with lists of entries (like VEP) can be accessed in the following order:
-vcf_dict[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][&#8216;&lt;Transcript_ID&gt;&#8217;][&#8216;&lt;VEP_COLUMN_NAME&gt;&#8217; (defined by format in header)]</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>vcf_file_lines (list of str): list of lines from VCF file in original order</dd>
-<dt>Returns:</dt>
-<dd>list of dict: nested dictionary containing information from each VCF line</dd>
-<dt>Examples:</dt>
-<dd><p class="first">vcf_dict = get_vcf_dict(vcf_file_lines)
-vcf_dict[&#8216;REF&#8217;]  # Get REF field
-vcf_dict[&#8216;INFO&#8217;][&#8216;MY_TAG&#8217;]  # get tag from INFO field
-vcf_dict[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][&#8216;NM_0000353.3&#8217;][&#8216;CONSEQUENCE&#8217;]  # get nested data from tags that contain lists (like VEP)</p>
-<p class="last">Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="leiden.vcf.get_vcf_dict_from_file">
-<tt class="descclassname">leiden.vcf.</tt><tt class="descname">get_vcf_dict_from_file</tt><big>(</big><em>vcf_file</em><big>)</big><a class="headerlink" href="#leiden.vcf.get_vcf_dict_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list, where each each element is a nested dictionary providing access to progressively lower-level
-information from a VCF file.</p>
-<p>The first level is the VCF column name (all caps). The info column is a nested dictionary where tag names can be
-accessed. Entries with lists of entries (like VEP) can be accessed in the following order:
-vcf_dict[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][&#8216;&lt;Transcript_ID&gt;&#8217;][&#8216;&lt;VEP_COLUMN_NAME&gt;&#8217; (defined by format in header)]</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>vcf_file (str): path to VCF file</dd>
-<dt>Returns:</dt>
-<dd>list of dict: nested dictionary containing information from each VCF line</dd>
-<dt>Examples:</dt>
-<dd><p class="first">vcf_dict = get_vcf_dict(vcf_file_lines)
-vcf_dict[&#8216;REF&#8217;]  # Get REF field
-vcf_dict[&#8216;INFO&#8217;][&#8216;MY_TAG&#8217;]  # get tag from INFO field
-vcf_dict[&#8216;INFO&#8217;][&#8216;CSQ&#8217;][&#8216;NM_0000353.3&#8217;][&#8216;CONSEQUENCE&#8217;]  # get nested data from tags that contain lists (like VEP)</p>
-<p class="last">Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.</p>
 </dd>
 </dl>
 </dd></dl>
