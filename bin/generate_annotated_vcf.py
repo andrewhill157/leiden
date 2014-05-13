@@ -49,7 +49,8 @@ if __name__ == '__main__':
         annotate_vcf.annotate_vep(annotation_input_file, output_file)
 
         # Combine VEP VCF output with original LOVD data
-        header_lines = vcf.get_vcf_header_lines(output_file)
+        with open(output_file, 'r') as f:
+            header_lines = vcf.get_vcf_header_lines(f)
 
         cumulative_vcf = pd.read_csv(output_file, header=len(header_lines)-1, sep=COLUMN_DELIMITER)
 
