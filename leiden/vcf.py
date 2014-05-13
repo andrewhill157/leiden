@@ -25,10 +25,10 @@ def get_vcf_dict_from_file(vcf_file):
         vcf_dict = get_vcf_dict(vcf_file_lines)
         vcf_dict['REF']  # Get REF field
         vcf_dict['INFO']['MY_TAG']  # get tag from INFO field
-        vcf_dict['INFO']['CSQ']['NM_0000353.3']['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
+        vcf_dict['INFO']['CSQ'][0]['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
 
-        Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-        by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.
+        Note that VEP-like annotations may list multiple fields in the same lists, so the tag field for items with lists
+        will be a list of dicts rather than a dict itself.
     """
 
     vcf_file_lines = [x.strip() for x in open(vcf_file, 'r')]
@@ -54,10 +54,10 @@ def get_vcf_dict(vcf_file_lines):
         vcf_dict = get_vcf_dict(vcf_file_lines)
         vcf_dict['REF']  # Get REF field
         vcf_dict['INFO']['MY_TAG']  # get tag from INFO field
-        vcf_dict['INFO']['CSQ']['NM_0000353.3']['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
+        vcf_dict['INFO']['CSQ'][0]['CONSEQUENCE']  # get nested data from tags that contain lists (like VEP)
 
-        Note that VEP lists annotations for a number of features in the same tag. To access each I have indexed results
-        by the feature IDs. If you do not know the feature ID, can iterate over all values rather than access via keys.
+        Note that VEP-like annotations may list multiple fields in the same lists, so the tag field for items with lists
+        will be a list of dicts rather than a dict itself.
 
     """
 
@@ -91,7 +91,7 @@ def get_vcf_header_lines(vcf_file):
     def stop_loop():
         raise StopIteration
 
-    return list(x.strip("\n") if x.startswith(VCF_HEADER_PREFIX) else stop_loop() for x in open(vcf_file, 'r'))
+    return list(x.strip('\n') if x.startswith(VCF_HEADER_PREFIX) else stop_loop() for x in open(vcf_file, 'r'))
 
 
 def _get_info_column_dict(info_text, info_formats):
@@ -133,7 +133,7 @@ def _get_info_tag_dict(tag_text, info_format):
         Returns nested dict containing information from the CSQ tag (from VEP) in info column of VCF.
 
     """
-    tag_values = [x.split('|') for x in tag_text.split(',')]
+    tag_values = [x.split(FORMAT_DELIMITER) for x in tag_text.split(',')]
 
     result = []
     for items in tag_values:
@@ -167,7 +167,7 @@ def _get_info_formats(vcf_file_lines):
             format = _get_format_string(line)
             format = _normalize_format_string(format)
 
-            format_dict[id] = format.split('|')
+            format_dict[id] = format.split(FORMAT_DELIMITER)
     return format_dict
 
 
@@ -238,14 +238,14 @@ def remove_malformed_fields(data_frame):
 
 def _convert_to_vcf_friendly_text(data_frame):
     """
-    Replace characters that are not VCF-friendly in individual fields like ',', '|', '=', ';', etc. in pandas dataframe.
+    Replace characters that are not VCF-friendly in individual fields like ',', FORMAT_DELIMITER, '=', ';', etc. in pandas dataframe.
     Idended to pre-process table before converting to VCF format to ensure quality of output.
 
     Args:
         data_frame: pandas dataframe
 
     Returns:
-        data_frame with ',', ';', and '|' replaced with '&'. Non-vcf-friendly characters are converted to ''.
+        data_frame with ',', ';', and FORMAT_DELIMITER replaced with '&'. Non-vcf-friendly characters are converted to ''.
 
     """
     data_frame = data_frame.replace('[=\s]', '', regex=True)
@@ -269,7 +269,7 @@ def get_vcf_info_header(data_frame, tag_id, description):
 
     """
 
-    format_string = '|'.join(data_frame.columns).upper()
+    format_string = FORMAT_DELIMITER.join(data_frame.columns).upper()
     return '##INFO=<ID=' + tag_id + ',Number=.,TYPE=String,Description="' + description + ' Format: ' + format_string + '">'
 
 
@@ -312,7 +312,7 @@ def convert_to_vcf_format(data_frame, remapper, hgvs_column, info_tag):
     data_frame = _convert_to_vcf_friendly_text(data_frame)
 
     vcf_format = data_frame[hgvs_column].apply(_map_to_genomic_coordinates, args=[remapper])
-    info = info_tag + '=' + data_frame.apply(lambda row: '|'.join(map(str, row)), axis=1)
+    info = info_tag + '=' + data_frame.apply(lambda row: FORMAT_DELIMITER.join(map(str, row)), axis=1)
     vcf_format['INFO'] = info
     vcf_format['FILTER'] = '.'
     vcf_format['QUAL'] = '.'

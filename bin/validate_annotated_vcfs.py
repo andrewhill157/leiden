@@ -32,9 +32,9 @@ if __name__ == '__main__':
         vcf_file = vcf.get_vcf_dict(vcf_file_lines)
 
         vcf_header = vcf.get_vcf_header_lines(file)
-        variant_index = len(vcf_header)
+        offset = len(vcf_header)
 
-        for variant in vcf_file:
+        for i, variant in enumerate(vcf_file):
             total_mutation_count += 1
             gene_mutation_count += 1
 
@@ -43,21 +43,20 @@ if __name__ == '__main__':
             viewing_interval = 25
             if coordinate != '.':
                 ucsc_link = validation.get_ucsc_location_link(chromosome_number,
-                                                   str(int(coordinate) - viewing_interval),
-                                                   str(int(coordinate) + viewing_interval))
+                                                              str(int(coordinate) - viewing_interval),
+                                                              str(int(coordinate) + viewing_interval))
 
             concordant_mutation_found = False
             for transcript in variant['INFO']['CSQ']:
                 if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD'][0]['PROTEIN_CHANGE'], transcript['HGVSP']):
                     total_concordant_mutation_count += 1
                     gene_concordant_mutation_count += 1
-                    concordant_mutations.append(vcf_file_lines[variant_index])
+                    concordant_mutations.append(vcf_file_lines[i + offset])
                     concordant_mutation_found = True
 
             if not concordant_mutation_found:
-                discordant_mutations.append(vcf_file_lines[variant_index])
+                discordant_mutations.append(vcf_file_lines[i + offset])
 
-            variant_index += 1
         if gene_mutation_count > 0:
             print file, gene_concordant_mutation_count, '/', gene_mutation_count, 'Concordant'
         else:
