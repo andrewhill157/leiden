@@ -4,9 +4,8 @@
 import argparse
 import os
 import pandas as pd
-from leiden import annotate_vcf
+from leiden import annotate_vcf, vcf
 from leiden.remapping import VariantRemapper
-from leiden import vcf
 
 COLUMN_DELIMITER = '\t'
 

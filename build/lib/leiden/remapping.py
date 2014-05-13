@@ -12,6 +12,7 @@ class VariantRemapper:
 
     Attributes:
         genome (SequenceFileDB): reference sequence DB object
+
     """
 
     def __init__(self):

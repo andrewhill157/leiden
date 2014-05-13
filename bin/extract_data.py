@@ -6,6 +6,7 @@ import os
 from leiden import file_io
 from leiden import leiden_database
 
+
 def extract_data(database, gene_id):
     """
     Extracts variant table data for given gene in leiden_database.

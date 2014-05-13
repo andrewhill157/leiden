@@ -4,9 +4,10 @@
 import argparse
 import os
 from leiden import file_io
-from leiden.leiden_database import make_leiden_database
+from leiden import leiden_database
 
-def extract_data(leiden_database, gene_id):
+
+def extract_data(database, gene_id):
     """
     Extracts variant table data for given gene in leiden_database.
 
@@ -20,9 +21,9 @@ def extract_data(leiden_database, gene_id):
     """
 
     try:
-        leiden_database.set_gene_id(gene_id)
-        column_labels = leiden_database.get_table_headers()
-        table_entries = leiden_database.get_table_data()
+        gene = database.get_gene_data(gene_id)
+        column_labels = gene.columns()
+        table_entries = gene.variants()
 
     except Exception as e:
         raise e
@@ -67,25 +68,13 @@ if __name__ == '__main__':
 
     if args.genes_available:
         # Print list of available genes to the user
-        database = make_leiden_database(args.leiden_url)
-
-        print("\n".join(database._genes()))
+        print("\n".join(leiden_database._genes(args.leiden_url)))
 
     else:
-        # Get database object and print the lovd version number
-        print "---> DETECTING LOVD VERSION: IN PROGRESS..."
-
-        # Use factory method to get LeidenDatabase object
-        database = make_leiden_database(args.leiden_url)
-        version_number = database.version_number()
-
-        print "---> DETECTING LOVD VERSION: COMPLETE"
-        print "    ---> VERSION " + str(version_number) + " DETECTED"
-
         # User has specified the all option, extract data from all genes available on the Leiden Database
         if args.all:
             print("---> CHECKING AVAILABLE GENES...")
-            genes = database._genes()
+            genes = leiden_database._genes(args.leiden_url)
 
         else:
             if len(args.gene_list) > 0:
@@ -94,6 +83,8 @@ if __name__ == '__main__':
                 print('Must specify at least one gene_list.')
 
         if genes:
+            print '---> Setting things up... '
+            database = leiden_database.make_leiden_database(args.leiden_url)
 
             for gene in genes:
                 print '---> ' + gene + ': IN PROGRESS...'

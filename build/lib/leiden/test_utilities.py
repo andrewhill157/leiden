@@ -1,6 +1,6 @@
 from nose.tools import assert_equals
 from nose.tools import assert_raises
-from leiden import utilities
+from . import utilities
 
 
 def test_correct_hgvs_parentheses():

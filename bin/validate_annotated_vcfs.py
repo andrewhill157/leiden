@@ -28,39 +28,36 @@ if __name__ == '__main__':
         gene_mutation_count = 0
         gene_concordant_mutation_count = 0
 
-        vcf_file_lines = [x.strip() for x in open(file, 'r')]
-        vcf_file = vcf.get_vcf_dict(vcf_file_lines)
+        with open(file, 'r') as f:
+            vcf_file = vcf.VCFReader(f)
 
-        vcf_header = vcf.get_vcf_header_lines(file)
-        offset = len(vcf_header)
+            for variant in vcf_file:
+                total_mutation_count += 1
+                gene_mutation_count += 1
 
-        for i, variant in enumerate(vcf_file):
-            total_mutation_count += 1
-            gene_mutation_count += 1
+                chromosome_number = variant['CHROM']
+                coordinate = variant['POS']
+                viewing_interval = 25
+                if coordinate != '.':
+                    ucsc_link = validation.get_ucsc_location_link(chromosome_number,
+                                                       str(int(coordinate) - viewing_interval),
+                                                       str(int(coordinate) + viewing_interval))
 
-            chromosome_number = variant['CHROM']
-            coordinate = variant['POS']
-            viewing_interval = 25
-            if coordinate != '.':
-                ucsc_link = validation.get_ucsc_location_link(chromosome_number,
-                                                              str(int(coordinate) - viewing_interval),
-                                                              str(int(coordinate) + viewing_interval))
+                concordant_mutation_found = False
+                for transcript in variant['INFO']['CSQ']:
+                    if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD'][0]['PROTEIN_CHANGE'], transcript['HGVSP']):
+                        total_concordant_mutation_count += 1
+                        gene_concordant_mutation_count += 1
+                        concordant_mutations.append(str(variant))
+                        concordant_mutation_found = True
 
-            concordant_mutation_found = False
-            for transcript in variant['INFO']['CSQ']:
-                if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD'][0]['PROTEIN_CHANGE'], transcript['HGVSP']):
-                    total_concordant_mutation_count += 1
-                    gene_concordant_mutation_count += 1
-                    concordant_mutations.append(vcf_file_lines[i + offset])
-                    concordant_mutation_found = True
+                if not concordant_mutation_found:
+                    discordant_mutations.append(str(variant))
 
-            if not concordant_mutation_found:
-                discordant_mutations.append(vcf_file_lines[i + offset])
-
-        if gene_mutation_count > 0:
-            print file, gene_concordant_mutation_count, '/', gene_mutation_count, 'Concordant'
-        else:
-            print file, ': No annotated variants - variants could not be remapped.'
+            if gene_mutation_count > 0:
+                print file, gene_concordant_mutation_count, '/', gene_mutation_count, 'Concordant'
+            else:
+                print file, ': No annotated variants - variants could not be remapped.'
 
     print '-------------------------------------------'
     print total_concordant_mutation_count, '/', total_mutation_count, 'Concordant'
@@ -68,9 +65,9 @@ if __name__ == '__main__':
     print 'Discordant variants written to: ', args.output_file
 
     with open(args.discordant_output_file, 'w') as discordant_file:
-        discordant_file.write('\n'.join(vcf_header) + '\n')
+        discordant_file.write('\n'.join(vcf_file.header_lines) + '\n')
         discordant_file.write('\n'.join(discordant_mutations))
 
     with open(args.output_file, 'w') as concordant_file:
-        concordant_file.write('\n'.join(vcf_header) + '\n')
+        concordant_file.write('\n'.join(vcf_file.header_lines) + '\n')
         concordant_file.write('\n'.join(concordant_mutations))
