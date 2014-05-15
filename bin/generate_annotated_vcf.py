@@ -14,13 +14,16 @@ if __name__ == '__main__':
                                                  'of variant_effect_predictor is on PATH with cache 27 and 28 installed and'
                                                  'the Downstream plugin installed.')
 
-    group = parser.add_argument('-i', '--input_files',  help='List of input raw LOVD output files to be annotated.', nargs='*')
+    group = parser.add_argument('-f', '--file_list',  help='File containing names of input raw LOVD output files to be annotated.')
 
     args = parser.parse_args()
 
+    with open(args.file_list, 'r') as f:
+        file_list = [x.split() for x in f.read()]
+
     rm = VariantRemapper()
 
-    for file in args.input_files:
+    for file in file_list:
         base_file_name = os.path.splitext(file)[0]
         annotation_input_file = base_file_name + '_HGVS.temp'
         output_file = base_file_name + '.vcf'

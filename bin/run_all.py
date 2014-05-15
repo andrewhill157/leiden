@@ -45,8 +45,12 @@ for file in extracted_data_files:
     else:
         files_to_annotate.append(file)
 
+# Write temp list of files to annotate
+temp_file_name = 'files_to_annotate.temp'
+with open(temp_file_name, 'w') as f:
+    f.write('\n'.join(files_to_annotate))
 
-pipe = subprocess.Popen(['python', 'generate_annotated_vcf.py', '-i'] + files_to_annotate, stdin=subprocess.PIPE)
+pipe = subprocess.Popen(['python', 'generate_annotated_vcf.py', '-f', temp_file_name], stdin=subprocess.PIPE)
 
 annotation_log = pipe.communicate()[0]
 
@@ -55,10 +59,11 @@ annotated_files_list = [os.path.splitext(file)[0] + '.vcf' for files in files_to
 # Validate VCF Files
 with open('annotated_files.temp', 'w') as f:
     f.write(' '.join(annotated_files_list))
-    pipe = subprocess.Popen(['python', 'validate_annotated_vcfs.py',
-                             '-f', 'annotated_files.temp',
-                             '-o', os.path.join(args.output_directory, 'lovd_validated_variants.vcf'),
-                             '-d', os.path.join(args.output_directory, 'lovd_discordant_variants.vcf'),
-                             ], stdout=subprocess.PIPE)
 
-    validation_log = pipe.communicate()
+pipe = subprocess.Popen(['python', 'validate_annotated_vcfs.py',
+                         '-f', 'annotated_files.temp',
+                         '-o', os.path.join(args.output_directory, 'lovd_validated_variants.vcf'),
+                         '-d', os.path.join(args.output_directory, 'lovd_discordant_variants.vcf'),
+                         ], stdout=subprocess.PIPE)
+
+validation_log = pipe.communicate()[0]

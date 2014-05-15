@@ -44,14 +44,26 @@ if __name__ == '__main__':
                                                        str(int(coordinate) + viewing_interval))
 
                 concordant_mutation_found = False
+
+                # Always include variants that have a pubmed or omim reference
+                #if 'pubmed' in variant['INFO']['LOVD'][0]['REFERENCE'] or 'omim' in variant['INFO']['LOVD'][0]['REFERENCE']:
+                #    concordant_mutation_found = True
+                #    concordant_mutations.append(str(variant))
+
+                lovd_protein_change = variant['INFO']['LOVD'][0]['PROTEIN_CHANGE']
+
+                # Check if any transcripts have matching protein change predictions
                 for transcript in variant['INFO']['CSQ']:
-                    if (not concordant_mutation_found) and validation.is_concordant(variant['INFO']['LOVD'][0]['PROTEIN_CHANGE'], transcript['HGVSP']):
-                        total_concordant_mutation_count += 1
-                        gene_concordant_mutation_count += 1
-                        concordant_mutations.append(str(variant))
+                    vep_protein_change = transcript['HGVSP']
+
+                    if (not concordant_mutation_found) and validation.is_concordant(lovd_protein_change, vep_protein_change):
                         concordant_mutation_found = True
 
-                if not concordant_mutation_found:
+                if concordant_mutation_found:
+                    total_concordant_mutation_count += 1
+                    gene_concordant_mutation_count += 1
+                    concordant_mutations.append(str(variant))
+                else:
                     discordant_mutations.append(str(variant))
 
             if gene_mutation_count > 0:

@@ -53,23 +53,11 @@ to VCF format are not saved to output file.
 Example Usage
 -------------
 
-Run on one file:
-
-.. code-block:: bash
-
-    python generate_annotated_vcfs.py -i input_data.txt
-
-Run on multiple files (improved efficiency over multiple script calls):
-
-.. code-block:: bash
-
-    python generate_annotated_vcfs.py -i input_data.txt input_data2.txt
-
 Run on list of files contained in a file (improved efficiency over multiple script calls):
 
 .. code-block:: bash
 
-    cat file_names.txt | python generate_annotated_vcfs.py -i
+    python generate_annotated_vcfs.py -f file_names.txt
 
 
 validate_annotated_vcfs.py
@@ -86,15 +74,8 @@ LOVD or VEP report a protein change (intronic variants, splice variants, etc.), 
 Example Usage
 -------------
 
-Specifying a list of input files on the command lines:
-
-.. code-block:: bash
-
-    python extract_data.py --output_file output.vcf --discordant_output_file discordant.vcf file1.vcf file2.vcf
-
-
 Using a file containing names of all input files:
 
 .. code-block:: bash
 
-    cat input_files.list | python extract_data.py --output_file output.vcf --discordant_output_file discordant.vcf
+    python extract_data.py --output_file output.vcf --discordant_output_file discordant.vcf -f file_list.txt
