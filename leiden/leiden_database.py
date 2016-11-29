@@ -201,6 +201,31 @@ class _LOVD3Database(LeidenDatabase):
         html = web_io.get_page_html(start_url)
         url_soup = BeautifulSoup(html)
 
+        # find the page number indicator to see how many pages to read
+        page_count_span = url_soup.find('span', id='viewlistPageSplitText_Genes').text.strip()
+        m = re.search(r"(?P<entries>[0-9]+) entries on (?P<pages>[0-9]+) pages", page_count_span)
+        (entry_count, page_count) = [int(x) for x in m.groups()]
+
+        # build the initial set of available genes from page 1
+        available_genes = self._genes_on_page(start_url=start_url, url_soup=url_soup)
+
+        # if we have more than the initial first page, iterate through the rest
+        # (range() will return an empty list if you specify an empty range)
+        for curPage in range(2, page_count + 1):
+            available_genes.extend(self._genes_on_page(
+                start_url="%sgenes/?page_size=1000&page=%d" % (self._leiden_url, curPage)
+            ))
+            print '...processing page %d of %d...' % (curPage, page_count)
+
+        return available_genes
+
+    def _genes_on_page(self, start_url, url_soup=None):
+        if url_soup is None:
+            # (added to prevent re-parsing the data on the first page request)
+            # Download and parse HTML from base URL
+            html = web_io.get_page_html(start_url)
+            url_soup = BeautifulSoup(html)
+
         # Extract all gene entries from the lovd homepage
         table_class = 'data'
         options = url_soup.find_all('tr', class_=table_class)
@@ -209,6 +234,7 @@ class _LOVD3Database(LeidenDatabase):
         for genes in options:
             gene_string = genes.find_all('td')[0].find('a').string
             available_genes.append(gene_string)
+
         return available_genes
 
     def get_gene_data(self, gene_id):
